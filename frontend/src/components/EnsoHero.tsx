@@ -1,9 +1,10 @@
 import { motion, type Variants } from "framer-motion";
-import ensoLogo from "../assets/logo/Enso.svg";
+
 // import { Star } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { MagneticDots } from "@/components/MagneticDots";
+import EnsoTitle from "./EnsoTitle";
 
 const container: Variants = {
   hidden: {},
@@ -53,12 +54,7 @@ export function EnsoHero() {
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col">
         {/* Header */}
         <header className="flex items-end justify-between px-6 py-6 sm:px-10 lg:px-16">
-          <div className="pointer-events-auto flex items-center gap-3">
-            <img src={ensoLogo} alt="Enso Logo" className="h-6 w-6" />
-            <span className="font-display text-2xl font-bold tracking-tight text-[#16161D]">
-              Enso
-            </span>
-          </div>
+          <EnsoTitle />
 
           <nav className="pointer-events-auto hidden items-center gap-9 md:flex">
             {navLinks.map((link) => (
