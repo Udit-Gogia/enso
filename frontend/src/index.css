@@ -8,13 +8,13 @@
     --foreground: 240 10% 10%;
 
     --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
+    --muted-foreground: 240 4% 50%;
 
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
+    --border: 240 6% 91%;
+    --input: 232 10% 86%;
     --ring: 214 82% 51%;
 
-    --primary: 214 82% 51%; /* #1a73e8 Google blue */
+    --primary: 214 82% 51%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 5% 96%;
@@ -23,7 +23,7 @@
     --accent: 240 5% 96%;
     --accent-foreground: 240 10% 10%;
 
-    --destructive: 4 90% 58%;
+    --destructive: 4 78% 55%;
     --destructive-foreground: 0 0% 100%;
 
     --radius: 0.875rem;
@@ -34,6 +34,8 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    background-color: #f4f4f7;
+    color: #16161d;
+    @apply font-sans antialiased;
   }
 }

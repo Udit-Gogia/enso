@@ -61,15 +61,19 @@ export function Login() {
     <AuthForm
       CardHeaderChildren={
         <>
-          <EnsoTitle className="mx-auto text-3xl" />
+          <EnsoTitle className="mx-auto text-2xl [&_img]:h-11 [&_img]:w-11" />
           <div className="flex flex-col gap-2">
-            <CardTitle className="text-xl font-bold">Welcome back.</CardTitle>
-            <CardDescription>Sign in to continue on Enso.</CardDescription>
+            <CardTitle className="text-2xl font-bold tracking-tight leading-9">
+              Welcome back.
+            </CardTitle>
+            <CardDescription className="text-sm text-ink-muted">
+              Sign in to continue on Enso.
+            </CardDescription>
           </div>
         </>
       }
     >
-      <CardContent>
+      <CardContent className="px-8">
         <form
           id="login-form"
           onSubmit={form.handleSubmit(onSubmit)}
@@ -121,7 +125,7 @@ export function Login() {
                       placeholder="Enter your password"
                       autoComplete="current-password"
                       type={showPassword ? "text" : "password"}
-                      className="rounded-sm h-11 placeholder:text-muted-foreground/60"
+                      className="rounded-sm h-11 placeholder:text-muted-foreground/60 "
                     />
 
                     <Button
@@ -145,9 +149,11 @@ export function Login() {
                     <FieldError className="mt-2" errors={[fieldState.error]} />
                   )}
 
-                  <p className="text-xs text-muted-foreground mt-2 underline underline-offset-4 hover:text-primary hover:cursor-pointer transition-all duration-300 ease-in-out">
-                    Forgot password?
-                  </p>
+                  <div className="w-full flex justify-end mt-2">
+                    <p className="text-xs text-ink-muted underline underline-offset-4 hover:text-primary hover:cursor-pointer transition-all duration-300 ease-in-out">
+                      Forgot password?
+                    </p>
+                  </div>
                 </Field>
               )}
             />
@@ -155,11 +161,11 @@ export function Login() {
         </form>
       </CardContent>
       {/* <div className="my- h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" /> */}
-      <CardFooter className="my-2 flex flex-col gap-2">
+      <CardFooter className="my-4 flex flex-col gap-2 px-8">
         <Field orientation="horizontal">
           <Button
             disabled={isSubmitting}
-            className="w-full"
+            className="w-full text-white active:scale-[0.99]"
             type="submit"
             form="login-form"
           >
@@ -167,19 +173,16 @@ export function Login() {
             {isSubmitting && <Loader2 className="animate-spin mr-2" />}
           </Button>
         </Field>
-        <Field
-          orientation="horizontal"
-          className="text-muted-foreground text-sm gap-1"
-        >
+        <p className="text-center text-sm text-ink-muted">
           Don't have an account?{" "}
-          <span className="group hover: underline underline-offset-2 hover:text-primary hover:cursor-pointer active:scale-[0.99] transition-all duration-300 ease-in-out flex items-center">
+          <span className="group inline-flex items-center text-primary font-medium hover:underline underline-offset-2 hover:cursor-pointer transition-all duration-200 ease-in-out">
             Join Enso{" "}
             <MoveRight
               className="group-hover:translate-x-1 transition-all duration-200 ease-in-out"
               height={10}
             />
           </span>
-        </Field>
+        </p>
       </CardFooter>
     </AuthForm>
   );
