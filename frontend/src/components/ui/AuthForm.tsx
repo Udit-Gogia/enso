@@ -16,7 +16,7 @@ export function AuthForm({ children, CardHeaderChildren }: AuthFormProps) {
         intensity={1}
         className="absolute inset-0 h-full w-full"
       />
-      <Card className="w-full sm:max-w-lg bg-white  absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 h-fit shadow-[0_12px_40px_rgba(15,23,42,0.08)] rounded-2xl transition-all duration-300 hover:shadow-2xl">
+      <Card className="w-full sm:max-w-lg bg-white absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 h-fit max-h-[90vh] overflow-y-auto shadow-xl rounded-2xl transition-all duration-300 hover:shadow-2xl overflow-hidden">
         <CardHeader className="flex flex-col gap-5 pt-8 px-8">
           {CardHeaderChildren}
         </CardHeader>

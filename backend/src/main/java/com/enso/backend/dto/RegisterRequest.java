@@ -2,7 +2,6 @@ package com.enso.backend.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -17,12 +16,4 @@ public class RegisterRequest {
 
     @NotBlank(message = "Password is required")
     private String password;
-
-    @NotBlank(message = "Phone is required")
-    @Pattern(regexp = "^[0-9]{10}$", message = "Phone must be 10 digits")
-    private String phone;
-
-    private String role;
-
-    private String location;
 }

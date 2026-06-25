@@ -69,7 +69,7 @@ export function EnsoHero() {
               onClick={() => navigate("/login")}
               className="text-[16px] font-medium text-ink hover:text-primary hover:bg-white transition-colors duration-200"
             >
-              Log in
+              Sign in
             </button>
             <Button
               variant="dark"

@@ -10,18 +10,24 @@ import { AuthField } from "@/components/ui/AuthField";
 import PageTransition from "@/components/PageTransition";
 
 const formSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(3, "Username must be at least 3 characters.")
+    .max(24, "Username can't exceed 24 characters.")
+    .regex(/^[a-zA-Z0-9._]+$/, "Only letters, numbers, dots and underscores."),
   email: z.string().trim().email("Please enter a valid email address."),
-  password: z.string().min(1, "Password is required."),
+  password: z.string().min(8, "Password must be at least 8 characters."),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function Login() {
+export function Register() {
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { name: "", email: "", password: "" },
     shouldFocusError: true,
   });
 
@@ -42,29 +48,35 @@ export function Login() {
   return (
     <PageTransition slideUp>
       <AuthCard
-        title="Welcome back."
-        subtitle="Sign in to continue on Enso."
-        submitLabel="Sign in"
-        submittingLabel="Signing in..."
+        title="Create your account."
+        subtitle="Let's get you started."
+        submitLabel="Create account"
+        submittingLabel="Creating account..."
         isSubmitting={form.formState.isSubmitting}
-        formId="login-form"
-        forgotPassword
-        onForgotPassword={() => console.log("forgot password")}
-        bottomText="Don't have an account?"
-        bottomLinkText="Join Enso"
-        onBottomLinkClick={() => navigate("/register")}
+        formId="register-form"
+        bottomText="Already have an account?"
+        bottomLinkText="Sign in"
+        onBottomLinkClick={() => navigate("/login")}
       >
         <form
-          id="login-form"
+          id="register-form"
           onSubmit={form.handleSubmit(onSubmit)}
           aria-disabled={form.formState.isSubmitting}
         >
           <FieldGroup>
             <AuthField
+              name="name"
+              control={form.control}
+              label="Username"
+              placeholder="johnsmith"
+              autoComplete="username"
+              disabled={form.formState.isSubmitting}
+            />
+            <AuthField
               name="email"
               control={form.control}
               label="Email"
-              placeholder="Email address"
+              placeholder="name@example.com"
               type="email"
               autoComplete="email"
               disabled={form.formState.isSubmitting}
@@ -73,17 +85,11 @@ export function Login() {
               name="password"
               control={form.control}
               label="Password"
-              placeholder="Enter your password"
-              autoComplete="current-password"
+              placeholder="Create a password"
+              autoComplete="new-password"
               disabled={form.formState.isSubmitting}
               isPassword
-              hint={
-                <div className="w-full flex justify-end mt-2">
-                  <p className="text-xs text-ink-muted/80 underline underline-offset-4 hover:text-primary hover:cursor-pointer transition-all duration-300 ease-in-out">
-                    Forgot password?
-                  </p>
-                </div>
-              }
+              description="Use 8 or more characters."
             />
           </FieldGroup>
         </form>

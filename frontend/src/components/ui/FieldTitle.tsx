@@ -10,9 +10,12 @@ const FieldTitle = ({
   isRequired?: boolean;
 }) => {
   return (
-    <FieldLabel className="text-sm font-medium " htmlFor={htmlFor}>
+    <FieldLabel
+      className="text-sm font-medium flex gap-1 items-center"
+      htmlFor={htmlFor}
+    >
       {label}
-      {isRequired && <span className="text-destructive">*</span>}
+      {isRequired && <span className="text-destructive opacity-70">*</span>}
     </FieldLabel>
   );
 };
