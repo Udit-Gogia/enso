@@ -5,6 +5,7 @@ import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { MagneticDots } from "@/components/MagneticDots";
 import EnsoTitle from "./EnsoTitle";
+import { useNavigate } from "react-router-dom";
 
 const container: Variants = {
   hidden: {},
@@ -22,7 +23,7 @@ const item: Variants = {
   },
 };
 
-const navLinks = ["How it works", "Join Enso"];
+// const navLinks = ["How it works", "Join Enso"];
 
 // const categories = [
 //   { label: "Professionals Verified", color: "#5B5F6B" },
@@ -33,6 +34,7 @@ const navLinks = ["How it works", "Join Enso"];
 // const avatars = ["#4285F4", "#EA4335", "#34A853", "#FBBC05"];
 
 export function EnsoHero() {
+  const navigate = useNavigate();
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-white">
       {/* Interactive background */}
@@ -41,7 +43,14 @@ export function EnsoHero() {
         intensity={1}
         className="absolute inset-0 h-full w-full"
       />
-
+      <div
+        className="pointer-events-none absolute left-0 right-0 top-0 z-10"
+        style={{
+          height: "120px",
+          background:
+            "linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 40%, rgba(255,255,255,0) 100%)",
+        }}
+      />
       {/* Legibility scrim behind the centered content */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -55,30 +64,21 @@ export function EnsoHero() {
         {/* Header */}
         <header className="flex items-end justify-between px-6 py-6 sm:px-10 lg:px-16">
           <EnsoTitle />
-
-          <nav className="pointer-events-auto hidden items-center gap-9 md:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link}
-                href="#"
-                className="text-[15px] font-medium text-[#5B5F6B] transition-colors hover:text-[#16161D]"
-              >
-                {link}
-              </a>
-            ))}
-          </nav>
-
           <div className="pointer-events-auto flex items-center gap-4">
-            <a
-              href="#"
-              className="text-[15px] font-semibold text-[#16161D] hover:opacity-70"
+            <button
+              onClick={() => navigate("/login")}
+              className="text-[16px] font-medium text-ink hover:text-primary hover:bg-white transition-colors duration-200"
             >
               Log in
-            </a>
-            <Button variant="dark" className="hover:-translate-y-px">
+            </button>
+            <Button
+              variant="dark"
+              onClick={() => navigate("/register")}
+              className="hover:-translate-y-px transition-transform duration-200"
+            >
               Create account
             </Button>
-          </div>
+          </div>{" "}
         </header>
 
         {/* Hero */}
@@ -117,14 +117,14 @@ export function EnsoHero() {
           >
             <Button
               size="lg"
-              className="bg-[#1a73e8] shadow-[0_14px_30px_-10px_rgba(26,115,232,.65)] hover:-translate-y-0.5 hover:bg-[#1666c8] hover:shadow-[0_20px_38px_-10px_rgba(26,115,232,.75)]"
+              className="bg-primary text-white shadow-cta hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-cta transition-all duration-200"
             >
               Explore Enso
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="border-[#DADBE2] hover:-translate-y-0.5 hover:border-[#1a73e8]"
+              className="border-border-input text-ink hover:-translate-y-0.5 hover:border-primary hover:text-primary transition-all duration-200 active:scale-[0.99]"
             >
               Join Enso
             </Button>
