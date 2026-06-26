@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import ensoLogo from "../assets/logo/Enso.svg";
+import ensoLogo from "../../assets/logo/Enso.svg";
 import { useNavigate } from "react-router-dom";
 
 export default function EnsoTitle({
@@ -20,7 +20,7 @@ export default function EnsoTitle({
         if (redirectToHome) navigate("/");
       }}
     >
-      <img src={ensoLogo} alt="Enso Logo" className="h-9 w-9" />
+      <img src={ensoLogo} alt="Enso Logo" className="h-7 w-7" />
       <span>Enso</span>
     </div>
   );

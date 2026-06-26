@@ -4,8 +4,9 @@ import { motion, type Variants } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { MagneticDots } from "@/components/common/MagneticDots";
-import EnsoTitle from "./common/EnsoTitle";
+
 import { useNavigate } from "react-router-dom";
+import EnsoTitle from "@/components/common/EnsoTitle";
 
 const container: Variants = {
   hidden: {},
@@ -124,7 +125,8 @@ export function EnsoHero() {
             <Button
               size="lg"
               variant="outline"
-              className="border-border-input text-ink hover:-translate-y-0.5 hover:border-primary hover:text-primary transition-all duration-200 active:scale-[0.99]"
+              onClick={() => navigate("/register")}
+              className="border-border-input text-ink hover:-translate-y-0.5 hover:border-primary hover:text-primary transition-all duration-200 active:scale-[0.98]"
             >
               Join Enso
             </Button>

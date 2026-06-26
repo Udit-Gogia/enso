@@ -1,5 +1,5 @@
-import { EnsoHero } from "@/components/EnsoHero";
 import PageTransition from "@/components/common/PageTransition";
+import { EnsoHero } from "@/features/Landing/components/EnsoHero";
 
 export default function LandingPage() {
   return (
