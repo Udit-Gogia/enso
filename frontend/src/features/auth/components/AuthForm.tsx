@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Card, CardHeader } from "@/components/ui/card";
 
-import { MagneticDots } from "@/components/MagneticDots";
+import { MagneticDots } from "@/components/common/MagneticDots";
 
 type AuthFormProps = {
   CardHeaderChildren: React.JSX.Element;

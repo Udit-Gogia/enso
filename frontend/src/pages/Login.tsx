@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import * as z from "zod";
 import { FieldGroup } from "@/components/ui/field";
-import { AuthCard } from "@/components/ui/AuthCard";
-import { AuthField } from "@/components/ui/AuthField";
-import PageTransition from "@/components/PageTransition";
+import { AuthCard } from "@/features/auth/components/AuthCard";
+import { AuthField } from "@/features/auth/components/AuthField";
+import PageTransition from "@/components/common/PageTransition";
 
 const formSchema = z.object({
   email: z.string().trim().email("Please enter a valid email address."),

@@ -3,8 +3,8 @@ import { motion, type Variants } from "framer-motion";
 // import { Star } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { MagneticDots } from "@/components/MagneticDots";
-import EnsoTitle from "./EnsoTitle";
+import { MagneticDots } from "@/components/common/MagneticDots";
+import EnsoTitle from "./common/EnsoTitle";
 import { useNavigate } from "react-router-dom";
 
 const container: Variants = {

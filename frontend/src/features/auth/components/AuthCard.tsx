@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/card";
 import { Field } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
-import { AuthForm } from "@/components/ui/AuthForm";
-import EnsoTitle from "@/components/EnsoTitle";
+import { AuthForm } from "@/features/auth/components/AuthForm";
+import EnsoTitle from "@/components/common/EnsoTitle";
 
 type AuthCardProps = {
   title: string;
