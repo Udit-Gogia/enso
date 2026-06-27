@@ -1,5 +1,7 @@
-import LandingPage from "@/pages/LandingPage";
+import { PersonaSelector } from "@/features/auth/components/PersonaSelector";
+// import LandingPage from "@/pages/LandingPage";
 import { Login } from "@/pages/Login";
+import ProfileSetup from "@/pages/ProfileSetup";
 import { Register } from "@/pages/Register";
 import { AnimatePresence } from "framer-motion";
 import { Route, Routes, useLocation } from "react-router-dom";
@@ -10,7 +12,7 @@ export default function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<ProfileSetup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

@@ -3,7 +3,10 @@ import { useEffect, useRef } from "react";
 export const PALETTES = {
   Google: ["#4285F4", "#EA4335", "#FBBC05", "#34A853"],
   Candy: ["#FF5DA2", "#7C4DFF", "#22C7E8", "#FFC93C"],
-  Mono: ["#4285F4", "#5C9BFF", "#86B8FF", "#1A73E8"],
+
+  MonoBlue: ["#E8F1FF", "#86B8FF", "#4285F4", "#1A73E8"],
+  MonoRed: ["#FDECEC", "#F28B82", "#EA4335", "#C5221F"],
+  MonoGreen: ["#E6F4EA", "#81C995", "#34A853", "#188038"],
 } as const;
 
 export type Palette = keyof typeof PALETTES;
@@ -14,6 +17,7 @@ interface MagneticDotsProps {
   /** Multiplier on how far dots are pushed (0.4 = calm, 2 = wild). */
   intensity?: number;
   className?: string;
+  background?: string;
 }
 
 /**
@@ -25,6 +29,7 @@ export function MagneticDots({
   palette = "Google",
   intensity = 1,
   className,
+  background = "#ffffff",
 }: MagneticDotsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -95,7 +100,7 @@ export function MagneticDots({
       st.my += (st.ty - st.my) * 0.07;
 
       ctx.setTransform(st.dpr, 0, 0, st.dpr, 0, 0);
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = background;
       ctx.fillRect(0, 0, st.cssW, st.cssH);
 
       for (let gx = sp / 2; gx < st.cssW; gx += sp) {
@@ -110,8 +115,8 @@ export function MagneticDots({
           let ox = 0;
           let oy = 0;
           let size = 1.7;
-          let col = "#D1D5DB";
-          // let col = "#E9EAEE";
+          // let col = "#D1D5DB";
+          let col = "#D8DCE2";
           let a = 0.5;
 
           if (d < R) {
