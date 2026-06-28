@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PersonaPanel } from "./PersonaPanel";
 import { Greetings } from "./Greetings";
 import { Palette } from "@/components/common/MagneticDots";
+import { BriefcaseBusinessIcon, Shield, User } from "lucide-react";
 
 // ─── TIMELINE (all values in ms from page load) ──────────────
 const TIMELINE = {
@@ -14,6 +15,12 @@ const TIMELINE = {
   panel2FadeIn: { delay: 1900, duration: 600 },
   panel3FadeIn: { delay: 2100, duration: 600 },
 };
+
+const FLEX: Record<string, number> = {
+  customer: 1.15, // slightly wider to compensate for left clip loss
+  vendor: 1,
+  admin: 0.95, // slightly narrower to compensate for right clip gain
+};
 // ─────────────────────────────────────────────────────────────
 
 const SKEW_PX = 32;
@@ -24,25 +31,28 @@ const PANELS = [
     persona: "customer" as const,
     label: "Customer",
     position: "left" as const,
-    description: "Description for customer",
+    description: "Book trusted services.",
     palette: "MonoBlue" as Palette,
     backgroundHex: "#F1F7FF",
+    icon: <User color="#1A73E8" />, // MonoBlue[3]
   },
   {
     persona: "vendor" as const,
     label: "Vendor",
     position: "middle" as const,
-    description: "Description for vendor",
+    description: "Grow your business.",
     palette: "MonoRed" as Palette,
     backgroundHex: "#FFF4F3",
+    icon: <BriefcaseBusinessIcon color="#C5221F" />, // MonoRed[3]
   },
   {
     persona: "admin" as const,
     label: "Admin",
     position: "right" as const,
-    description: "Description for admin",
+    description: "Manage your platform.",
     palette: "MonoGreen" as Palette,
     backgroundHex: "#F3FAF4",
+    icon: <Shield color="#188038" />, // MonoGreen[3]
   },
 ];
 
@@ -97,6 +107,7 @@ export function PersonaSelector() {
               key={p.persona}
               className="relative flex-1 h-full"
               style={{
+                flex: FLEX[p.persona],
                 marginLeft: i !== 0 ? `-${SKEW_PX - GAP}px` : undefined,
               }}
               initial={{ opacity: 0 }}
@@ -116,6 +127,7 @@ export function PersonaSelector() {
                 description={p.description}
                 palette={p.palette}
                 backgroundHex={p.backgroundHex}
+                icon={p.icon}
               />
             </motion.div>
           ))}

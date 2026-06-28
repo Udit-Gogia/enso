@@ -15,6 +15,7 @@ interface PersonaPanelProps {
   backgroundHex: string;
   position: "left" | "middle" | "right";
   palette: Palette;
+  icon: JSX.Element;
 }
 
 function getClipPath(position: "left" | "middle" | "right"): string {
@@ -32,32 +33,17 @@ function getClipPath(position: "left" | "middle" | "right"): string {
   }
 }
 
-const COLORS: Record<Persona, [number, number, number][]> = {
-  customer: [
-    [26, 115, 232],
-    [66, 133, 244],
-  ],
-  vendor: [
-    [234, 67, 53],
-    [188, 45, 35],
-  ],
-  admin: [
-    [251, 188, 5],
-    [249, 171, 0],
-  ],
-};
-
 export function PersonaPanel({
-  persona,
   label,
   position,
   description,
   palette,
   backgroundHex,
+  icon,
 }: PersonaPanelProps) {
   return (
     <div
-      className="relative flex-1 h-full overflow-hidden"
+      className="relative flex-1 h-full overflow-hidden flex items-center justify-center"
       style={{
         clipPath: getClipPath(position),
         marginLeft: position !== "left" ? `-${SKEW_PX - GAP}px` : undefined,
@@ -73,14 +59,22 @@ export function PersonaPanel({
       </div>
 
       {/* Label */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center pointer-events-none">
-        <p
-          className="m-0 max-w-[14ch] text-balance font-display text-[clamp(32px,3vw,60px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D]"
-          //  className="font-display font-semibold tracking-widest uppercase text-white text-lg drop-shadow-sm"
-        >
-          {label}
-        </p>
-        <p>{description}</p>
+      <div
+        className={`relative z-10 h-fit flex flex-col items-center justify-center pointer-events-none gap-2 rounded-full p-6`}
+        style={{ backgroundColor: backgroundHex }}
+      >
+        <div className="p-4 rounded-full shadow-lg bg-white border border-[#EEF2F6] ">
+          {icon}
+        </div>
+
+        <div className="flex flex-col gap-4 items-center justify-center">
+          <p className="m-0 max-w-[14ch] text-balance font-display text-[clamp(32px,3vw,60px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D]">
+            {label}
+          </p>
+          <p className="m-0 max-w-[600px] text-[clamp(14px,1.25vw,21px)] leading-[1.6] text-[#5B5F6B] font-display font-light ">
+            {description}
+          </p>
+        </div>
       </div>
     </div>
   );
