@@ -1,12 +1,13 @@
 // import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
 
 import { MagneticDots, Palette } from "@/components/common/MagneticDots";
+import { SKEW_PX } from "./PersonaSelector";
 
 export type Persona = "customer" | "vendor" | "admin";
 
 // Tweak this to adjust the diagonal slant amount (in pixels)
-export const SKEW_PX = 100;
-export const GAP = 14;
+// export const SKEW_PX = 100;
+// export const GAP = 14;
 
 interface PersonaPanelProps {
   persona: Persona;
@@ -46,7 +47,6 @@ export function PersonaPanel({
       className="relative flex-1 h-full overflow-hidden flex items-center justify-center"
       style={{
         clipPath: getClipPath(position),
-        marginLeft: position !== "left" ? `-${SKEW_PX - GAP}px` : undefined,
       }}
     >
       {/* CanvasRevealEffect background */}

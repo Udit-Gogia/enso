@@ -17,14 +17,14 @@ const TIMELINE = {
 };
 
 const FLEX: Record<string, number> = {
-  customer: 1.15, // slightly wider to compensate for left clip loss
+  customer: 1.05, // slightly wider to compensate for left clip loss
   vendor: 1,
   admin: 0.95, // slightly narrower to compensate for right clip gain
 };
 // ─────────────────────────────────────────────────────────────
 
-const SKEW_PX = 32;
-const GAP = 20;
+export const SKEW_PX = 100;
+export const GAP = 2;
 
 const PANELS = [
   {
