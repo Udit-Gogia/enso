@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +7,8 @@ import { FieldGroup } from "@/components/ui/field";
 import { AuthCard } from "@/features/auth/components/AuthCard";
 import { AuthField } from "@/features/auth/components/AuthField";
 import PageTransition from "@/components/common/PageTransition";
+import api from "@/lib/axios";
+import { setSetupToken } from "@/lib/token";
 
 const formSchema = z.object({
   name: z
@@ -31,18 +32,24 @@ export function Register() {
     shouldFocusError: true,
   });
 
-  function onSubmit(data: FormValues) {
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      style: {
-        "--border-radius": "calc(var(--radius) + 4px)",
-      } as React.CSSProperties,
-    });
+  async function onSubmit(data: FormValues) {
+    try {
+      const response = await api.post("/api/auth/register", {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+
+      setSetupToken(response.data.setupToken);
+      navigate("/profile-setup");
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ??
+        "Something went wrong. Please try again.";
+      toast.error(message, {
+        position: "bottom-right",
+      });
+    }
   }
 
   return (

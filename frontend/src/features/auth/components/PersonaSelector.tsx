@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PersonaPanel } from "./PersonaPanel";
+import { Persona, PersonaPanel } from "./PersonaPanel";
 import { Greetings } from "./Greetings";
 import { Palette } from "@/components/common/MagneticDots";
 import { BriefcaseBusinessIcon, Shield, User } from "lucide-react";
+import { PersonaConfirmDialog } from "./PersonaConfirmDialog";
+import { useNavigate } from "react-router-dom";
 
 // ─── TIMELINE (all values in ms from page load) ──────────────
 const TIMELINE = {
@@ -68,6 +70,22 @@ export function PersonaSelector() {
   const [showGreetingBottom, setShowGreetingBottom] = useState(false);
   const [showPanels, setShowPanels] = useState(false);
 
+  const navigate = useNavigate();
+  const [pendingPersona, setPendingPersona] = useState<Persona | null>(null);
+
+  function handlePanelClick(persona: Persona) {
+    setPendingPersona(persona);
+  }
+
+  function handleConfirm() {
+    navigate(`/profile-setup/${pendingPersona}`);
+    setPendingPersona(null);
+  }
+
+  function handleCancel() {
+    setPendingPersona(null);
+  }
+
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
 
@@ -97,7 +115,12 @@ export function PersonaSelector() {
   }, []);
 
   return (
-    <div className="w-full h-full overflow-hidden border border-black flex flex-col">
+    <div className="w-full h-screen  border border-black flex flex-col">
+      <PersonaConfirmDialog
+        persona={pendingPersona}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
       {/* ── Row 1: Black persona area ── */}
       <div className="relative flex basis-5/6 min-h-[320px] bg-black">
         {/* Persona panels */}
@@ -128,6 +151,7 @@ export function PersonaSelector() {
                 palette={p.palette}
                 backgroundHex={p.backgroundHex}
                 icon={p.icon}
+                onClick={() => handlePanelClick(p.persona)}
               />
             </motion.div>
           ))}

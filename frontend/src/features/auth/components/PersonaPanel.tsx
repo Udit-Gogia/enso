@@ -16,6 +16,7 @@ interface PersonaPanelProps {
   backgroundHex: string;
   position: "left" | "middle" | "right";
   palette: Palette;
+  onClick: () => void;
   icon: JSX.Element;
 }
 
@@ -41,6 +42,7 @@ export function PersonaPanel({
   palette,
   backgroundHex,
   icon,
+  onClick,
 }: PersonaPanelProps) {
   return (
     <div
@@ -48,6 +50,7 @@ export function PersonaPanel({
       style={{
         clipPath: getClipPath(position),
       }}
+      onClick={onClick}
     >
       {/* CanvasRevealEffect background */}
       <div className="absolute inset-0">
