@@ -5,9 +5,11 @@ import { SKEW_PX } from "./PersonaSelector";
 
 export type Persona = "customer" | "vendor" | "admin";
 
-// Tweak this to adjust the diagonal slant amount (in pixels)
-// export const SKEW_PX = 100;
-// export const GAP = 14;
+export const PersonaLabels: Record<Persona, String> = {
+  admin: "Admin",
+  customer: "Customer",
+  vendor: "Vendor",
+};
 
 interface PersonaPanelProps {
   persona: Persona;
@@ -49,7 +51,7 @@ export function PersonaPanel({
 }: PersonaPanelProps) {
   return (
     <div
-      className="relative flex-1 h-full overflow-hidden flex items-center justify-center"
+      className={`relative flex-1 h-full overflow-hidden flex items-center justify-center hover:cursor-pointer`}
       style={{
         clipPath: getClipPath(position),
       }}

@@ -82,8 +82,8 @@ export function PersonaConfirmDialog({
                 </DialogPrimitive.Title>
 
                 <DialogPrimitive.Description className="text-md text-ink-muted mb-6">
-                  You'll complete your profile as a {meta.label.toLowerCase()}.
-                  You can't change this later.
+                  You're about to create a {meta.label.toLowerCase()} profile.
+                  This choice is permanent.
                 </DialogPrimitive.Description>
 
                 <div className="flex gap-3 justify-end w-full">

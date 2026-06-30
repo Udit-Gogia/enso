@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,7 +31,10 @@ public class VendorProfile {
     private int yearsOfExperience;
     private LocalTime openTime;
     private LocalTime closeTime;
-    private String tags;
+
+    @ElementCollection
+    private List<String> tags;
+
     private String profilePhotoUrl;
 
     @Builder.Default

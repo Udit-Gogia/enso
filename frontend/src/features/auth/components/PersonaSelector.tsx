@@ -4,8 +4,10 @@ import { Persona, PersonaPanel } from "./PersonaPanel";
 import { Greetings } from "./Greetings";
 import { Palette } from "@/components/common/MagneticDots";
 import { BriefcaseBusinessIcon, Shield, User } from "lucide-react";
-import { PersonaConfirmDialog } from "./PersonaConfirmDialog";
+
 import { useNavigate } from "react-router-dom";
+
+import { PersonaCTA } from "./PersonaSelectionCTA";
 
 // ─── TIMELINE (all values in ms from page load) ──────────────
 const TIMELINE = {
@@ -82,10 +84,6 @@ export function PersonaSelector() {
     setSelectedPersona(null);
   }
 
-  function handleCancel() {
-    setSelectedPersona(null);
-  }
-
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
 
@@ -116,11 +114,6 @@ export function PersonaSelector() {
 
   return (
     <div className="w-full h-screen  border border-black flex flex-col">
-      <PersonaConfirmDialog
-        persona={selectedPersona}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-      />
       {/* ── Row 1: Black persona area ── */}
       <div className="relative flex basis-5/6 min-h-[320px] bg-black">
         {/* Persona panels */}
@@ -141,7 +134,7 @@ export function PersonaSelector() {
                 delay:
                   (panelDelays[i].delay - TIMELINE.panel1FadeIn.delay) / 1000,
                 duration: panelDelays[i].duration / 1000,
-                flex: { duration: 0.5, ease: "easeInOut" },
+                flex: { duration: 0.35, ease: "easeInOut" },
               }}
             >
               <PersonaPanel
@@ -171,7 +164,6 @@ export function PersonaSelector() {
               transition={{ duration: TIMELINE.greetingFadeIn.duration / 1000 }}
             >
               <Greetings
-                showDescription={false}
                 title="Welcome"
                 className="[&_p:first-child]:text-white [&_p:last-child]:text-white/60 max-w-xl"
                 titleClassName="text-balance font-display text-[clamp(46px,5vw,80px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D] text-surface"
@@ -184,7 +176,7 @@ export function PersonaSelector() {
 
       {/* ── Row 2: White bottom bar ── */}
       <motion.div
-        className="bg-surface w-screen border-t-2 shadow-md border-black basis-1/6 min-h-[100px] flex items-center justify-center "
+        className="bg-surface w-screen shadow-[0_2px_6px_rgba(22,22,29,.04),0_10px_30px_rgba(22,22,29,.08),0_30px_60px_rgba(22,22,29,.06)] basis-1/5 min-h-[100px] flex items-center justify-center relative"
         initial={{ opacity: 0 }}
         animate={{ opacity: showBottomBar ? 1 : 0 }}
         transition={{ duration: TIMELINE.bottomBarFadeIn.duration / 1000 }}
@@ -197,13 +189,20 @@ export function PersonaSelector() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
+              className="group/persona-confirmation"
             >
-              <Greetings
-                titleClassName="text-balance font-display text-[clamp(32px,1vw,40px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D]"
-                showDescription={false}
-                descriptionClassName="m-0 text-[clamp(12px,1vw,18px)] text-[#5B5F6B]"
-                title="Choose how you'll use Enso."
-              />
+              {selectedPersona ? (
+                <PersonaCTA
+                  persona={selectedPersona}
+                  onConfirm={handleConfirm}
+                />
+              ) : (
+                <Greetings
+                  titleClassName="text-balance font-display text-[clamp(32px,1vw,40px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D]"
+                  descriptionClassName="m-0 text-[clamp(12px,1vw,18px)] text-[#5B5F6B]"
+                  title="Choose how you'll use Enso."
+                />
+              )}
             </motion.div>
           )}
         </AnimatePresence>
