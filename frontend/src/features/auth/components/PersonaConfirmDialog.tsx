@@ -1,11 +1,24 @@
 import { motion, AnimatePresence } from "framer-motion";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Persona } from "./PersonaPanel";
+import { Button } from "@/components/ui/button";
+import { BriefcaseBusinessIcon, Shield, User } from "lucide-react";
 
-const PERSONA_META: Record<Persona, { label: string; color: string }> = {
-  customer: { label: "Customer", color: "#1A73E8" },
-  vendor: { label: "Vendor", color: "#C5221F" },
-  admin: { label: "Admin", color: "#188038" },
+const PERSONA_META: Record<
+  Persona,
+  { label: string; color: string; icon: JSX.Element }
+> = {
+  customer: {
+    label: "Customer",
+    color: "#1A73E8",
+    icon: <User color="#1A73E8" />,
+  },
+  vendor: {
+    label: "Vendor",
+    color: "#C5221F",
+    icon: <BriefcaseBusinessIcon color="#C5221F" />,
+  },
+  admin: { label: "Admin", color: "#188038", icon: <Shield color="#188038" /> },
 };
 
 interface PersonaConfirmDialogProps {
@@ -32,20 +45,20 @@ export function PersonaConfirmDialog({
           <DialogPrimitive.Portal forceMount>
             {/* Backdrop */}
             <DialogPrimitive.Overlay asChild forceMount>
-              <motion.div
+              {/* <motion.div
                 className="fixed inset-0 bg-black/40 z-50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-              />
+              /> */}
             </DialogPrimitive.Overlay>
 
             {/* Dialog */}
             <DialogPrimitive.Content asChild forceMount>
               <motion.div
-                className="fixed left-[38.5%] top-[33%] z-50 w-full max-w-sm -translate-x-1/2 -translate-y-1/2 
-                           bg-surface rounded-2xl shadow-card border border-border-soft p-6 outline-none"
+                className="fixed left-[34%] top-[33%] z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 
+                           bg-surface rounded-2xl shadow-xl border border-border-soft p-6 outline-none"
                 initial={{ opacity: 0, scale: 0.96, y: -8 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: -8 }}
@@ -60,38 +73,35 @@ export function PersonaConfirmDialog({
                   }}
                 >
                   <div className="w-full h-full rounded-full flex items-center justify-center">
-                    <div
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: meta.color }}
-                    />
+                    {meta.icon}
                   </div>
                 </div>
 
-                <DialogPrimitive.Title className="font-display text-lg font-semibold text-ink mb-1">
-                  Continue as {meta.label}?
+                <DialogPrimitive.Title className="font-display text-xl font-semibold text-ink mb-1">
+                  Confirm {meta.label} profile
                 </DialogPrimitive.Title>
 
-                <DialogPrimitive.Description className="text-sm text-ink-muted mb-6">
+                <DialogPrimitive.Description className="text-md text-ink-muted mb-6">
                   You'll complete your profile as a {meta.label.toLowerCase()}.
                   You can't change this later.
                 </DialogPrimitive.Description>
 
-                <div className="flex gap-3 justify-end">
-                  <button
+                <div className="flex gap-3 justify-end w-full">
+                  <Button
+                    size="default"
+                    variant="outline"
                     onClick={onCancel}
-                    className="px-4 py-2 text-sm font-medium text-ink-muted hover:text-ink 
-                               rounded-lg border border-border-soft hover:border-border 
-                               transition-colors"
+                    className="border-border-input text-md  text-ink hover:-translate-y-0.5 hover:border-primary hover:text-primary transition-all duration-200 active:scale-[0.98] w-full"
                   >
                     Cancel
-                  </button>
-                  <button
+                  </Button>
+
+                  <Button
                     onClick={onConfirm}
-                    className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors"
-                    style={{ backgroundColor: meta.color }}
+                    className="bg-primary text-white  text-md shadow-cta hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-cta transition-all duration-200 w-full"
                   >
-                    Continue
-                  </button>
+                    Confirm
+                  </Button>
                 </div>
               </motion.div>
             </DialogPrimitive.Content>

@@ -4,7 +4,7 @@ import { PersonaSelector } from "@/features/auth/components/PersonaSelector";
 export default function ProfileSetup() {
   return (
     <PageTransition>
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen w-screen overflow-x-hidden bg-black flex items-center justify-center">
         <div className="w-screen h-screen">
           <PersonaSelector />
         </div>

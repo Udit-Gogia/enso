@@ -56,10 +56,34 @@ export function MagneticDots({
       dpr: 1,
     };
 
+    // const resize = () => {
+    //   const b = wrap.getBoundingClientRect();
+    //   st.cssW = b.width;
+    //   st.cssH = b.height;
+    //   st.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    //   canvas.width = Math.max(1, Math.round(st.cssW * st.dpr));
+    //   canvas.height = Math.max(1, Math.round(st.cssH * st.dpr));
+    //   if (st.mx === 0 && st.my === 0) {
+    //     st.mx = st.tx = st.cssW * 0.5;
+    //     st.my = st.ty = st.cssH * 0.44;
+    //   }
+    // };
     const resize = () => {
       const b = wrap.getBoundingClientRect();
-      st.cssW = b.width;
-      st.cssH = b.height;
+      const newCssW = b.width;
+      const newCssH = b.height;
+
+      // Skip if size hasn't meaningfully changed — avoids clearing canvas on sub-pixel/animation-frame churn
+      if (
+        Math.abs(newCssW - st.cssW) < 1 &&
+        Math.abs(newCssH - st.cssH) < 1 &&
+        st.cssW !== 0
+      ) {
+        return;
+      }
+
+      st.cssW = newCssW;
+      st.cssH = newCssH;
       st.dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.max(1, Math.round(st.cssW * st.dpr));
       canvas.height = Math.max(1, Math.round(st.cssH * st.dpr));
@@ -82,7 +106,13 @@ export function MagneticDots({
 
     wrap.addEventListener("pointermove", onMove);
     wrap.addEventListener("pointerleave", onLeave);
-    const ro = new ResizeObserver(resize);
+    // const ro = new ResizeObserver(resize);
+    // ro.observe(wrap);
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const ro = new ResizeObserver(() => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(resize, 100);
+    });
     ro.observe(wrap);
 
     const sp = 34; // grid spacing
@@ -150,9 +180,16 @@ export function MagneticDots({
       wrap.removeEventListener("pointermove", onMove);
       wrap.removeEventListener("pointerleave", onLeave);
       ro.disconnect();
+      clearTimeout(resizeTimeout);
       cancelAnimationFrame(st.raf);
     };
   }, [palette, intensity]);
 
-  return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className={`w-full h-full ${className ?? ""}`}
+      aria-hidden="true"
+    />
+  );
 }

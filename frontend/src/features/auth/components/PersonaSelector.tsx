@@ -71,19 +71,19 @@ export function PersonaSelector() {
   const [showPanels, setShowPanels] = useState(false);
 
   const navigate = useNavigate();
-  const [pendingPersona, setPendingPersona] = useState<Persona | null>(null);
+  const [selectedPersona, setSelectedPersona] = useState<Persona | null>(null);
 
   function handlePanelClick(persona: Persona) {
-    setPendingPersona(persona);
+    setSelectedPersona(persona);
   }
 
   function handleConfirm() {
-    navigate(`/profile-setup/${pendingPersona}`);
-    setPendingPersona(null);
+    navigate(`/profile-setup/${selectedPersona}`);
+    setSelectedPersona(null);
   }
 
   function handleCancel() {
-    setPendingPersona(null);
+    setSelectedPersona(null);
   }
 
   useEffect(() => {
@@ -117,7 +117,7 @@ export function PersonaSelector() {
   return (
     <div className="w-full h-screen  border border-black flex flex-col">
       <PersonaConfirmDialog
-        persona={pendingPersona}
+        persona={selectedPersona}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
@@ -128,23 +128,25 @@ export function PersonaSelector() {
           {PANELS.map((p, i) => (
             <motion.div
               key={p.persona}
-              className="relative flex-1 h-full"
+              className="relative h-full"
               style={{
-                flex: FLEX[p.persona],
                 marginLeft: i !== 0 ? `-${SKEW_PX - GAP}px` : undefined,
               }}
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 0, flex: FLEX[p.persona] }}
               animate={{
                 opacity: showPanels ? 1 : 0,
+                flex: selectedPersona === p.persona ? 2 : FLEX[p.persona],
               }}
               transition={{
                 delay:
                   (panelDelays[i].delay - TIMELINE.panel1FadeIn.delay) / 1000,
                 duration: panelDelays[i].duration / 1000,
+                flex: { duration: 0.5, ease: "easeInOut" },
               }}
             >
               <PersonaPanel
                 persona={p.persona}
+                selectedPersona={selectedPersona}
                 label={p.label}
                 position={p.position}
                 description={p.description}

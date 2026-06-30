@@ -1,5 +1,5 @@
 // import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
-
+import { motion } from "framer-motion";
 import { MagneticDots, Palette } from "@/components/common/MagneticDots";
 import { SKEW_PX } from "./PersonaSelector";
 
@@ -13,6 +13,7 @@ interface PersonaPanelProps {
   persona: Persona;
   label: string;
   description: string;
+  selectedPersona: Persona | null;
   backgroundHex: string;
   position: "left" | "middle" | "right";
   palette: Palette;
@@ -37,7 +38,9 @@ function getClipPath(position: "left" | "middle" | "right"): string {
 
 export function PersonaPanel({
   label,
+  persona,
   position,
+  selectedPersona,
   description,
   palette,
   backgroundHex,
@@ -52,12 +55,22 @@ export function PersonaPanel({
       }}
       onClick={onClick}
     >
+      {!!selectedPersona && persona != selectedPersona && (
+        <motion.div
+          className="absolute inset-0 bg-black/40 z-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+        />
+      )}
       {/* CanvasRevealEffect background */}
       <div className="absolute inset-0">
         <MagneticDots
           palette={palette}
           intensity={0.25}
           background={backgroundHex}
+          className="w-full h-full"
         />
       </div>
 
