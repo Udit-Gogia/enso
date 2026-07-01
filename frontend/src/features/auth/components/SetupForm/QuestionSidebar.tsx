@@ -43,70 +43,101 @@ export function QuestionSidebar({
   const answeredCount = questions.filter((q) => isAnswered(q.id)).length;
 
   return (
-    <div className="h-full flex flex-col bg-white border-r border-border-soft">
-      {/* Top — persona badge */}
-      <div className="px-6 pt-8 pb-6 border-b border-border-soft">
+    <div
+      className="h-full flex flex-col bg-white border border-slate-200/70 rounded-2xl px-4 pt-4 shadow-[0_2px_8px_rgba(15,23,42,0.04),0_16px_40px_rgba(15,23,42,0.06)]"
+      style={
+        {
+          // boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+          // height: "-webkit-fill-available",
+        }
+      }
+    >
+      {/* Header */}
+      <div className="px-6 pt-8 pb-6 flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <div
             className="w-2 h-2 rounded-full"
             style={{ backgroundColor: accent }}
           />
-          <span className="text-xs font-bold tracking-widest uppercase text-ink-secondary ">
+          <span className="text-lg font-display font-bold tracking-widest uppercase">
             {PERSONA_LABEL[persona]} Profile
           </span>
         </div>
-        <p className="mt-3 text-xs text-ink-placeholder">
-          {answeredCount} of {questions.length} completed
-        </p>
-        {/* Progress bar */}
-        <div className="mt-2 h-0.5 w-full bg-border-soft rounded-full overflow-hidden">
-          <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: accent }}
-            initial={{ width: 0 }}
-            animate={{ width: `${(answeredCount / questions.length) * 100}%` }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          />
+        <div>
+          <p className="mt-3 text-xs text-ink-placeholder">
+            {answeredCount} of {questions.length} completed
+          </p>
+          <div className="mt-2 h-0.5 w-full bg-border-soft rounded-full overflow-hidden">
+            <motion.div
+              className="h-full rounded-full"
+              style={{ backgroundColor: accent }}
+              initial={{ width: 0 }}
+              animate={{
+                width: `${(answeredCount / questions.length) * 100}%`,
+              }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Question list */}
-      <div className="flex-1 px-3 py-4 flex flex-col gap-0.5 overflow-y-auto">
+      {/* Steps list */}
+      <div className="flex-1 px-5 py-5 flex flex-col overflow-y-auto gap-1">
         {questions.map((q, i) => {
           const answered = isAnswered(q.id);
           const isCurrent = i === currentIndex;
-          // const isUpcoming = i > currentIndex;
+          const isUpcoming = i > currentIndex;
+          const isClickable = answered || isCurrent;
 
           return (
-            <motion.div
-              key={q.id}
-              animate={{ opacity: answered || isCurrent ? 1 : 0.4 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => (answered || isCurrent) && onJump(i)}
-              className="flex items-start gap-3 px-3 py-2.5 rounded-lg relative transition-colors"
-              style={{
-                backgroundColor: isCurrent ? "#F0F1F3" : "transparent",
-                borderLeft: "2px solid transparent",
-                cursor: answered || isCurrent ? "pointer" : "default",
-              }}
-            >
-              {/* Status dot / check */}
-              <div
-                className="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300"
-                style={{
-                  backgroundColor: answered ? accent : "transparent",
-                  border: answered
-                    ? "none"
-                    : `1.5px solid ${isCurrent ? accent : "#CBD0D8"}`,
-                }}
-              >
-                {answered && <Check size={9} color="white" strokeWidth={3} />}
+            <div key={q.id} className="flex gap-3">
+              {/* Left: number/check + vertical line */}
+              <div className="flex flex-col items-center gap-1">
+                {/* Badge */}
+                <motion.div
+                  animate={{ opacity: isUpcoming ? 0.4 : 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 text-xs font-semibold"
+                  style={{
+                    backgroundColor: answered
+                      ? accent
+                      : isCurrent
+                        ? accent + "15"
+                        : "transparent",
+                    border: answered
+                      ? "none"
+                      : `1.5px solid ${isCurrent ? accent : "#CBD0D8"}`,
+                    color: answered ? "white" : isCurrent ? accent : "#CBD0D8",
+                  }}
+                >
+                  {answered ? (
+                    <Check size={11} strokeWidth={3} color="white" />
+                  ) : (
+                    i + 1
+                  )}
+                </motion.div>
+
+                {/* Vertical connector */}
+                {i < questions.length - 1 && (
+                  <div
+                    className="w-px flex-1 my-1 min-h-[20px] rounded-lg"
+                    style={{
+                      backgroundColor: answered ? accent + "40" : "#E9EAEE",
+                    }}
+                  />
+                )}
               </div>
 
-              {/* Text */}
-              <div className="flex flex-col gap-0.5 min-w-0">
+              {/* Right: label + description */}
+              <motion.div
+                animate={{ opacity: isUpcoming ? 0.4 : 1 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => isClickable && onJump(i)}
+                className="flex flex-col gap-0.5 pb-5 min-w-0"
+                style={{ cursor: isClickable ? "pointer" : "default" }}
+              >
                 <span
-                  className="text-sm leading-snug"
+                  className="text-md font-display leading-snug"
                   style={{
                     color: isCurrent
                       ? "#16161D"
@@ -118,17 +149,11 @@ export function QuestionSidebar({
                 >
                   {q.label}
                 </span>
-                {answered && (
-                  <span className="text-xs text-ink-muted truncate max-w-[160px]">
-                    {Array.isArray(answers[q.id])
-                      ? answers[q.id].join(", ")
-                      : typeof answers[q.id] === "object"
-                        ? `${answers[q.id].open} – ${answers[q.id].close}`
-                        : String(answers[q.id])}
-                  </span>
-                )}
-              </div>
-            </motion.div>
+                <span className="text-xs text-ink-placeholder leading-snug">
+                  {q.sidebarDescription}
+                </span>
+              </motion.div>
+            </div>
           );
         })}
       </div>

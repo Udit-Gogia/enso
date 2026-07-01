@@ -27,7 +27,7 @@ export function QuestionInput({
 
   const baseInput = `w-full px-4 py-3 rounded-xl border border-border-input bg-surface
     text-ink placeholder:text-ink-placeholder text-sm font-sans
-    focus:outline-none focus:ring-2 transition-all`;
+    focus:outline-none focus:ring-2 transition-all shadow-[inset_0_1px_2px_rgba(15,23,42,.02)]`;
 
   if (question.type === "textarea") {
     return (
@@ -36,7 +36,6 @@ export function QuestionInput({
         placeholder={question.placeholder}
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
-        style={{ "--tw-ring-color": accent } as any}
       />
     );
   }
@@ -121,6 +120,24 @@ export function QuestionInput({
       </div>
     );
   }
+
+  // Work on OTP INPUT
+  // if (question.type === "otp") {
+  //   return (
+  //     <div >
+  //       <InputOTP maxLength={6} >
+  //         <InputOTPGroup>
+  //           <InputOTPSlot index={0} />
+  //           <InputOTPSlot index={1} />
+  //           <InputOTPSlot index={2} />
+  //           <InputOTPSlot index={3} />
+  //           <InputOTPSlot index={4} />
+  //           <InputOTPSlot index={5} />
+  //         </InputOTPGroup>
+  //       </InputOTP>
+  //     </div>
+  //   );
+  // }
 
   return (
     <input

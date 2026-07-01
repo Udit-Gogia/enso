@@ -5,6 +5,7 @@ import { Persona } from "../PersonaPanel";
 import { QUESTIONS } from "./questions";
 import { QuestionSidebar } from "./QuestionSidebar";
 import { QuestionInput } from "./QuestionInput";
+import { MagneticDots } from "@/components/common/MagneticDots";
 import { Button } from "@/components/ui/button";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
@@ -50,131 +51,136 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
     setCurrentIndex((i) => i - 1);
   }
 
-  function handleSubmit() {
-    console.log("Submit", answers);
-  }
-
   function handleJump(index: number) {
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
   }
 
+  function handleSubmit() {
+    console.log("Submit", answers);
+  }
+
   return (
-    <div className="w-full h-screen flex overflow-hidden">
-      {/* ── Left: Sidebar ── */}
-      <div className="w-[260px] flex-shrink-0 overflow-y-auto">
-        <QuestionSidebar
-          persona={persona}
-          questions={questions}
-          currentIndex={currentIndex}
-          answers={answers}
-          onJump={handleJump}
+    <div className="w-full h-screen flex flex-col overflow-hidden relative">
+      {/* MagneticDots — full page background */}
+      <div className="absolute inset-0">
+        <MagneticDots palette="Google" intensity={0.2} />
+      </div>
+
+      {/* Progress bar — full width, sits at very top */}
+      <div className="relative z-10 h-0.5 w-full bg-black/5 flex-shrink-0">
+        <motion.div
+          className="h-full"
+          style={{ backgroundColor: accent }}
+          initial={{ width: 0 }}
+          animate={{
+            width: `${((currentIndex + (canProceed ? 1 : 0)) / questions.length) * 100}%`,
+          }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
         />
       </div>
 
-      {/* ── Right: Question panel ── */}
-      <div
-        className="flex-1 flex flex-col bg-white overflow-hidden h-screen"
-        style={{ height: "calc(100vh - 4px)" }}
-      >
-        {/* Top progress bar */}
-        <div className="h-1 w-full bg-white flex-shrink-0">
-          <motion.div
-            className="h-full"
-            style={{ backgroundColor: accent }}
-            initial={{ width: 0 }}
-            animate={{
-              width: `${((currentIndex + (canProceed ? 1 : 0)) / questions.length) * 100}%`,
-            }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+      {/* Main content row */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* ── Left: Sidebar ── */}
+        <div className="flex-shrink-0 w-[340px] overflow-y-auto relative z-10 py-6 pl-6">
+          <QuestionSidebar
+            persona={persona}
+            questions={questions}
+            currentIndex={currentIndex}
+            answers={answers}
+            onJump={handleJump}
           />
         </div>
 
-        {/* Main content — vertically centered */}
-        <div className="flex-1 flex items-center justify-start px-16 overflow-hidden">
-          <div className="w-full max-w-xl">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={current.id}
-                custom={direction}
-                variants={{
-                  enter: (d: number) => ({ opacity: 0, x: d * 28 }),
-                  center: { opacity: 1, x: 0 },
-                  exit: (d: number) => ({ opacity: 0, x: d * -28 }),
-                }}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
-                className="flex flex-col gap-8"
-              >
-                {/* Step counter — neutral, small */}
-                <p className="text-xs font-medium text-ink-placeholder tracking-wide">
-                  {String(currentIndex + 1).padStart(2, "0")} /{" "}
-                  {String(questions.length).padStart(2, "0")}
-                </p>
+        {/* ── Right: Question card ── */}
+        <div className="flex-1 relative flex flex-col overflow-hidden">
+          <div className="relative z-10 flex-1 flex items-center justify-center px-10">
+            <div className="w-full max-w-lg bg-white rounded-2xl shadow-[0_12px_32px_rgba(15,23,42,0.06),0_32px_64px_rgba(15,23,42,0.08)] border border-slate-200/80 px-10 py-10">
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={current.id}
+                  custom={direction}
+                  variants={{
+                    enter: (d: number) => ({ opacity: 0, x: d * 28 }),
+                    center: { opacity: 1, x: 0 },
+                    exit: (d: number) => ({ opacity: 0, x: d * -28 }),
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+                  className="flex flex-col gap-6"
+                >
+                  {/* Step counter */}
+                  <p className="text-xs font-medium text-ink-placeholder tracking-wide">
+                    {String(currentIndex + 1).padStart(2, "0")} /{" "}
+                    {String(questions.length).padStart(2, "0")}
+                  </p>
 
-                {/* Question */}
-                <div className="flex flex-col gap-2">
-                  <h2 className="font-display text-[clamp(28px,3vw,40px)] font-bold text-ink leading-tight tracking-tight">
-                    {current.label}
-                  </h2>
-                  {current.description && (
-                    <p className="text-sm text-ink-muted leading-relaxed">
-                      {current.description}
-                    </p>
-                  )}
-                </div>
+                  {/* Question */}
+                  <div className="flex flex-col gap-1.5">
+                    <h2 className="font-display text-[clamp(24px,2.5vw,36px)] font-bold text-ink leading-tight tracking-tight">
+                      {current.label}
+                    </h2>
+                    {current.description && (
+                      <p className="text-sm text-ink-muted leading-relaxed">
+                        {current.description}
+                      </p>
+                    )}
+                  </div>
 
-                {/* Input */}
-                <QuestionInput
-                  question={current}
-                  value={currentAnswer}
-                  onChange={(val) =>
-                    setAnswers((prev) => ({ ...prev, [current.id]: val }))
-                  }
-                  persona={persona}
-                />
-              </motion.div>
-            </AnimatePresence>
+                  {/* Input */}
+                  <QuestionInput
+                    question={current}
+                    value={currentAnswer}
+                    onChange={(val) =>
+                      setAnswers((prev) => ({ ...prev, [current.id]: val }))
+                    }
+                    persona={persona}
+                  />
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Navigation */}
+              <div className="flex items-center justify-between mt-8 pt-6 border-t border-border-soft">
+                <Button
+                  variant="ghost"
+                  onClick={goBack}
+                  disabled={isFirst}
+                  className="flex items-center gap-2 text-sm font-medium text-ink transition-colors
+                             disabled:opacity-0 disabled:pointer-events-none border border-ink-muted/20
+                             hover:bg-ink-muted/5 px-6 py-2.5 rounded-xl"
+                >
+                  <ArrowLeft size={15} />
+                  Back
+                </Button>
+
+                {isLast ? (
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={!canProceed}
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
+                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    style={{ backgroundColor: "#16161D" }}
+                  >
+                    Complete Setup
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={goNext}
+                    disabled={!canProceed}
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
+                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    style={{ backgroundColor: "#16161D" }}
+                  >
+                    Next
+                    <ArrowRight size={15} />
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-
-        {/* Bottom navigation */}
-        <div className="flex-shrink-0 px-16 py-6 border-t border-border-soft flex items-center justify-between">
-          <Button
-            onClick={goBack}
-            variant={"outline"}
-            disabled={isFirst}
-            className="flex items-center gap-1.5 text-sm font-medium hover:bg-[#F0F1F3] px-6 py-2.5 rounded-xl text-ink transition-colors disabled:opacity-0 disabled:pointer-events-none active:scale-[0.98]"
-          >
-            <ArrowLeft size={15} />
-            Back
-          </Button>
-
-          {isLast ? (
-            <Button
-              onClick={handleSubmit}
-              disabled={!canProceed}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
-                         text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed
-                         shadow-cta active:scale-[0.98]"
-              style={{ backgroundColor: "#16161D" }}
-            >
-              Complete Setup
-            </Button>
-          ) : (
-            <Button
-              onClick={goNext}
-              disabled={!canProceed}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
-                         text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98]"
-              style={{ backgroundColor: "#16161D" }}
-            >
-              Next
-              <ArrowRight size={15} />
-            </Button>
-          )}
         </div>
       </div>
     </div>
