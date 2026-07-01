@@ -182,27 +182,31 @@ export function PersonaSelector() {
         transition={{ duration: TIMELINE.bottomBarFadeIn.duration / 1000 }}
       >
         <AnimatePresence mode="wait">
-          {showGreetingBottom && (
+          {showGreetingBottom && !selectedPersona && (
             <motion.div
-              key="greeting-bottom"
+              key="greeting-text"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
-              className="group/persona-confirmation"
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
             >
-              {selectedPersona ? (
-                <PersonaCTA
-                  persona={selectedPersona}
-                  onConfirm={handleConfirm}
-                />
-              ) : (
-                <Greetings
-                  titleClassName="text-balance font-display text-[clamp(32px,1vw,40px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D]"
-                  descriptionClassName="m-0 text-[clamp(12px,1vw,18px)] text-[#5B5F6B]"
-                  title="Choose how you'll use Enso."
-                />
-              )}
+              <Greetings
+                titleClassName="text-balance font-display text-[clamp(32px,1vw,40px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D]"
+                descriptionClassName="m-0 text-[clamp(12px,1vw,18px)] text-[#5B5F6B]"
+                title="Choose how you'll use Enso."
+              />
+            </motion.div>
+          )}
+
+          {showGreetingBottom && selectedPersona && (
+            <motion.div
+              key={`cta-${selectedPersona}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+            >
+              <PersonaCTA persona={selectedPersona} onConfirm={handleConfirm} />
             </motion.div>
           )}
         </AnimatePresence>
