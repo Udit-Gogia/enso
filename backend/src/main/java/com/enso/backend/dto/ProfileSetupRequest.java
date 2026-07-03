@@ -1,5 +1,7 @@
 package com.enso.backend.dto;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -26,7 +28,9 @@ public class ProfileSetupRequest {
     private Integer yearsOfExperience;
     private String openTime;
     private String closeTime;
-    private String tags;
+    private List<String> tags;
+    private String location;
+
 
     // Shared
     private String profilePhotoUrl;

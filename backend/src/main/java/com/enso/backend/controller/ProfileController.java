@@ -22,7 +22,7 @@ public class ProfileController {
             @RequestHeader("Authorization") String authHeader,
             @Valid @RequestBody ProfileSetupRequest request) {
         String token = authHeader.substring(7);
-
+        System.out.println("Token received in setupProfile: " + token); // Debugging line
         if (!jwtUtil.isSetupToken(token)) {
             throw new RuntimeException("Invalid token type for profile setup");
         }

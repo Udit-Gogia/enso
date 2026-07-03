@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import { Persona } from "../PersonaPanel";
 import { Question } from "./questions";
+import { Button } from "@/components/ui/button";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
   customer: "#1A73E8",
@@ -21,6 +22,7 @@ interface QuestionSidebarProps {
   currentIndex: number;
   answers: Record<string, any>;
   onJump: (index: number) => void;
+  onChangePersona: () => void;
 }
 
 export function QuestionSidebar({
@@ -29,6 +31,7 @@ export function QuestionSidebar({
   currentIndex,
   answers,
   onJump,
+  onChangePersona,
 }: QuestionSidebarProps) {
   const accent = PERSONA_ACCENT[persona];
 
@@ -44,7 +47,7 @@ export function QuestionSidebar({
 
   return (
     <div
-      className="h-full flex flex-col bg-white border border-slate-200/70 rounded-2xl px-4 pt-4 shadow-[0_2px_8px_rgba(15,23,42,0.04),0_16px_40px_rgba(15,23,42,0.06)]"
+      className="h-full flex flex-col bg-white border border-slate-200/70 rounded-2xl px-4 py-4 shadow-[0_2px_8px_rgba(15,23,42,0.04),0_16px_40px_rgba(15,23,42,0.06)]"
       style={
         {
           // boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
@@ -156,6 +159,20 @@ export function QuestionSidebar({
             </div>
           );
         })}
+      </div>
+
+      <div>
+        <Button
+          variant="ghost"
+          onClick={onChangePersona}
+          // disabled={isFirst}
+          className="flex items-center gap-2 text-sm font-medium text-ink transition-colors
+                             disabled:opacity-0 disabled:pointer-events-none 
+                             hover:bg-ink-muted/5 px-6 py-2.5 rounded-xl"
+        >
+          <ArrowLeft size={15} />
+          Change Persona
+        </Button>
       </div>
     </div>
   );

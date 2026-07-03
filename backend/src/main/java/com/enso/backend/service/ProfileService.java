@@ -51,6 +51,7 @@ public class ProfileService {
                         .yearsOfExperience(request.getYearsOfExperience() != null ? request.getYearsOfExperience() : 0)
                         .openTime(request.getOpenTime() != null ? LocalTime.parse(request.getOpenTime()) : null)
                         .closeTime(request.getCloseTime() != null ? LocalTime.parse(request.getCloseTime()) : null)
+
                         .tags(request.getTags())
                         .profilePhotoUrl(request.getProfilePhotoUrl())
                         .build();
@@ -63,6 +64,8 @@ public class ProfileService {
         }
 
         user.setRole(role);
+        user.setPhone(request.getPhone());
+        user.setLocation(request.getLocation());
         user.setProfileComplete(true);
         userRepository.save(user);
 
