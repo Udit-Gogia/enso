@@ -3,6 +3,7 @@ package com.enso.backend.service;
 import com.enso.backend.dto.AuthResponse;
 import com.enso.backend.dto.ProfileSetupRequest;
 import com.enso.backend.model.*;
+import com.enso.backend.repository.AdminInviteRepository;
 import com.enso.backend.repository.CustomerProfileRepository;
 import com.enso.backend.repository.UserRepository;
 import com.enso.backend.repository.VendorProfileRepository;
@@ -19,6 +20,7 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final CustomerProfileRepository customerProfileRepository;
     private final VendorProfileRepository vendorProfileRepository;
+    private final AdminInviteRepository adminInviteRepository;
     private final JwtUtil jwtUtil;
 
     public AuthResponse setupProfile(String email, ProfileSetupRequest request) {
@@ -58,8 +60,19 @@ public class ProfileService {
                 vendorProfileRepository.save(profile);
             }
             case ADMIN -> {
-                // OTP validation — to be implemented
-                throw new RuntimeException("Admin setup not yet implemented");
+                AdminInvite invite = adminInviteRepository.findByEmail(email)
+                        .orElseThrow(() -> new RuntimeException("No admin invite found for this email"));
+
+                if (invite.isUsed()) {
+                    throw new RuntimeException("This invite has already been used");
+                }
+
+                if (!invite.getOtp().equals(request.getAdminOtp())) {
+                    throw new RuntimeException("Invalid OTP");
+                }
+
+                invite.setUsed(true);
+                adminInviteRepository.save(invite);
             }
         }
 
@@ -72,4 +85,5 @@ public class ProfileService {
         String accessToken = jwtUtil.generateAccessToken(user);
         return new AuthResponse(accessToken, role.name(), user.getEmail(), user.getName());
     }
+
 }

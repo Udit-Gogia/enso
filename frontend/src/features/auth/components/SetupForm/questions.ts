@@ -96,6 +96,14 @@ export const QUESTIONS: Record<Persona, Question[]> = {
   ],
   admin: [
     {
+      id: "phone",
+      label: "Phone Number",
+      sidebarDescription: "How customers reach you",
+      type: "tel",
+      placeholder: "+91 98765 43210",
+      description: "Customers will use this to reach you.",
+    },
+    {
       id: "otp",
       label: "Admin OTP",
       sidebarDescription: "Verify your admin access",
