@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +7,8 @@ import { FieldGroup } from "@/components/ui/field";
 import { AuthCard } from "@/features/auth/components/AuthCard";
 import { AuthField } from "@/features/auth/components/AuthField";
 import PageTransition from "@/components/common/PageTransition";
+import { setAccessToken, setSetupToken } from "@/lib/token";
+import api from "@/lib/axios";
 
 const formSchema = z.object({
   email: z.string().trim().email("Please enter a valid email address."),
@@ -25,18 +26,30 @@ export function Login() {
     shouldFocusError: true,
   });
 
-  function onSubmit(data: FormValues) {
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      style: {
-        "--border-radius": "calc(var(--radius) + 4px)",
-      } as React.CSSProperties,
-    });
+  async function onSubmit(data: FormValues) {
+    try {
+      const response = await api.post("/api/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
+
+      const { token, role } = response.data;
+
+      if (role === "SETUP_REQUIRED") {
+        setSetupToken(token);
+        toast.info("Please complete your profile setup.");
+        navigate("/profile-setup");
+        return;
+      }
+
+      setAccessToken(token);
+      toast.success("Welcome back!");
+      navigate("/dashboard");
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ?? "Invalid email or password.";
+      toast.error(message, { position: "bottom-right" });
+    }
   }
 
   return (

@@ -147,7 +147,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
       {/* Main content row */}
       <div className="flex flex-1 overflow-hidden">
         {/* ── Left: Sidebar ── */}
-        <div className="flex-shrink-0 w-[340px] overflow-y-auto relative z-10 py-6 pl-6">
+        <div className="flex-shrink-0 w-[340px] relative z-10 py-6 pl-6">
           <QuestionSidebar
             persona={persona}
             questions={questions}

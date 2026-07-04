@@ -46,15 +46,7 @@ export function QuestionSidebar({
   const answeredCount = questions.filter((q) => isAnswered(q.id)).length;
 
   return (
-    <div
-      className="h-full flex flex-col bg-white border border-slate-200/70 rounded-2xl px-4 py-4 shadow-[0_2px_8px_rgba(15,23,42,0.04),0_16px_40px_rgba(15,23,42,0.06)]"
-      style={
-        {
-          // boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
-          // height: "-webkit-fill-available",
-        }
-      }
-    >
+    <div className="bg-white h-full flex flex-col border border-slate-200/70 rounded-2xl px-4 py-4 shadow-[0_2px_6px_rgba(15,23,42,0.01),0_8px_20px_rgba(15,23,42,0.03),0_0_0_1px_rgba(15,23,42,0.01)]">
       {/* Header */}
       <div className="px-6 pt-8 pb-6 flex flex-col gap-2">
         <div className="flex items-center gap-2">
