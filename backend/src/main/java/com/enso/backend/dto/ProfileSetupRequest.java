@@ -21,14 +21,14 @@ public class ProfileSetupRequest {
 
     // Customer fields
     private String preferredLocation;
-
+    
     // Vendor fields
     private String businessName;
     private String bio;
     private Integer yearsOfExperience;
     private String openTime;
     private String closeTime;
-    private List<String> tags;
+    private List<String> categoryCodes;
     private String location;
 
 

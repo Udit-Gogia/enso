@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-import { Question } from "./questions";
+import { Question } from "../../constants/questions";
 import { Persona } from "../PersonaPanel";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
@@ -120,24 +120,6 @@ export function QuestionInput({
       </div>
     );
   }
-
-  // Work on OTP INPUT
-  // if (question.type === "otp") {
-  //   return (
-  //     <div >
-  //       <InputOTP maxLength={6} >
-  //         <InputOTPGroup>
-  //           <InputOTPSlot index={0} />
-  //           <InputOTPSlot index={1} />
-  //           <InputOTPSlot index={2} />
-  //           <InputOTPSlot index={3} />
-  //           <InputOTPSlot index={4} />
-  //           <InputOTPSlot index={5} />
-  //         </InputOTPGroup>
-  //       </InputOTP>
-  //     </div>
-  //   );
-  // }
 
   return (
     <input

@@ -32,8 +32,9 @@ public class VendorProfile {
     private LocalTime openTime;
     private LocalTime closeTime;
 
-    @ElementCollection
-    private List<String> tags;
+    @ManyToMany
+    @JoinTable(name = "vendor_profile_categories", joinColumns = @JoinColumn(name = "vendor_profile_id"), inverseJoinColumns = @JoinColumn(name = "service_category_id"))
+    private List<ServiceCategory> categories;
 
     private String profilePhotoUrl;
 

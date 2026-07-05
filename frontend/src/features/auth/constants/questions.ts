@@ -1,4 +1,4 @@
-import { Persona } from "../PersonaPanel";
+import { Persona } from "../components/PersonaPanel";
 
 export interface Question {
   id: string;
@@ -86,7 +86,7 @@ export const QUESTIONS: Record<Persona, Question[]> = {
       description: "When are you available for bookings?",
     },
     {
-      id: "tags",
+      id: "categories",
       label: "Services Offered",
       sidebarDescription: "What you specialise in",
       type: "tags",

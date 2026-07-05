@@ -42,7 +42,7 @@ public class SecurityConfig {
                                               // necessary for stateless APIs)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/profile/setup").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/profile/setup", "/api/categories/active").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

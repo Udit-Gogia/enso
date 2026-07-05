@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, Check } from "lucide-react";
 import { Persona } from "../PersonaPanel";
-import { Question } from "./questions";
+import { Question } from "../../constants/questions";
 import { Button } from "@/components/ui/button";
 
 const PERSONA_ACCENT: Record<Persona, string> = {

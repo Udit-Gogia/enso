@@ -5,13 +5,19 @@ import com.enso.backend.dto.ProfileSetupRequest;
 import com.enso.backend.model.*;
 import com.enso.backend.repository.AdminInviteRepository;
 import com.enso.backend.repository.CustomerProfileRepository;
+import com.enso.backend.repository.ServiceCategoryRepository;
 import com.enso.backend.repository.UserRepository;
 import com.enso.backend.repository.VendorProfileRepository;
 import com.enso.backend.security.JwtUtil;
+
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.List;
+
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +27,7 @@ public class ProfileService {
     private final CustomerProfileRepository customerProfileRepository;
     private final VendorProfileRepository vendorProfileRepository;
     private final AdminInviteRepository adminInviteRepository;
+    private final ServiceCategoryRepository serviceCategoryRepository;
     private final JwtUtil jwtUtil;
 
     public AuthResponse setupProfile(String email, ProfileSetupRequest request) {
@@ -46,6 +53,7 @@ public class ProfileService {
                 if (request.getBusinessName() == null || request.getBusinessName().isBlank()) {
                     throw new RuntimeException("Business name is required for vendors");
                 }
+                
                 VendorProfile profile = VendorProfile.builder()
                         .user(user)
                         .businessName(request.getBusinessName())
@@ -53,8 +61,12 @@ public class ProfileService {
                         .yearsOfExperience(request.getYearsOfExperience() != null ? request.getYearsOfExperience() : 0)
                         .openTime(request.getOpenTime() != null ? LocalTime.parse(request.getOpenTime()) : null)
                         .closeTime(request.getCloseTime() != null ? LocalTime.parse(request.getCloseTime()) : null)
-
-                        .tags(request.getTags())
+                        .categories(request.getCategoryCodes() != null ? request.getCategoryCodes().stream()
+                                .map(serviceCategoryRepository::findByCode)
+                                .filter(optional -> optional != null && optional.isPresent())
+                                .map(optional -> optional.get())
+                                .collect(Collectors.toList())
+                                : List.of())
                         .profilePhotoUrl(request.getProfilePhotoUrl())
                         .build();
                 vendorProfileRepository.save(profile);
@@ -73,6 +85,9 @@ public class ProfileService {
 
                 invite.setUsed(true);
                 adminInviteRepository.save(invite);
+            }
+            case SUPER_ADMIN -> {
+                throw new RuntimeException("Cannot set up profile for super admin");
             }
         }
 

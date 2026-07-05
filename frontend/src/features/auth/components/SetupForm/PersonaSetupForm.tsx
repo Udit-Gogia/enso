@@ -2,15 +2,14 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Persona } from "../PersonaPanel";
-import { QUESTIONS } from "./questions";
+import { QUESTIONS } from "../../constants/questions";
 import { QuestionSidebar } from "./QuestionSidebar";
 import { QuestionInput } from "./QuestionInput";
 import { MagneticDots } from "@/components/common/MagneticDots";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { clearSetupToken, getSetupToken, setAccessToken } from "@/lib/token";
-import api from "@/lib/axios";
+import usePersonaSetupForm from "../../hooks/usePersonaSetupForm";
+
+import useServiceCategories from "@/hooks/useServiceCategories";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
   customer: "#1A73E8",
@@ -28,7 +27,9 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [direction, setDirection] = useState<1 | -1>(1);
 
-  const navigate = useNavigate();
+  const { submitSetupForm, onChangePersona } = usePersonaSetupForm(persona);
+
+  const { serviceCategories } = useServiceCategories();
 
   const accent = PERSONA_ACCENT[persona];
   const current = questions[currentIndex];
@@ -62,66 +63,8 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
     setCurrentIndex(index);
   }
 
-  function onChangePersona() {
-    navigate("/profile-setup");
-  }
-
   async function handleSubmit() {
-    const setupToken = getSetupToken();
-
-    if (!setupToken) {
-      toast.error("Session expired. Please register again.");
-      navigate("/register");
-      return;
-    }
-
-    try {
-      // Strip phone — remove +91, spaces, dashes
-      const rawPhone = answers["phone"] ?? "";
-      const phone = rawPhone.replace(/^\+91\s?/, "").replace(/\s|-/g, "");
-
-      // Build request body based on persona
-      const body: Record<string, any> = {
-        phone,
-        role: persona.toUpperCase(),
-        location: answers["location"] ?? null,
-      };
-
-      if (persona === "customer") {
-        body.preferredLocation = answers["preferredLocation"] ?? null;
-      }
-
-      if (persona === "vendor") {
-        body.businessName = answers["businessName"] ?? null;
-        body.bio = answers["bio"] ?? null;
-        body.yearsOfExperience = answers["yearsOfExperience"]
-          ? parseInt(answers["yearsOfExperience"])
-          : null;
-        body.openTime = answers["operatingHours"]?.open ?? null;
-        body.closeTime = answers["operatingHours"]?.close ?? null;
-        body.tags = answers["tags"] ?? [];
-      }
-
-      if (persona === "admin") {
-        body.adminOtp = answers["otp"] ?? null;
-      }
-
-      const response = await api.post("/api/profile/setup", body, {
-        headers: { Authorization: `Bearer ${setupToken}` },
-      });
-
-      // Store access token, clear setup token
-      setAccessToken(response.data.token);
-      clearSetupToken();
-
-      toast.success("Profile setup complete!");
-      navigate("/dashboard"); // change this route when dashboard exists
-    } catch (error: any) {
-      const message =
-        error.response?.data?.message ??
-        "Something went wrong. Please try again.";
-      toast.error(message);
-    }
+    await submitSetupForm(answers);
   }
 
   return (
