@@ -40,7 +40,7 @@ export default function usePersonaSetupForm(persona: Persona) {
           : null;
         body.openTime = answers["operatingHours"]?.open ?? null;
         body.closeTime = answers["operatingHours"]?.close ?? null;
-        body.tags = answers["categories"] ?? [];
+        body.categoryCodes = answers["categories"] ?? [];
       }
 
       if (persona === "admin") {

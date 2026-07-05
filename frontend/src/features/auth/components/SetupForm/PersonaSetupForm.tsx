@@ -142,10 +142,12 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
                   <QuestionInput
                     question={current}
                     value={currentAnswer}
-                    onChange={(val) =>
-                      setAnswers((prev) => ({ ...prev, [current.id]: val }))
-                    }
+                    onChange={(val) => {
+                      console.log("val is", val);
+                      setAnswers((prev) => ({ ...prev, [current.id]: val }));
+                    }}
                     persona={persona}
+                    options={serviceCategories}
                   />
                 </motion.div>
               </AnimatePresence>

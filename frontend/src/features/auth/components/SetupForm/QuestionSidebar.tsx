@@ -82,7 +82,7 @@ export function QuestionSidebar({
           const answered = isAnswered(q.id);
           const isCurrent = i === currentIndex;
           const isUpcoming = i > currentIndex;
-          const isClickable = answered || isCurrent;
+          const isClickable = true; //answered || isCurrent;
 
           return (
             <div key={q.id} className="flex gap-3">
