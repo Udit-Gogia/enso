@@ -1,14 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import * as z from "zod";
 import { FieldGroup } from "@/components/ui/field";
 import { AuthCard } from "@/features/auth/components/AuthCard";
 import { AuthField } from "@/features/auth/components/AuthField";
 import PageTransition from "@/components/common/PageTransition";
-import { setAccessToken, setSetupToken } from "@/lib/token";
-import api from "@/lib/axios";
+import useAuth from "@/features/auth/hooks/useAuth";
 
 const formSchema = z.object({
   email: z.string().trim().email("Please enter a valid email address."),
@@ -18,7 +15,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export function Login() {
-  const navigate = useNavigate();
+  const { submitLogin, navigateToRegister } = useAuth();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -27,29 +24,7 @@ export function Login() {
   });
 
   async function onSubmit(data: FormValues) {
-    try {
-      const response = await api.post("/api/auth/login", {
-        email: data.email,
-        password: data.password,
-      });
-
-      const { token, role } = response.data;
-
-      if (role === "SETUP_REQUIRED") {
-        setSetupToken(token);
-        toast.info("Please complete your profile setup.");
-        navigate("/profile-setup");
-        return;
-      }
-
-      setAccessToken(token);
-      toast.success("Welcome back!");
-      navigate("/dashboard");
-    } catch (error: any) {
-      const message =
-        error.response?.data?.message ?? "Invalid email or password.";
-      toast.error(message, { position: "bottom-right" });
-    }
+    await submitLogin(data);
   }
 
   return (
@@ -65,7 +40,7 @@ export function Login() {
         onForgotPassword={() => console.log("forgot password")}
         bottomText="Don't have an account?"
         bottomLinkText="Join Enso"
-        onBottomLinkClick={() => navigate("/register")}
+        onBottomLinkClick={navigateToRegister}
       >
         <form
           id="login-form"

@@ -1,14 +1,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+
 import * as z from "zod";
 import { FieldGroup } from "@/components/ui/field";
 import { AuthCard } from "@/features/auth/components/AuthCard";
 import { AuthField } from "@/features/auth/components/AuthField";
 import PageTransition from "@/components/common/PageTransition";
-import api from "@/lib/axios";
-import { setSetupToken } from "@/lib/token";
+import useAuth from "@/features/auth/hooks/useAuth";
 
 const formSchema = z.object({
   name: z
@@ -24,7 +22,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export function Register() {
-  const navigate = useNavigate();
+  const { submitRegister, navigateToLogin } = useAuth();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -33,23 +31,7 @@ export function Register() {
   });
 
   async function onSubmit(data: FormValues) {
-    try {
-      const response = await api.post("/api/auth/register", {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-      });
-
-      setSetupToken(response.data.setupToken);
-      navigate("/profile-setup");
-    } catch (error: any) {
-      const message =
-        error.response?.data?.message ??
-        "Something went wrong. Please try again.";
-      toast.error(message, {
-        position: "bottom-right",
-      });
-    }
+    await submitRegister(data);
   }
 
   return (
@@ -63,7 +45,7 @@ export function Register() {
         formId="register-form"
         bottomText="Already have an account?"
         bottomLinkText="Sign in"
-        onBottomLinkClick={() => navigate("/login")}
+        onBottomLinkClick={navigateToLogin}
       >
         <form
           id="register-form"
