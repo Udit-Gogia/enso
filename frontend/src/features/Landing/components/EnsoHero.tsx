@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { MagneticDots } from "@/components/common/MagneticDots";
 
 import { useNavigate } from "react-router-dom";
-import EnsoTitle from "@/components/common/EnsoTitle";
+
+import Navbar from "./Navbar";
+import { isFirstTimeUser } from "@/lib/auth";
 
 const container: Variants = {
   hidden: {},
@@ -36,6 +38,9 @@ const item: Variants = {
 
 export function EnsoHero() {
   const navigate = useNavigate();
+
+  const firstTimeUser = isFirstTimeUser();
+
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-white">
       {/* Interactive background */}
@@ -63,24 +68,7 @@ export function EnsoHero() {
 
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col">
         {/* Header */}
-        <header className="flex items-end justify-between px-6 py-6 sm:px-10 lg:px-16">
-          <EnsoTitle />
-          <div className="pointer-events-auto flex items-center gap-4">
-            <button
-              onClick={() => navigate("/login")}
-              className="text-[16px] font-medium text-ink hover:text-primary hover:bg-white transition-colors duration-200"
-            >
-              Sign in
-            </button>
-            <Button
-              variant="dark"
-              onClick={() => navigate("/register")}
-              className="hover:-translate-y-px transition-transform duration-200"
-            >
-              Create account
-            </Button>
-          </div>{" "}
-        </header>
+        <Navbar />
 
         {/* Hero */}
         <motion.main
@@ -122,14 +110,16 @@ export function EnsoHero() {
             >
               Explore Enso
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={() => navigate("/register")}
-              className="border-border-input text-ink hover:-translate-y-0.5 hover:border-primary hover:text-primary transition-all duration-200 active:scale-[0.98]"
-            >
-              Join Enso
-            </Button>
+            {firstTimeUser && (
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => navigate("/register")}
+                className="border-border-input text-ink hover:-translate-y-0.5 hover:border-primary hover:text-primary transition-all duration-200 active:scale-[0.98]"
+              >
+                Join Enso
+              </Button>
+            )}
           </motion.div>
 
           {/* <motion.div

@@ -31,8 +31,7 @@ export default function useAuth() {
       toast.success("Welcome back!");
       navigate("/dashboard");
     } catch (error: any) {
-      const message =
-        error.response?.data?.message ?? "Invalid email or password.";
+      const message = error.response?.data?.message ?? "Unable to login.";
       toast.error(message, { position: "bottom-right" });
     }
   }
