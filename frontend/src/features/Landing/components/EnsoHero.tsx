@@ -8,7 +8,7 @@ import { MagneticDots } from "@/components/common/MagneticDots";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "./Navbar";
-import { isFirstTimeUser } from "@/lib/auth";
+import { isFirstTimeUser, isLoggedIn } from "@/lib/auth";
 
 const container: Variants = {
   hidden: {},
@@ -40,6 +40,7 @@ export function EnsoHero() {
   const navigate = useNavigate();
 
   const firstTimeUser = isFirstTimeUser();
+  const loggedIn = isLoggedIn();
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-white">
@@ -110,7 +111,7 @@ export function EnsoHero() {
             >
               Explore Enso
             </Button>
-            {firstTimeUser && (
+            {(firstTimeUser || !loggedIn) && (
               <Button
                 size="lg"
                 variant="outline"
