@@ -1,12 +1,7 @@
 import { motion, type Variants } from "framer-motion";
-
-// import { Star } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { MagneticDots } from "@/components/common/MagneticDots";
-
 import { useNavigate } from "react-router-dom";
-
 import Navbar from "./Navbar";
 import { isFirstTimeUser, isLoggedIn } from "@/lib/auth";
 
@@ -25,16 +20,6 @@ const item: Variants = {
     transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
   },
 };
-
-// const navLinks = ["How it works", "Join Enso"];
-
-// const categories = [
-//   { label: "Professionals Verified", color: "#5B5F6B" },
-//   { label: "Every Job Reviewed", color: "#5B5F6B" },
-//   { label: "Available Locally", color: "#34A853" },
-// ];
-
-// const avatars = ["#4285F4", "#EA4335", "#34A853", "#FBBC05"];
 
 export function EnsoHero() {
   const navigate = useNavigate();
@@ -78,14 +63,6 @@ export function EnsoHero() {
           animate="show"
           className="flex flex-1 flex-col items-center justify-center gap-7 px-6 pb-12 text-center"
         >
-          {/* <motion.div
-            variants={item}
-            className="pointer-events-auto inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[#E6E7EB] bg-white px-4 py-2 text-[13.5px] font-semibold text-[#16161D] shadow-[0_4px_14px_-6px_rgba(22,22,29,.12)]"
-          >
-            <span className="h-[7px] w-[7px] rounded-full bg-[#34A853]" />
-            Now live in 8 cities
-          </motion.div> */}
-
           <motion.h1
             variants={item}
             className="m-0 max-w-[14ch] text-balance font-display text-[clamp(46px,6.4vw,80px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D]"
@@ -122,26 +99,6 @@ export function EnsoHero() {
               </Button>
             )}
           </motion.div>
-
-          {/* <motion.div
-            variants={item}
-            className="pointer-events-auto mt-2 flex max-w-[660px] flex-wrap justify-center"
-          >
-            {categories.map((c, index) => (
-              <span
-                key={c.label}
-                className="inline-flex items-center gap-2 rounded-full  px-3 py-2 text-[14.5px] font-medium text-[#3A3D47] transition-colors="
-              >
-                {c.label}
-                {index !== categories.length - 1 && (
-                  <span
-                    className="h-[7px] w-[7px] rounded-full ml-3"
-                    style={{ background: c.color }}
-                  />
-                )}
-              </span>
-            ))}
-          </motion.div> */}
         </motion.main>
       </div>
     </section>

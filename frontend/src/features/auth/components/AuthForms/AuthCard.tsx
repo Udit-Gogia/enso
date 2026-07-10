@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Field } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
-import { AuthForm } from "@/features/auth/components/AuthForm";
+import { AuthForm } from "@/features/auth/components/AuthForms/AuthForm";
 import EnsoTitle from "@/components/common/EnsoTitle";
 
 type AuthCardProps = {
@@ -44,7 +44,7 @@ export function AuthCard({
         <>
           <EnsoTitle
             redirectToHome
-            className="mx-auto text-2xl [&_img]:h-11 [&_img]:w-11"
+            className="mx-auto text-2xl [&_img]:h-6 [&_img]:w-6"
           />
           <div className="flex flex-col gap-2">
             <CardTitle className="text-2xl font-bold tracking-tight leading-9">

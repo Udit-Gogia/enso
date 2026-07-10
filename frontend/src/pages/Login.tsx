@@ -2,8 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { FieldGroup } from "@/components/ui/field";
-import { AuthCard } from "@/features/auth/components/AuthCard";
-import { AuthField } from "@/features/auth/components/AuthField";
+import { AuthCard } from "@/features/auth/components/AuthForms/AuthCard";
+import { AuthField } from "@/features/auth/components/AuthForms/AuthField";
 import PageTransition from "@/components/common/PageTransition";
 import useAuth from "@/features/auth/hooks/useAuth";
 
