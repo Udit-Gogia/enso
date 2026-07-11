@@ -7,6 +7,7 @@ import Dashboard from "@/pages/Dashboard";
 import { ProtectedRoute } from "@/components/common/ProtectedRoute";
 import { AnimatePresence } from "framer-motion";
 import { Route, Routes, useLocation } from "react-router-dom";
+import ROUTES from "./Routes";
 
 export default function AnimatedRoutes() {
   const location = useLocation();
@@ -15,9 +16,9 @@ export default function AnimatedRoutes() {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         {/* Public — redirect to dashboard if already logged in */}
-        <Route path="/" element={<LandingPage />} />
+        <Route path={ROUTES.LANDING} element={<LandingPage />} />
         <Route
-          path="/login"
+          path={ROUTES.LOGIN}
           element={
             <ProtectedRoute require="guest">
               <Login />
@@ -25,7 +26,7 @@ export default function AnimatedRoutes() {
           }
         />
         <Route
-          path="/register"
+          path={ROUTES.REGISTER}
           element={
             <ProtectedRoute require="guest">
               <Register />
@@ -35,7 +36,7 @@ export default function AnimatedRoutes() {
 
         {/* Setup — requires setupToken or redirects */}
         <Route
-          path="/profile-setup"
+          path={ROUTES.PROFILE_SETUP}
           element={
             <ProtectedRoute require="setup">
               <ProfileSetup />
@@ -43,7 +44,7 @@ export default function AnimatedRoutes() {
           }
         />
         <Route
-          path="/profile-setup/:persona"
+          path={ROUTES.PERSONA_PROFILE_SETUP}
           element={
             <ProtectedRoute require="setup">
               <ProfileSetupForm />
@@ -53,7 +54,7 @@ export default function AnimatedRoutes() {
 
         {/* Protected — requires accessToken */}
         <Route
-          path="/dashboard"
+          path={ROUTES.DASHBOARD}
           element={
             <ProtectedRoute require="auth">
               <Dashboard />

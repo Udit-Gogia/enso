@@ -1,10 +1,11 @@
 import { logout } from "@/lib/auth";
 import PageTransition from "@/components/common/PageTransition";
+import PageLayout from "@/components/common/pageLayout";
 
 export default function Dashboard() {
   return (
     <PageTransition>
-      <div className="min-h-screen bg-surface-page flex flex-col items-center justify-center gap-6">
+      {/* <div className="min-h-screen bg-surface-page flex flex-col items-center justify-center gap-6">
         <h1 className="font-display text-3xl font-bold text-ink">
           Welcome to Enso
         </h1>
@@ -16,7 +17,8 @@ export default function Dashboard() {
         >
           Log out
         </button>
-      </div>
+      </div> */}
+      <PageLayout />
     </PageTransition>
   );
 }

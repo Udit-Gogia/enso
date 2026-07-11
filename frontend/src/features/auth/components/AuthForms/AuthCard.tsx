@@ -43,7 +43,7 @@ export function AuthCard({
       CardHeaderChildren={
         <>
           <EnsoTitle
-            redirectToHome
+            redirectTo="home"
             className="mx-auto text-2xl [&_img]:h-6 [&_img]:w-6"
           />
           <div className="flex flex-col gap-2">

@@ -22,6 +22,9 @@ export default {
           ring: "rgba(26,115,232,0.14)",
           tint: "rgba(26,115,232,0.08)",
         },
+        secondary: {
+          DEFAULT: "#F3F4F6",
+        },
         "brand-blue": "#4285F4",
 
         // --- Text / Ink ---

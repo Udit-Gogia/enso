@@ -48,7 +48,7 @@ export function QuestionSidebar({
   return (
     <div className="bg-white h-full flex flex-col border border-slate-200/70 rounded-2xl px-4 py-4 shadow-[0_2px_6px_rgba(15,23,42,0.01),0_8px_20px_rgba(15,23,42,0.03),0_0_0_1px_rgba(15,23,42,0.01)]">
       {/* Header */}
-      <div className="px-6 pt-8 pb-6 flex flex-col gap-2">
+      <div className="px-6 py-6 flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <div
             className="w-2 h-2 rounded-full"
