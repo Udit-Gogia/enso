@@ -1,43 +1,22 @@
-import { LayoutGrid, LucideProps, PieChart, User } from "lucide-react";
-import { motion } from "framer-motion";
 import EnsoTitle from "./EnsoTitle";
-import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
-import ROUTES, { Screens } from "@/routes/Routes";
-import { useNavigate } from "react-router-dom";
-
-type DASHBOARD_FIELD = {
-  id: string;
-  label: string;
-  icon: ForwardRefExoticComponent<
-    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-  >;
-  redirectPath: Screens;
-};
-
-const DASHBOARD_FIELDS: DASHBOARD_FIELD[] = [
-  {
-    id: "dashboard",
-    label: "Dashboard",
-    icon: LayoutGrid,
-    redirectPath: "DASHBOARD",
-  },
-  {
-    id: "profile",
-    label: "Profile",
-    icon: User,
-    redirectPath: "DASHBOARD",
-  },
-  {
-    id: "analytics",
-    label: "Analytics",
-    icon: PieChart,
-    redirectPath: "DASHBOARD",
-  },
-];
+import { useLocation } from "react-router-dom";
+import SidebarOption from "./SidebarOption";
+import {
+  DASHBOARD_FIELD,
+  DASHBOARD_FIELDS,
+} from "@/constants/sidebarConstants";
+import { useState } from "react";
+import ROUTES from "@/routes/Routes";
 
 export default function Sidebar() {
-  const navigate = useNavigate();
+  const location = useLocation();
+
   const [hovered, setHovered] = useState<string | null>(null);
+
+  const onHoverChange = (option: string | null) => {
+    setHovered(option);
+  };
+
   return (
     <div
       id="sidebar"
@@ -52,36 +31,14 @@ export default function Sidebar() {
 
       <div>
         {DASHBOARD_FIELDS.map((field: DASHBOARD_FIELD) => {
-          const Icon = field.icon;
           return (
-            <div
+            <SidebarOption
               key={field.id}
-              onMouseEnter={() => setHovered(field.id)}
-              onMouseLeave={() => setHovered(null)}
-              onClick={() => navigate(ROUTES[field.redirectPath])}
-              className="group/sidebar relative px-4 py-1 cursor-pointer"
-            >
-              {hovered === field.id && (
-                <motion.div
-                  layoutId="sidebar-hover"
-                  className="absolute inset-0 rounded-sm bg-neutral-200/50"
-                  transition={{
-                    type: "spring",
-                    stiffness: 420,
-                    damping: 60,
-                    mass: 0.6,
-                  }}
-                />
-              )}
-
-              <div className="relative flex items-center gap-2 py-2 ">
-                <Icon className="h-5 w-5 text-neutral-700" />
-
-                <span className="text-md font-medium text-neutral-700 transition-transform duration-150 group-hover/sidebar:translate-x-1">
-                  {field.label}
-                </span>
-              </div>
-            </div>
+              field={field}
+              hovered={hovered}
+              onHoverChange={onHoverChange}
+              isSelected={location.pathname === ROUTES[field.redirectPath]}
+            />
           );
         })}
       </div>

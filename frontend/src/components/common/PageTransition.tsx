@@ -9,6 +9,7 @@ export default function PageTransition({
 }) {
   return (
     <motion.div
+      className="w-full"
       initial={{ opacity: 0, y: slideUp ? 40 : 0 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: slideUp ? -20 : 0 }}

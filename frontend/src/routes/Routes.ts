@@ -4,6 +4,8 @@ export type Screens =
   | "LOGIN"
   | "DASHBOARD"
   | "PROFILE_SETUP"
+  | "ANALYTICS"
+  | "MY_PROFILE"
   | "PERSONA_PROFILE_SETUP";
 
 const ROUTES: Record<Screens, string> = {
@@ -12,6 +14,8 @@ const ROUTES: Record<Screens, string> = {
   DASHBOARD: "/dashboard",
   REGISTER: "/register",
   PROFILE_SETUP: "/profile-setup",
+  ANALYTICS: "/analytics",
+  MY_PROFILE: "/my-profile",
   PERSONA_PROFILE_SETUP: "/profile-setup/:persona",
 };
 

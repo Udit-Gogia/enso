@@ -5,17 +5,17 @@ import ProfileSetupForm from "@/pages/ProfileSetupForm";
 import { Register } from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
 import { ProtectedRoute } from "@/components/common/ProtectedRoute";
-import { AnimatePresence } from "framer-motion";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import ROUTES from "./Routes";
+import Analytics from "@/pages/Analytics";
+import Myprofile from "@/pages/Myprofile";
+import PageLayout from "@/components/common/pageLayout";
+import PublicLayout from "@/components/common/publicLayout";
 
 export default function AnimatedRoutes() {
-  const location = useLocation();
-
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        {/* Public — redirect to dashboard if already logged in */}
+    <Routes>
+      <Route element={<PublicLayout />}>
         <Route path={ROUTES.LANDING} element={<LandingPage />} />
         <Route
           path={ROUTES.LOGIN}
@@ -33,8 +33,6 @@ export default function AnimatedRoutes() {
             </ProtectedRoute>
           }
         />
-
-        {/* Setup — requires setupToken or redirects */}
         <Route
           path={ROUTES.PROFILE_SETUP}
           element={
@@ -51,8 +49,9 @@ export default function AnimatedRoutes() {
             </ProtectedRoute>
           }
         />
+      </Route>
 
-        {/* Protected — requires accessToken */}
+      <Route element={<PageLayout />}>
         <Route
           path={ROUTES.DASHBOARD}
           element={
@@ -61,7 +60,23 @@ export default function AnimatedRoutes() {
             </ProtectedRoute>
           }
         />
-      </Routes>
-    </AnimatePresence>
+        <Route
+          path={ROUTES.ANALYTICS}
+          element={
+            <ProtectedRoute require="auth">
+              <Analytics />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.MY_PROFILE}
+          element={
+            <ProtectedRoute require="auth">
+              <Myprofile />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
+    </Routes>
   );
 }

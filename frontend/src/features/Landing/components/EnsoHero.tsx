@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { MagneticDots } from "@/components/common/MagneticDots";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
-import { isFirstTimeUser, isLoggedIn } from "@/lib/auth";
+import { hasSetupToken, isFirstTimeUser, isLoggedIn } from "@/lib/auth";
 
 const container: Variants = {
   hidden: {},
@@ -25,6 +25,7 @@ export function EnsoHero() {
   const navigate = useNavigate();
 
   const firstTimeUser = isFirstTimeUser();
+  const setupPending = hasSetupToken();
   const loggedIn = isLoggedIn();
 
   return (
@@ -88,7 +89,7 @@ export function EnsoHero() {
             >
               Explore Enso
             </Button>
-            {(firstTimeUser || !loggedIn) && (
+            {(firstTimeUser || !loggedIn) && !setupPending && (
               <Button
                 size="lg"
                 variant="outline"
