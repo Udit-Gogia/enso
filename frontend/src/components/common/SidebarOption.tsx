@@ -44,7 +44,7 @@ export default function SidebarOption({
       <div className="relative flex items-center gap-2 py-2 ">
         <Icon className="h-5 w-5 text-neutral-700" />
 
-        <span className="text-md font-medium text-neutral-700 transition-transform duration-150 group-hover/sidebar:translate-x-1">
+        <span className="text-sm font-medium text-neutral-700 transition-transform ease-linear duration-150 group-hover/sidebar:translate-x-1">
           {field.label}
         </span>
       </div>
