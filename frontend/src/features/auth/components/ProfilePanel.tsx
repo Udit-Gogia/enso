@@ -1,27 +1,8 @@
 // import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
 import { motion } from "framer-motion";
-import { MagneticDots, Palette } from "@/components/common/MagneticDots";
-import { SKEW_PX } from "./PersonaSelector";
-
-export type Persona = "customer" | "vendor" | "admin";
-
-export const PersonaLabels: Record<Persona, String> = {
-  admin: "Admin",
-  customer: "Customer",
-  vendor: "Vendor",
-};
-
-interface PersonaPanelProps {
-  persona: Persona;
-  label: string;
-  description: string;
-  selectedPersona: Persona | null;
-  backgroundHex: string;
-  position: "left" | "middle" | "right";
-  palette: Palette;
-  onClick: () => void;
-  icon: JSX.Element;
-}
+import { MagneticDots } from "@/components/common/MagneticDots";
+import { SKEW_PX } from "./ProfileSelector";
+import { PersonaPanelProps } from "../constants/types";
 
 function getClipPath(position: "left" | "middle" | "right"): string {
   const s = SKEW_PX;

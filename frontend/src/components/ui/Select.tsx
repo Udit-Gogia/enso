@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Check, ChevronDown, X } from "lucide-react";
-import { Persona } from "@/features/auth/components/ProfilePanel";
+import { Check, ChevronDown } from "lucide-react";
+import { Persona } from "@/features/auth/constants/types";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
   customer: "#1A73E8",
@@ -13,21 +13,21 @@ interface Option {
   name: string;
 }
 
-interface MultiSelectProps {
+interface SelectProps {
   options: Option[];
-  value: string[];
-  onChange: (codes: string[]) => void;
+  value: string;
+  onChange: (codes: string) => void;
   placeholder?: string;
   persona: Persona;
 }
 
-export function MultiSelect({
+export function Select({
   options,
   value,
   onChange,
   placeholder = "Search or select...",
   persona,
-}: MultiSelectProps) {
+}: SelectProps) {
   const accent = PERSONA_ACCENT[persona];
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -52,19 +52,15 @@ export function MultiSelect({
     opt.name.toLowerCase().includes(search.toLowerCase()),
   );
 
-  function toggle(code: string) {
-    if (value.includes(code)) {
-      onChange(value.filter((c) => c !== code));
-    } else {
-      onChange([...value, code]);
-    }
-  }
-
-  function remove(code: string) {
-    onChange(value.filter((c) => c !== code));
+  function select(value: string) {
+    onChange(value);
+    setOpen(false);
+    setSearch("");
   }
 
   const selectedOptions = options.filter((opt) => value.includes(opt.code));
+  console.log({ selectedOptions });
+  console.log("persona at select", persona, accent);
 
   return (
     <div ref={containerRef} className="relative flex flex-col gap-2">
@@ -80,7 +76,7 @@ export function MultiSelect({
           <input
             className="flex-1 bg-transparent outline-none text-ink placeholder:text-ink-placeholder"
             placeholder={open ? "Search services..." : placeholder}
-            value={search}
+            value={search || value}
             onChange={(e) => {
               setSearch(e.target.value);
               setOpen(true);
@@ -105,19 +101,20 @@ export function MultiSelect({
                         max-h-[220px] overflow-y-auto"
           >
             {filtered.length === 0 ? (
-              <p className="px-4 py-3 text-sm text-ink-muted">
-                No services found.
-              </p>
+              <p className="px-4 py-3 text-sm text-ink-muted">No city found.</p>
             ) : (
               filtered.map((opt) => {
-                const isSelected = value.includes(opt.code);
+                const isSelected = value === opt.name;
                 return (
                   <div
                     key={opt.code}
-                    onClick={() => toggle(opt.code)}
-                    className="flex items-center justify-between px-3 py-2.5 
-                             text-sm cursor-pointer hover:bg-surface-page transition-all hover:pl-4"
-                    style={{ color: isSelected ? accent : "#16161D" }}
+                    onClick={() => select(opt.name)}
+                    className={`flex items-center justify-between px-3 py-2.5 
+                             text-sm cursor-pointer hover:bg-surface-page transition-all hover:pl-4 `}
+                    style={{
+                      color: isSelected ? accent : "#16161D",
+                      backgroundColor: isSelected ? accent + "15" : "",
+                    }}
                   >
                     <span>{opt.name}</span>
                     {isSelected && (
@@ -131,7 +128,7 @@ export function MultiSelect({
         )}
       </div>
       {/* Selected chips */}
-      {selectedOptions.length > 0 && (
+      {/* {selectedOptions.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mt-1">
           {selectedOptions.map((opt) => (
             <span
@@ -155,7 +152,7 @@ export function MultiSelect({
             </span>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 }

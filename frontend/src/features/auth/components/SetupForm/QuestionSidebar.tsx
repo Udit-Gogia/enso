@@ -1,20 +1,9 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, Check } from "lucide-react";
-import { Persona } from "../PersonaPanel";
+
 import { Question } from "../../constants/questions";
 import { Button } from "@/components/ui/button";
-
-const PERSONA_ACCENT: Record<Persona, string> = {
-  customer: "#1A73E8",
-  vendor: "#C5221F",
-  admin: "#188038",
-};
-
-const PERSONA_LABEL: Record<Persona, string> = {
-  customer: "Customer",
-  vendor: "Vendor",
-  admin: "Admin",
-};
+import { Persona, PERSONA_ACCENT, PERSONA_LABEL } from "../../constants/types";
 
 interface QuestionSidebarProps {
   persona: Persona;
@@ -77,12 +66,12 @@ export function QuestionSidebar({
       </div>
 
       {/* Steps list */}
-      <div className="flex-1 px-5 py-5 flex flex-col overflow-y-auto gap-1">
+      <div className="flex-1 px-5 py-5 flex flex-col gap-1 overflow-y-hidden">
         {questions.map((q, i) => {
           const answered = isAnswered(q.id);
           const isCurrent = i === currentIndex;
           const isUpcoming = i > currentIndex;
-          const isClickable = true; //answered || isCurrent;
+          const isClickable = i > 1; //answered || isCurrent;
 
           return (
             <div key={q.id} className="flex gap-3">
@@ -92,7 +81,7 @@ export function QuestionSidebar({
                 <motion.div
                   animate={{ opacity: isUpcoming ? 0.4 : 1 }}
                   transition={{ duration: 0.2 }}
-                  className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 text-xs font-semibold"
+                  className="w-6 h-6 mt-1 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 text-xs font-semibold"
                   style={{
                     backgroundColor: answered
                       ? accent
@@ -115,7 +104,7 @@ export function QuestionSidebar({
                 {/* Vertical connector */}
                 {i < questions.length - 1 && (
                   <div
-                    className="w-px flex-1 my-1 min-h-[20px] rounded-lg"
+                    className="w-px my-auto min-h-[20px] rounded-lg"
                     style={{
                       backgroundColor: answered ? accent + "40" : "#E9EAEE",
                     }}

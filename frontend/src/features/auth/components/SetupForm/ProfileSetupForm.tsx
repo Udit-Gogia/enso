@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Persona } from "../PersonaPanel";
-import { QUESTIONS } from "../../constants/questions";
+
+import { COMMON_QUESTIONS, QUESTIONS } from "../../constants/questions";
 import { QuestionSidebar } from "./QuestionSidebar";
 import { QuestionInput } from "./QuestionInput";
 import { MagneticDots } from "@/components/common/MagneticDots";
@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import usePersonaSetupForm from "../../hooks/usePersonaSetupForm";
 
 import useServiceCategories from "@/hooks/useServiceCategories";
+import { CITIES } from "@/constants/cities";
+import { Persona } from "../../constants/types";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
   customer: "#1A73E8",
@@ -22,9 +24,12 @@ interface PersonaSetupFormProps {
 }
 
 export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
-  const questions = QUESTIONS[persona];
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const questions = [...COMMON_QUESTIONS, ...QUESTIONS[persona]];
+  const [currentIndex, setCurrentIndex] = useState(2);
+  const [answers, setAnswers] = useState<Record<string, any>>({
+    signup: "completed",
+    "persona-selection": "completed",
+  });
   const [direction, setDirection] = useState<1 | -1>(1);
 
   const { submitSetupForm, onChangePersona } = usePersonaSetupForm(persona);
@@ -147,7 +152,10 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
                       setAnswers((prev) => ({ ...prev, [current.id]: val }));
                     }}
                     persona={persona}
-                    options={serviceCategories}
+                    options={{
+                      SERVICE_CATEGORIES: serviceCategories,
+                      CITIES: CITIES,
+                    }}
                   />
                 </motion.div>
               </AnimatePresence>

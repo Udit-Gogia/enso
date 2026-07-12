@@ -1,7 +1,7 @@
 import { clearSetupToken, getSetupToken, setAccessToken } from "@/lib/token";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Persona } from "../components/PersonaPanel";
+import { Persona } from "../components/ProfilePanel";
 import api from "@/lib/axios";
 
 export default function usePersonaSetupForm(persona: Persona) {

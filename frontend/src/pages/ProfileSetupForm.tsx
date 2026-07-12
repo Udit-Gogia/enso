@@ -1,7 +1,7 @@
 import { useParams, Navigate } from "react-router-dom";
 import PageTransition from "@/components/common/PageTransition";
-import { PersonaSetupForm } from "@/features/auth/components/SetupForm/PersonaSetupForm";
-import { Persona } from "@/features/auth/components/PersonaPanel";
+import { PersonaSetupForm } from "@/features/auth/components/SetupForm/ProfileSetupForm";
+import { Persona } from "@/features/auth/constants/types";
 
 const VALID_PERSONAS = ["customer", "vendor", "admin"];
 

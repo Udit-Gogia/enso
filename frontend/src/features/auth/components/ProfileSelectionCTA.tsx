@@ -1,7 +1,7 @@
 // PersonaCTA.tsx
 import { MoveRight, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Persona, PersonaLabels } from "./PersonaPanel";
+import { Persona, PersonaLabels } from "../constants/types";
 
 type Props = {
   persona: Persona;

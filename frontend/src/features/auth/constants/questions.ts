@@ -1,13 +1,40 @@
-import { Persona } from "../components/PersonaPanel";
+import { Persona } from "./types";
 
 export interface Question {
   id: string;
   label: string;
   sidebarDescription: string;
-  type: "text" | "tel" | "number" | "textarea" | "time-range" | "tags" | "otp";
+  type:
+    | "text"
+    | "tel"
+    | "number"
+    | "textarea"
+    | "time-range"
+    | "tags"
+    | "otp"
+    | "select";
   placeholder?: string;
   description?: string;
 }
+
+export const COMMON_QUESTIONS: Question[] = [
+  {
+    id: "signup",
+    label: "Signup",
+    sidebarDescription: "Signup Completed",
+    type: "text",
+    placeholder: "",
+    description: "You've already signed up",
+  },
+  {
+    id: "persona-selection",
+    label: "Profile Selection",
+    sidebarDescription: "Profile Selected",
+    type: "text",
+    placeholder: "",
+    description: "Profile Selected.",
+  },
+];
 
 export const QUESTIONS: Record<Persona, Question[]> = {
   customer: [
@@ -23,7 +50,7 @@ export const QUESTIONS: Record<Persona, Question[]> = {
       id: "location",
       label: "Your City",
       sidebarDescription: "Where you need services",
-      type: "text",
+      type: "select",
       placeholder: "e.g. Pune",
       description: "Which city are you based in?",
     },
@@ -46,20 +73,20 @@ export const QUESTIONS: Record<Persona, Question[]> = {
       description: "Customers will use this to reach you.",
     },
     {
-      id: "location",
-      label: "Your City",
-      sidebarDescription: "Where you operate",
-      type: "text",
-      placeholder: "e.g. Pune",
-      description: "Which city do you operate in?",
-    },
-    {
       id: "businessName",
       label: "Business Name",
       sidebarDescription: "Your brand or trade name",
       type: "text",
       placeholder: "e.g. Sharma Electricals",
       description: "What's your business or trade name?",
+    },
+    {
+      id: "location",
+      label: "Your City",
+      sidebarDescription: "Where you operate",
+      type: "text",
+      placeholder: "e.g. Pune",
+      description: "Which city do you operate in?",
     },
     {
       id: "bio",
@@ -69,14 +96,6 @@ export const QUESTIONS: Record<Persona, Question[]> = {
       placeholder:
         "Tell customers what you do and why they should choose you...",
       description: "A short description shown on your profile.",
-    },
-    {
-      id: "yearsOfExperience",
-      label: "Experience",
-      sidebarDescription: "Years in your trade",
-      type: "number",
-      placeholder: "e.g. 5",
-      description: "How many years have you been doing this?",
     },
     {
       id: "operatingHours",

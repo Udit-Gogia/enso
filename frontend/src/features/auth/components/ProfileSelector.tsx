@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Persona, PersonaPanel } from "./PersonaPanel";
+import { PersonaPanel } from "./ProfilePanel";
 import { Greetings } from "./Greetings";
 import { Palette } from "@/components/common/MagneticDots";
 import { BriefcaseBusinessIcon, Shield, User } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
 
-import { PersonaCTA } from "./PersonaSelectionCTA";
+import { PersonaCTA } from "./ProfileSelectionCTA";
+import { Persona } from "../constants/types";
 
 // ─── TIMELINE (all values in ms from page load) ──────────────
 const TIMELINE = {

@@ -1,5 +1,5 @@
 import PageTransition from "@/components/common/PageTransition";
-import { PersonaSelector } from "@/features/auth/components/PersonaSelector";
+import { PersonaSelector } from "@/features/auth/components/ProfileSelector";
 
 export default function ProfileSetup() {
   return (
