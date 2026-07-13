@@ -15,6 +15,7 @@ export interface Question {
     | "select";
   placeholder?: string;
   description?: string;
+  isOptional?: boolean;
 }
 
 export const COMMON_QUESTIONS: Question[] = [
@@ -43,6 +44,7 @@ export const QUESTIONS: Record<Persona, Question[]> = {
       label: "Phone Number",
       sidebarDescription: "For booking confirmations",
       type: "tel",
+      isOptional: true,
       placeholder: "+91 98765 43210",
       description: "We'll use this to confirm bookings.",
     },
@@ -117,8 +119,9 @@ export const QUESTIONS: Record<Persona, Question[]> = {
     {
       id: "phone",
       label: "Phone Number",
-      sidebarDescription: "How customers reach you",
+      sidebarDescription: "For Account recovery",
       type: "tel",
+      isOptional: true,
       placeholder: "+91 98765 43210",
       description: "Customers will use this to reach you.",
     },

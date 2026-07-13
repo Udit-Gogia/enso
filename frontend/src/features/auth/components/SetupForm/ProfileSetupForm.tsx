@@ -48,7 +48,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
     return true;
   };
 
-  const canProceed = isAnswered(current.id);
+  const canProceed = isAnswered(current.id) || current.isOptional;
   const isLast = currentIndex === questions.length - 1;
   const isFirst = currentIndex === 0;
 
@@ -134,7 +134,10 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
                   {/* Question */}
                   <div className="flex flex-col gap-1.5">
                     <h2 className="font-display text-[clamp(24px,2.5vw,36px)] font-bold text-ink leading-tight tracking-tight">
-                      {current.label}
+                      {current.label}{" "}
+                      <span className="text-[clamp(16px,0.5vw,36px)] font-normal tracking-normal">
+                        {current.isOptional ? "(Optional)" : ""}
+                      </span>
                     </h2>
                     {current.description && (
                       <p className="text-sm text-ink-muted leading-relaxed">

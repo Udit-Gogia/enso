@@ -1,8 +1,9 @@
 import { clearSetupToken, getSetupToken, setAccessToken } from "@/lib/token";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Persona } from "../components/ProfilePanel";
+
 import api from "@/lib/axios";
+import { Persona } from "../constants/types";
 
 export default function usePersonaSetupForm(persona: Persona) {
   const navigate = useNavigate();
@@ -18,8 +19,10 @@ export default function usePersonaSetupForm(persona: Persona) {
 
     try {
       // Strip phone — remove +91, spaces, dashes
-      const rawPhone = answers["phone"] ?? "";
-      const phone = rawPhone.replace(/^\+91\s?/, "").replace(/\s|-/g, "");
+      const rawPhone = answers["phone"] ?? null;
+      const phone = rawPhone
+        ? rawPhone.replace(/^\+91\s?/, "").replace(/\s|-/g, "")
+        : null;
 
       // Build request body based on persona
       const body: Record<string, any> = {

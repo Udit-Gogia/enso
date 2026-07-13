@@ -53,6 +53,7 @@ export function QuestionInput({
         autoComplete="tel-national"
         autoFocus
         className={baseInput}
+        required={!(question.isOptional ?? false)}
         placeholder={question.placeholder ?? "9876543210"}
         value={value ?? ""}
         maxLength={10}
