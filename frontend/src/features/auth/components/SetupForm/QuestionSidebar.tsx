@@ -70,7 +70,7 @@ export function QuestionSidebar({
         {questions.map((q, i) => {
           const answered = isAnswered(q.id);
           const isCurrent = i === currentIndex;
-          const isUpcoming = i > currentIndex;
+          const isUpcoming = i > currentIndex && !answered;
           const isClickable = i > 1; //answered || isCurrent;
 
           return (
