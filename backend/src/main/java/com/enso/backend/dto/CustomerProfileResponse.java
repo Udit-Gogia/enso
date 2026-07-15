@@ -8,5 +8,5 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CustomerProfileResponse extends ProfileResponse {
     public String preferredLocation;
-    public String profilePhotoUrl;
+
 }

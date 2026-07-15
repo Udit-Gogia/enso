@@ -1,7 +1,9 @@
 package com.enso.backend.service;
 
 import com.enso.backend.dto.AuthResponse;
+import com.enso.backend.dto.CustomerProfileResponse;
 import com.enso.backend.dto.ProfileSetupRequest;
+import com.enso.backend.dto.VendorProfileResponse;
 import com.enso.backend.model.*;
 import com.enso.backend.repository.AdminInviteRepository;
 import com.enso.backend.repository.CustomerProfileRepository;
@@ -99,6 +101,39 @@ public class ProfileService {
 
         String accessToken = jwtUtil.generateAccessToken(user);
         return new AuthResponse(accessToken, role.name(), user.getEmail(), user.getName());
+    }
+
+
+    public ProfileResponse getProfile(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+
+         Role role = user.getRole();
+
+         switch (role) {
+            case CUSTOMER -> {
+                CustomerProfile profile = customerProfileRepository.findByUser_Id(user.getId()).orElseThrow(() -> new RuntimeException("Profile Not found"));
+
+                return new CustomerProfileResponse(
+                    profile.getPreferredLocation()
+                );
+            }
+            case VENDOR, ADMIN, SUPER_ADMIN -> {
+                VendorProfile profile = vendorProfileRepository.findByUser_Id(user.getId()).orElseThrow(() -> new RuntimeException("Profile Not found"));
+
+                return new VendorProfileResponse(
+                    profile.getBio(),
+                    profile.getBusinessName(),
+                    profile.getYearsOfExperience(),
+                    user.getLocation(),
+                    profile.getOpenTime(),
+                    profile.getCloseTime()
+                );
+            }
+            default -> throw new IllegalStateException("Unexpected role: " + role);
+         }
+
     }
 
 }

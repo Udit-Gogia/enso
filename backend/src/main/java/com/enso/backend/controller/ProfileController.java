@@ -2,6 +2,7 @@ package com.enso.backend.controller;
 
 import com.enso.backend.dto.AuthResponse;
 import com.enso.backend.dto.ProfileSetupRequest;
+import com.enso.backend.model.ProfileResponse;
 import com.enso.backend.security.JwtUtil;
 import com.enso.backend.service.ProfileService;
 import jakarta.validation.Valid;
@@ -30,4 +31,18 @@ public class ProfileController {
         String email = jwtUtil.extractUsername(token);
         return ResponseEntity.ok(profileService.setupProfile(email, request));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<ProfileResponse> getProfile(
+            @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
+
+        if (!jwtUtil.isAccessToken(token)) {
+            throw new RuntimeException("Invalid token type for get profile");
+        }
+        String email = jwtUtil.extractUsername(token);
+        return ResponseEntity.ok(profileService.getProfile(email));
+
+    }
+
 }

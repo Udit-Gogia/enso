@@ -25,5 +25,6 @@ public abstract class ProfileResponse {
     private String email;
     private String phone;
     private String profileComplete;
+    public String profilePhotoUrl;
 
 }

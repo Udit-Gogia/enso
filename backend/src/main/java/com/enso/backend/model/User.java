@@ -47,6 +47,7 @@ public class User implements UserDetails {
     private boolean profileComplete = false;
 
     private String location;
+    private String profilePhotoUrl;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
