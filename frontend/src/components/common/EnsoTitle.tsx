@@ -29,7 +29,7 @@ export default function EnsoTitle({
       }}
     >
       <img src={ensoLogo} alt="Enso Logo" className="h-7 w-7" />
-      <span>Enso</span>
+      <span className="font-semibold font-display">Enso</span>
     </div>
   );
 }

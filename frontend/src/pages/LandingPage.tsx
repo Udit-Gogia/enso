@@ -4,7 +4,9 @@ import { EnsoHero } from "@/features/Landing/components/EnsoHero";
 export default function LandingPage() {
   return (
     <PageTransition>
-      <EnsoHero />
+      <div className="w-screen h-full overflow-y-scroll overflow-x-hidden">
+        <EnsoHero />
+      </div>
     </PageTransition>
   );
 }
