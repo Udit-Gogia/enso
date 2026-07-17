@@ -1,6 +1,5 @@
 import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { MagneticDots } from "@/components/common/MagneticDots";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { hasSetupToken, isFirstTimeUser, isLoggedIn } from "@/lib/auth";
@@ -29,13 +28,9 @@ export function EnsoHero() {
   const loggedIn = isLoggedIn();
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-white">
+    <section className="h-screen w-full relative overflow-hidden ">
       {/* Interactive background */}
-      <MagneticDots
-        palette="Google"
-        intensity={1}
-        className="absolute inset-0 h-full w-full"
-      />
+
       <div
         className="pointer-events-none absolute left-0 right-0 top-0 z-10"
         style={{
@@ -53,7 +48,7 @@ export function EnsoHero() {
         }}
       />
 
-      <div className="pointer-events-none relative z-10 flex min-h-screen flex-col">
+      <div className="pointer-events-none relative z-10 flex h-screen flex-col">
         {/* Header */}
         <Navbar />
 
@@ -75,26 +70,26 @@ export function EnsoHero() {
             variants={item}
             className="m-0 max-w-[600px] text-[clamp(17px,1.5vw,21px)] leading-[1.6] text-[#5B5F6B]"
           >
-            Connect with trusted local businesses, skilled individuals, and
-            everyday services - all in one place.
+            Connect with trusted local businesses, skilled individuals, <br />
+            and everyday services - all in one place.
           </motion.p>
 
           <motion.div
             variants={item}
-            className="pointer-events-auto mt-1 flex flex-wrap items-center justify-center gap-3.5"
+            className="pointer-events-auto max-w-[500px] w-full mt-1 flex flex-wrap items-center justify-center gap-3.5"
           >
             <Button
-              size="lg"
-              className="bg-primary text-white shadow-cta hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-cta transition-all duration-200"
+              size="default"
+              className="bg-primary basis-2/5 py-4 text-white shadow-cta hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-cta transition-all duration-200"
             >
               Explore Enso
             </Button>
             {(firstTimeUser || !loggedIn) && !setupPending && (
               <Button
-                size="lg"
+                size="default"
                 variant="outline"
                 onClick={() => navigate("/register")}
-                className="border-border-input text-ink hover:-translate-y-0.5 hover:border-primary hover:text-primary transition-all duration-200 active:scale-[0.98]"
+                className="border-border-input basis-2/5 py-4 text-ink hover:-translate-y-0.5 hover:border-primary hover:text-primary transition-all duration-200 active:scale-[0.98]"
               >
                 Join Enso
               </Button>
