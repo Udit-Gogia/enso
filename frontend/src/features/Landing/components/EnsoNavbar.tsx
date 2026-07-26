@@ -12,7 +12,7 @@ export default function EnsoNavbar() {
   const loggedIn = isLoggedIn();
   const setupPending = hasSetupToken();
 
-  const [hovered, setHovered] = useState<string | null>("signup");
+  const [hovered, setHovered] = useState<string>("signup");
 
   return (
     <header className="flex items-center justify-between py-6 sm:px-24 lg:px-24 ">
@@ -54,7 +54,7 @@ export default function EnsoNavbar() {
               Create account
             </Button> */}
             <div
-              className="flex space-x-2 items-center rounded-full  backdrop-blur-xl p-1 border border-white/20 transition duration-200 text-sm font-medium text-black "
+              className="flex space-x-2 items-center rounded-full p-1 transition duration-200 text-sm font-medium text-black"
               onMouseLeave={() => setHovered("signup")}
             >
               {[
@@ -71,10 +71,9 @@ export default function EnsoNavbar() {
                   {hovered === item.id && (
                     <motion.div
                       layoutId="hovered"
-                      className="absolute inset-0 h-full w-full rounded-full border-2  bg-gray-100 dark:bg-neutral-800"
+                      className="absolute inset-0 h-full w-full rounded-full border-2 bg-gray-100 dark:bg-neutral-800"
                     />
                   )}
-
                   <span className="relative z-10">{item.label}</span>
                 </Button>
               ))}

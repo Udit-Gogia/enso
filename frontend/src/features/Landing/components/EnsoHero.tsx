@@ -29,7 +29,7 @@ export function EnsoHero() {
   // const loggedIn = isLoggedIn();
 
   return (
-    <section className="h-screen w-full relative overflow-hidden ">
+    <section className="h-screen  w-full relative overflow-hidden ">
       {/* Interactive background */}
       <div className="absolute top-0 w-full h-full">
         <Grainient
@@ -71,11 +71,11 @@ export function EnsoHero() {
           variants={container}
           initial="hidden"
           animate="show"
-          className="flex flex-1 flex-col items-start justify-center gap-7 px-24 pb-12 text-start"
+          className="flex flex-1 flex-col items-start justify-start my-28 gap-7 px-24 pb-12 text-start"
         >
           <motion.h1
             variants={item}
-            className="m-0 max-w-[14ch] text-balance font-display text-[clamp(46px,6.4vw,80px)] font-normal leading-[1.02] tracking-[-0.035em] text-surface "
+            className="m-0 max-w-[14ch] text-balance font-display text-[clamp(46px,4.4vw,80px)] font-normal leading-[1.02] tracking-[-0.035em] text-surface "
           >
             The right people <span className="text-surface">nearby.</span>
           </motion.h1>
