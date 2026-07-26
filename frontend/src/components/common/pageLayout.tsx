@@ -8,7 +8,7 @@ export default function PageLayout() {
   const outlet = useOutlet();
 
   return (
-    <div className="w-screen h-screen bg-secondary">
+    <div className="w-screen h-screen bg-surface">
       <div className="flex p-4 gap-4 h-full w-full">
         <Sidebar />
 

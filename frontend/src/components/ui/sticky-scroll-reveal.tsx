@@ -1,112 +1,130 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { useMotionValueEvent, useScroll } from "motion/react";
-import { motion } from "motion/react";
+import React, { useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "motion/react";
 import { cn } from "@/lib/utils";
 
 export const StickyScroll = ({
+  header,
   content,
   contentClassName,
+  vhPerCard = 75,
+  backdrop,
 }: {
+  header?: React.ReactNode;
   content: {
-    title: string;
+    title: React.ReactNode;
     description: string;
-    content?: React.ReactNode | any;
+    accent: string;
+    accentDeep: string;
+    content?: React.ReactNode;
   }[];
+  backdrop?: React.ReactNode;
   contentClassName?: string;
+  vhPerCard?: number;
 }) => {
-  const [activeCard, setActiveCard] = React.useState(0);
-  const ref = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const lastIndexRef = useRef(0);
+  const [activeCard, setActiveCard] = useState(0);
+  const [direction, setDirection] = useState(1);
+
   const { scrollYProgress } = useScroll({
-    // uncomment line 22 and comment line 23 if you DONT want the overflow container and want to have it change on the entire page scroll
-    // target: ref
-    container: ref,
-    offset: ["start start", "end start"],
+    target: containerRef,
+    offset: ["start start", "end end"],
   });
-  const cardLength = content.length;
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const cardsBreakpoints = content.map((_, index) => index / cardLength);
-    const closestBreakpointIndex = cardsBreakpoints.reduce(
-      (acc, breakpoint, index) => {
-        const distance = Math.abs(latest - breakpoint);
-        if (distance < Math.abs(latest - cardsBreakpoints[acc])) {
-          return index;
-        }
-        return acc;
-      },
-      0,
+    const index = Math.min(
+      content.length - 1,
+      Math.floor(latest * content.length),
     );
-    setActiveCard(closestBreakpointIndex);
+    if (index !== lastIndexRef.current) {
+      setDirection(index > lastIndexRef.current ? 1 : -1);
+      lastIndexRef.current = index;
+      setActiveCard(index);
+    }
   });
 
-  const backgroundColors = [
-    "#0f172a", // slate-900
-    "#000000", // black
-    "#171717", // neutral-900
-  ];
-  const linearGradients = [
-    "linear-gradient(to bottom right, #06b6d4, #10b981)", // cyan-500 to emerald-500
-    "linear-gradient(to bottom right, #ec4899, #6366f1)", // pink-500 to indigo-500
-    "linear-gradient(to bottom right, #f97316, #eab308)", // orange-500 to yellow-500
-  ];
+  const active = content[activeCard];
 
-  const [backgroundGradient, setBackgroundGradient] = useState(
-    linearGradients[0],
-  );
-
-  useEffect(() => {
-    setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
-  }, [activeCard]);
+  const textVariants = {
+    enter: (dir: number) => ({ opacity: 0, y: dir > 0 ? 24 : -24 }),
+    center: { opacity: 1, y: 0 },
+    exit: (dir: number) => ({ opacity: 0, y: dir > 0 ? -24 : 24 }),
+  };
 
   return (
-    <motion.div
-      animate={{
-        backgroundColor: backgroundColors[activeCard % backgroundColors.length],
-      }}
-      className="relative flex h-[30rem] justify-center space-x-10 overflow-y-auto rounded-md p-10"
-      ref={ref}
+    <div
+      ref={containerRef}
+      style={{ height: `${content.length * vhPerCard}vh` }}
+      className="relative"
     >
-      <div className="div relative flex items-start px-4">
-        <div className="max-w-2xl">
-          {content.map((item, index) => (
-            <div key={item.title + index} className="my-20">
-              <motion.h2
-                initial={{
-                  opacity: 0,
-                }}
-                animate={{
-                  opacity: activeCard === index ? 1 : 0.3,
-                }}
-                className="text-2xl font-bold text-slate-100"
-              >
-                {item.title}
-              </motion.h2>
-              <motion.p
-                initial={{
-                  opacity: 0,
-                }}
-                animate={{
-                  opacity: activeCard === index ? 1 : 0.3,
-                }}
-                className="text-kg mt-10 max-w-sm text-slate-300"
-              >
-                {item.description}
-              </motion.p>
+      <div className="sticky top-0 flex h-screen flex-col">
+        {backdrop && <div className="absolute inset-0 -z-10">{backdrop}</div>}
+
+        <div className="relative pointer-events-none">{header}</div>
+
+        <div className="flex h-[80vh] items-center justify-between px-24 pointer-events-none">
+          <div className="relative max-w-2xl">
+            <div
+              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10"
+              style={{
+                width: "1600px",
+                height: "1000px",
+                background:
+                  "radial-gradient(ellipse 720px 460px at 50% 48%, rgba(255,255,255,.9), rgba(255,255,255,0) 68%)",
+              }}
+            />
+            <div className="overflow-hidden">
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={activeCard}
+                  custom={direction}
+                  variants={textVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                >
+                  <h2 className="font-display text-3xl font-bold text-ink">
+                    {active.title}
+                  </h2>
+                  <p className="text-secondary text-lg mt-10 max-w-sm text-justify">
+                    {active.description}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
             </div>
-          ))}
-          <div className="h-40" />
+          </div>
+
+          <motion.div
+            animate={{
+              background: `linear-gradient(135deg, ${active.accent}, ${active.accentDeep})`,
+            }}
+            transition={{ duration: 0.4 }}
+            className={cn(
+              "hidden w-[34vw] aspect-[4/3] items-center justify-center overflow-hidden rounded-md lg:flex",
+              contentClassName,
+            )}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCard}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {active.content ?? null}
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
         </div>
       </div>
-      <div
-        style={{ background: backgroundGradient }}
-        className={cn(
-          "sticky top-10 hidden h-60 w-80 overflow-hidden rounded-md bg-white lg:block",
-          contentClassName,
-        )}
-      >
-        {content[activeCard].content ?? null}
-      </div>
-    </motion.div>
+    </div>
   );
 };

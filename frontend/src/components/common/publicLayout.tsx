@@ -7,7 +7,7 @@ export default function PublicLayout() {
   const outlet = useOutlet();
   console.log("PageLayout rendered", location);
   return (
-    <div className="w-screen h-screen overflow-hidden">
+    <div className="w-screen h-full">
       <AnimatePresence mode="wait">
         <PageTransition key={location.pathname} slideUp>
           {outlet}

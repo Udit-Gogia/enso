@@ -11,21 +11,31 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Outfit", "ui-sans-serif", "system-serif", "sans-serif"],
-        sans: ['"DM Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
+        display: [
+          "General Sans",
+          "Inter",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+        ],
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
         // --- Brand ---
         primary: {
           DEFAULT: "#7e7de8",
-          hover: "#1666C8",
-          ring: "rgba(26,115,232,0.14)",
-          tint: "rgba(26,115,232,0.08)",
+          hover: "#1666C8", // ⚠ unresolved — flagged below, left as-is
+          ring: "rgba(26,115,232,0.14)", // ⚠ unresolved — flagged below, left as-is
+          tint: "rgba(26,115,232,0.08)", // ⚠ unresolved — flagged below, left as-is
+          deep: "#5F5ED4", // NEW — text-legible violet for the "One app, three jobs" feature card
         },
         secondary: {
-          DEFAULT: "#F3F4F6",
+          DEFAULT: "#86868b",
         },
-        "brand-blue": "#4285F4",
+        "brand-blue": {
+          DEFAULT: "#4285F4",
+          deep: "#2A56C6", // NEW — text-legible blue for the "Every category" feature card
+        },
 
         // --- Text / Ink ---
         ink: {
@@ -70,7 +80,15 @@ export default {
           bg: "#FEF9C3",
         },
 
-        amber: "#F9AB00",
+        amber: {
+          DEFAULT: "#F9AB00",
+          deep: "#B45309", // NEW — text-legible amber for the "Send a request" feature card
+        },
+
+        teal: {
+          DEFAULT: "#0D9488", // NEW — the "Know when they're open" feature card's own hue
+          deep: "#0F766E", // NEW
+        },
       },
       boxShadow: {
         card: "0 24px 60px -28px rgba(22,22,29,.22)",
@@ -84,5 +102,27 @@ export default {
       },
     },
   },
-  plugins: [],
+  // tailwind.config.ts
+  // tailwind.config.ts
+  plugins: [
+    function ({ addUtilities }: any) {
+      addUtilities({
+        ".text-halo-lg": {
+          WebkitTextStroke: "8px #fff",
+          paintOrder: "stroke fill",
+          textShadow: "0 0 20px #fff, 0 0 36px #fff",
+        },
+        ".text-halo-md": {
+          WebkitTextStroke: "5px #fff",
+          paintOrder: "stroke fill",
+          textShadow: "0 0 14px #fff, 0 0 26px #fff",
+        },
+        ".text-halo-sm": {
+          // no stroke — see note below on why small text gets a different treatment
+          textShadow:
+            "0 0 3px #fff, 0 0 6px #fff, 0 0 9px #fff, 0 0 14px #fff, 0 0 20px #fff",
+        },
+      });
+    },
+  ],
 } satisfies Config;
