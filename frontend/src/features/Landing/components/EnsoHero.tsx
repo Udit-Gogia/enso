@@ -1,8 +1,9 @@
 import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
-import { hasSetupToken, isFirstTimeUser, isLoggedIn } from "@/lib/auth";
+// import { useNavigate } from "react-router-dom";
+// import { hasSetupToken, isFirstTimeUser, isLoggedIn } from "@/lib/auth";
+import Grainient from "@/components/Grainient";
+import EnsoNavbar from "./EnsoNavbar";
 
 const container: Variants = {
   hidden: {},
@@ -21,79 +22,80 @@ const item: Variants = {
 };
 
 export function EnsoHero() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const firstTimeUser = isFirstTimeUser();
-  const setupPending = hasSetupToken();
-  const loggedIn = isLoggedIn();
+  // const firstTimeUser = isFirstTimeUser();
+  // const setupPending = hasSetupToken();
+  // const loggedIn = isLoggedIn();
 
   return (
     <section className="h-screen w-full relative overflow-hidden ">
       {/* Interactive background */}
+      <div className="absolute top-0 w-full h-full">
+        <Grainient
+          color1="#7e7de8"
+          color2="#c6c9ff"
+          color3="#7e7de8"
+          timeSpeed={1}
+          blendAngle={120}
+          colorBalance={0.1}
+          warpStrength={3}
+          warpFrequency={5}
+          warpSpeed={1.5}
+          warpAmplitude={50}
+          blendSoftness={0.11}
+          rotationAmount={500}
+          noiseScale={2}
+          grainAmount={0.075}
+          grainScale={2}
+          grainAnimated={false}
+          contrast={1.5}
+          gamma={1}
+          saturation={1}
+          centerX={0}
+          centerY={0}
+          zoom={1}
+        />
+      </div>
 
-      <div
-        className="pointer-events-none absolute left-0 right-0 top-0 z-10"
-        style={{
-          height: "120px",
-          background:
-            "linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 40%, rgba(255,255,255,0) 100%)",
-        }}
-      />
+      <div className=" absolute left-0 right-0 top-0 z-10" />
       {/* Legibility scrim behind the centered content */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 720px 460px at 50% 48%, rgba(255,255,255,.9), rgba(255,255,255,0) 68%)",
-        }}
-      />
+      <div className=" absolute inset-0" />
 
-      <div className="pointer-events-none relative z-10 flex h-screen flex-col">
+      <div className=" relative z-10 flex h-screen flex-col">
         {/* Header */}
-        <Navbar />
+        <EnsoNavbar />
 
         {/* Hero */}
         <motion.main
           variants={container}
           initial="hidden"
           animate="show"
-          className="flex flex-1 flex-col items-center justify-center gap-7 px-6 pb-12 text-center"
+          className="flex flex-1 flex-col items-start justify-center gap-7 px-24 pb-12 text-start"
         >
           <motion.h1
             variants={item}
-            className="m-0 max-w-[14ch] text-balance font-display text-[clamp(46px,6.4vw,80px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D]"
+            className="m-0 max-w-[14ch] text-balance font-display text-[clamp(46px,6.4vw,80px)] font-normal leading-[1.02] tracking-[-0.035em] text-surface "
           >
-            The right people <span className="text-[#1a73e8]">nearby.</span>
+            The right people <span className="text-surface">nearby.</span>
           </motion.h1>
 
           <motion.p
             variants={item}
-            className="m-0 max-w-[600px] text-[clamp(17px,1.5vw,21px)] leading-[1.6] text-[#5B5F6B]"
+            className="m-0 max-w-[600px] text-[clamp(17px,1.5vw,21px)] leading-[1.6] text-surface"
           >
             Connect with trusted local businesses, skilled individuals, <br />
             and everyday services - all in one place.
           </motion.p>
 
-          <motion.div
-            variants={item}
-            className="pointer-events-auto max-w-[500px] w-full mt-1 flex flex-wrap items-center justify-center gap-3.5"
-          >
+          <motion.div variants={item} className=" max-w-[200px] w-full mt-1 ">
             <Button
               size="default"
-              className="bg-primary basis-2/5 py-4 text-white shadow-cta hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-cta transition-all duration-200"
+              variant="outline"
+              className="border-border-input w-full py-4 text-ink hover:-translate-y-px hover:border-black transition-all duration-200 active:scale-[0.98] rounded-full"
             >
               Explore Enso
             </Button>
-            {(firstTimeUser || !loggedIn) && !setupPending && (
-              <Button
-                size="default"
-                variant="outline"
-                onClick={() => navigate("/register")}
-                className="border-border-input basis-2/5 py-4 text-ink hover:-translate-y-0.5 hover:border-primary hover:text-primary transition-all duration-200 active:scale-[0.98]"
-              >
-                Join Enso
-              </Button>
-            )}
           </motion.div>
         </motion.main>
       </div>

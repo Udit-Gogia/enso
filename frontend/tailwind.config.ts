@@ -17,7 +17,7 @@ export default {
       colors: {
         // --- Brand ---
         primary: {
-          DEFAULT: "#1A73E8",
+          DEFAULT: "#7e7de8",
           hover: "#1666C8",
           ring: "rgba(26,115,232,0.14)",
           tint: "rgba(26,115,232,0.08)",
