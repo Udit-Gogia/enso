@@ -94,7 +94,9 @@ export default {
       boxShadow: {
         card: "0 24px 60px -28px rgba(22,22,29,.22)",
         badge: "0 4px 14px -6px rgba(22,22,29,.12)",
-        cta: "0 14px 30px -10px rgba(26,115,232,.65)",
+        cta: "0 1px 2px rgba(126,125,232,0.18), 0 4px 14px rgba(126,125,232,0.16)",
+        "cta-hover":
+          "0 4px 10px rgba(95,94,212,0.32), 0 18px 40px rgba(95,94,212,0.34)",
       },
       borderRadius: {
         lg: "var(--radius)",
