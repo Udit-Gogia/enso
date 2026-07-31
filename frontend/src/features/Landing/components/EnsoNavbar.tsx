@@ -2,7 +2,7 @@ import EnsoTitle from "@/components/common/EnsoTitle";
 import { Button } from "@/components/ui/button";
 
 import { hasSetupToken, isLoggedIn, logout } from "@/lib/auth";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
@@ -68,12 +68,16 @@ export default function EnsoNavbar() {
                   onMouseEnter={() => setHovered(item.id)}
                   className="relative px-4 py-2 rounded-full"
                 >
-                  {hovered === item.id && (
-                    <motion.div
-                      layoutId="hovered"
-                      className="absolute inset-0 h-full w-full rounded-full border-2 bg-gray-100 dark:bg-neutral-800"
-                    />
-                  )}
+                  <AnimatePresence>
+                    {hovered === item.id && (
+                      <motion.div
+                        layoutId="hovered"
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute inset-0 h-full w-full rounded-full border-2 bg-gray-100 dark:bg-neutral-800"
+                      />
+                    )}
+                  </AnimatePresence>
                   <span className="relative z-10">{item.label}</span>
                 </Button>
               ))}

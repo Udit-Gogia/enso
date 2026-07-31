@@ -24,9 +24,10 @@ export default {
         // --- Brand ---
         primary: {
           DEFAULT: "#7e7de8",
-          hover: "#1666C8", // ⚠ unresolved — flagged below, left as-is
-          ring: "rgba(26,115,232,0.14)", // ⚠ unresolved — flagged below, left as-is
-          tint: "rgba(26,115,232,0.08)", // ⚠ unresolved — flagged below, left as-is
+          dark: "#8251ed",
+          hover: "#5453BB", // primary-deep darkened ~12%
+          ring: "rgba(126,125,232,0.14)", // rgb of #7e7de8
+          tint: "rgba(126,125,232,0.08)", // rgb of #7e7de8
           deep: "#5F5ED4", // NEW — text-legible violet for the "One app, three jobs" feature card
         },
         secondary: {

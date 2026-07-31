@@ -15,7 +15,7 @@ export function Features() {
           />
         }
         header={
-          <div className="pt-16 flex flex-col items-center text-center relative">
+          <div className="pt-12 flex flex-col items-center text-center relative">
             <div
               className="pointer-events-none absolute left-0 right-0 top-0 z-10"
               style={{

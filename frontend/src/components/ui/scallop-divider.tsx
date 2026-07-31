@@ -13,7 +13,7 @@ export function ScallopDivider({
   className?: string;
 }) {
   const patternId = useId();
-  const margin = 80; // flat pad below the wave so the fill fully covers the seam
+  const margin = 100; // flat pad below the wave so the fill fully covers the seam
   const stripHeight = bumpHeight + margin;
   const w = bumpWidth;
   const h = bumpHeight;

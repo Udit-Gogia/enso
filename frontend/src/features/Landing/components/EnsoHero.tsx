@@ -35,7 +35,7 @@ export function EnsoHero() {
         <Grainient
           color1="#7e7de8"
           color2="#c6c9ff"
-          color3="#7e7de8"
+          color3="#8E82FE"
           timeSpeed={1}
           blendAngle={120}
           colorBalance={0.1}

@@ -63,7 +63,7 @@ export function AuthCard({
         <Field orientation="horizontal">
           <Button
             disabled={isSubmitting}
-            className="w-full text-white active:scale-[0.99]"
+            className="w-full bg-primary-deep text-white active:scale-[0.99] hover:bg-primary-hover"
             type="submit"
             form={formId}
           >

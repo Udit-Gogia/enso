@@ -5,10 +5,13 @@ import PageTransition from "./PageTransition";
 export default function PublicLayout() {
   const location = useLocation();
   const outlet = useOutlet();
-  console.log("PageLayout rendered", location);
+  console.log("render:", location.pathname, outlet?.type);
   return (
     <div className="w-screen h-full">
-      <AnimatePresence mode="wait">
+      <AnimatePresence
+        mode="wait"
+        onExitComplete={() => console.log("exit complete fired")}
+      >
         <PageTransition key={location.pathname} slideUp>
           {outlet}
         </PageTransition>

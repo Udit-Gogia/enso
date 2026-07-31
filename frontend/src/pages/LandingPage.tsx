@@ -5,7 +5,7 @@ import { ScallopDivider } from "@/components/ui/scallop-divider";
 
 export default function LandingPage() {
   return (
-    <PageTransition>
+    <PageTransition slideUp>
       <div className=" relative w-screen overflow-x-clip">
         <EnsoHero />
         <ScallopDivider fill="#ffffff" />
