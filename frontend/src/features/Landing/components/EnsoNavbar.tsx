@@ -20,9 +20,10 @@ export default function EnsoNavbar() {
       <div className="pointer-events-auto flex items-center gap-4 ">
         {setupPending ? (
           <Button
-            variant="dark"
+            size="default"
+            variant="outline"
             onClick={() => navigate("/profile-setup")}
-            className="hover:-translate-y-px transition-transform duration-200 bg-ink  "
+            className="border-border-input w-full py-4 text-ink hover:-translate-y-px hover:border-black transition-all duration-200 active:scale-[0.98] rounded-full"
           >
             Complete Profile Setup
           </Button>
