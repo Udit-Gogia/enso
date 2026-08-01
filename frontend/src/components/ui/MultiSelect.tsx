@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Check, ChevronDown, X } from "lucide-react";
-import { Persona } from "@/features/auth/components/ProfilePanel";
+import { Persona } from "@/features/auth/constants/types";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
   customer: "#1A73E8",

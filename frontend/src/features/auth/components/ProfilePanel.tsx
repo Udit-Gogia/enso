@@ -1,80 +1,83 @@
-// import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
-import { motion } from "framer-motion";
 import { MagneticDots } from "@/components/common/MagneticDots";
-import { SKEW_PX } from "./ProfileSelector";
-import { PersonaPanelProps } from "../constants/types";
-
-function getClipPath(position: "left" | "middle" | "right"): string {
-  const s = SKEW_PX;
-  switch (position) {
-    case "left":
-      // top-right extends out, bottom-right pulls in
-      return `polygon(0% 0%, 100% 0%, calc(100% - ${s}px) 100%, 0% 100%)`;
-    case "middle":
-      // both edges slant same direction
-      return `polygon(${s}px 0%, 100% 0%, calc(100% - ${s}px) 100%, 0% 100%)`;
-    case "right":
-      // top-left pulls in, bottom-left extends out
-      return `polygon(${s}px 0%, 100% 0%, 100% 100%, 0% 100%)`;
-  }
-}
+import { PersonaPanelProps } from "../constants/types"; // adjust if the name's changed
+import SpotlightCard from "@/components/SpotlightCard";
+import { cn, hexToRgba } from "@/lib/utils";
 
 export function PersonaPanel({
-  label,
   persona,
-  position,
-  selectedPersona,
-  description,
-  palette,
-  backgroundHex,
-  icon,
+  selected,
   onClick,
 }: PersonaPanelProps) {
+  const {
+    label,
+    description,
+    palette,
+    Icon,
+    spotlightColor,
+    backgroundHex,
+    features,
+  } = persona;
+
   return (
     <div
-      className={`relative flex-1 h-full overflow-hidden flex items-center justify-center hover:cursor-pointer`}
-      style={{
-        clipPath: getClipPath(position),
-      }}
+      className="relative flex-1 h-full overflow-hidden flex items-center justify-center hover:cursor-pointer"
       onClick={onClick}
     >
-      {!!selectedPersona && persona != selectedPersona && (
-        <motion.div
-          className="absolute inset-0 bg-black/40 z-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
-        />
-      )}
-      {/* CanvasRevealEffect background */}
       <div className="absolute inset-0">
         <MagneticDots
           palette={palette}
-          intensity={0.25}
-          background={backgroundHex}
+          intensity={2}
+          background="#ffffff"
           className="w-full h-full"
         />
       </div>
 
-      {/* Label */}
-      <div
-        className={`relative z-10 h-fit flex flex-col items-center justify-center pointer-events-none gap-2 rounded-full p-6`}
-        style={{ backgroundColor: backgroundHex }}
+      <SpotlightCard
+        className={cn(
+          "rounded-[34px] backdrop-blur-xl border p-8 shadow-lg transition-all duration-300",
+          selected
+            ? "border-transparent -translate-y-1 scale-[1.02]"
+            : "bg-surface/80 border-surface/70",
+        )}
+        style={
+          selected
+            ? {
+                backgroundColor: hexToRgba(backgroundHex, 0.08),
+                boxShadow: `0 0 0 1.5px ${hexToRgba(backgroundHex, 0.9)}, 0 24px 48px -20px ${hexToRgba(backgroundHex, 0.35)}`,
+              }
+            : undefined
+        }
+        spotlightColor={spotlightColor}
+        accentColor={backgroundHex}
+        selected={selected}
       >
-        <div className="p-4 rounded-full shadow-lg bg-white border border-[#EEF2F6] ">
-          {icon}
-        </div>
+        <div className="relative z-10 flex h-full flex-col items-center text-center gap-5">
+          <div className="p-4 rounded-full shadow-lg bg-white border border-surface-page">
+            {Icon && <Icon color={backgroundHex} size={24} />}
+          </div>
 
-        <div className="flex flex-col gap-4 items-center justify-center">
-          <p className="m-0 max-w-[14ch] text-balance font-display text-[clamp(32px,3vw,60px)] font-bold leading-[1.02] tracking-[-0.035em] text-[#16161D]">
-            {label}
-          </p>
-          <p className="m-0 max-w-[600px] text-[clamp(14px,1.25vw,21px)] leading-[1.6] text-[#5B5F6B] font-display font-light ">
-            {description}
-          </p>
+          <div className="flex flex-col gap-3 items-center justify-center">
+            <p className="m-0 max-w-[14ch] text-balance font-display text-3xl font-bold leading-tight tracking-tight text-ink">
+              {label}
+            </p>
+            <p className="text-sm font-normal font-sans text-ink-body max-w-[27ch]">
+              {description}
+            </p>
+          </div>
+
+          <div className="mt-auto flex items-center justify-center gap-6 pt-4">
+            {features.map((f) => (
+              <div
+                key={f.label}
+                className="flex items-center gap-2 text-xs font-semibold font-sans text-ink-muted"
+              >
+                <f.icon color={backgroundHex} size={16} />
+                <span>{f.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </SpotlightCard>
     </div>
   );
 }

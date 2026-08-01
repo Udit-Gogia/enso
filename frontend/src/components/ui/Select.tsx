@@ -58,10 +58,6 @@ export function Select({
     setSearch("");
   }
 
-  const selectedOptions = options.filter((opt) => value.includes(opt.code));
-  console.log({ selectedOptions });
-  console.log("persona at select", persona, accent);
-
   return (
     <div ref={containerRef} className="relative flex flex-col gap-2">
       <div className="relative">
