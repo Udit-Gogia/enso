@@ -5,7 +5,6 @@ import * as z from "zod";
 import { FieldGroup } from "@/components/ui/field";
 import { AuthCard } from "@/features/auth/components/AuthForms/AuthCard";
 import { AuthField } from "@/features/auth/components/AuthForms/AuthField";
-import PageTransition from "@/components/common/PageTransition";
 import useAuth from "@/features/auth/hooks/useAuth";
 
 const formSchema = z.object({
@@ -35,54 +34,52 @@ export function Register() {
   }
 
   return (
-    <PageTransition slideUp>
-      <AuthCard
-        title="Create your account."
-        subtitle="Let's get you started."
-        submitLabel="Create account"
-        submittingLabel="Creating account..."
-        isSubmitting={form.formState.isSubmitting}
-        formId="register-form"
-        bottomText="Already have an account?"
-        bottomLinkText="Sign in"
-        onBottomLinkClick={navigateToLogin}
+    <AuthCard
+      title="Create your account."
+      subtitle="Let's get you started."
+      submitLabel="Create account"
+      submittingLabel="Creating account..."
+      isSubmitting={form.formState.isSubmitting}
+      formId="register-form"
+      bottomText="Already have an account?"
+      bottomLinkText="Sign in"
+      onBottomLinkClick={navigateToLogin}
+    >
+      <form
+        id="register-form"
+        onSubmit={form.handleSubmit(onSubmit)}
+        aria-disabled={form.formState.isSubmitting}
       >
-        <form
-          id="register-form"
-          onSubmit={form.handleSubmit(onSubmit)}
-          aria-disabled={form.formState.isSubmitting}
-        >
-          <FieldGroup>
-            <AuthField
-              name="name"
-              control={form.control}
-              label="Username"
-              placeholder="johnsmith"
-              autoComplete="username"
-              disabled={form.formState.isSubmitting}
-            />
-            <AuthField
-              name="email"
-              control={form.control}
-              label="Email"
-              placeholder="name@example.com"
-              type="email"
-              autoComplete="email"
-              disabled={form.formState.isSubmitting}
-            />
-            <AuthField
-              name="password"
-              control={form.control}
-              label="Password"
-              placeholder="Create a password"
-              autoComplete="new-password"
-              disabled={form.formState.isSubmitting}
-              isPassword
-              description="Use 8 or more characters."
-            />
-          </FieldGroup>
-        </form>
-      </AuthCard>
-    </PageTransition>
+        <FieldGroup>
+          <AuthField
+            name="name"
+            control={form.control}
+            label="Username"
+            placeholder="johnsmith"
+            autoComplete="username"
+            disabled={form.formState.isSubmitting}
+          />
+          <AuthField
+            name="email"
+            control={form.control}
+            label="Email"
+            placeholder="name@example.com"
+            type="email"
+            autoComplete="email"
+            disabled={form.formState.isSubmitting}
+          />
+          <AuthField
+            name="password"
+            control={form.control}
+            label="Password"
+            placeholder="Create a password"
+            autoComplete="new-password"
+            disabled={form.formState.isSubmitting}
+            isPassword
+            description="Use 8 or more characters."
+          />
+        </FieldGroup>
+      </form>
+    </AuthCard>
   );
 }

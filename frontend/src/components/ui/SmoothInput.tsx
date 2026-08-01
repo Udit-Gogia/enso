@@ -413,7 +413,7 @@ const SmoothInput = ({
           aria-invalid={isEmailInvalid || undefined}
           className={cn(
             inputClassName,
-            "col-start-1 col-end-2 row-start-1 row-end-2 text-inherit",
+            "col-start-1 col-end-2 row-start-1 row-end-2 text-inherit font-semibold",
             className,
           )}
           style={style}
@@ -448,7 +448,7 @@ const SmoothInput = ({
         />
         {supportsCustomCaret && (
           <motion.div
-            className="bg-primary pointer-events-none col-start-1 col-end-2 row-start-1 row-end-2 h-[0.9em] w-0.5 self-center"
+            className="bg-primary-deep pointer-events-none col-start-1 col-end-2 row-start-1 row-end-2 h-[0.9em] w-0.5 self-center"
             style={{ x: springCaretX, opacity: caretOpacity }}
           />
         )}
@@ -457,25 +457,4 @@ const SmoothInput = ({
   );
 };
 
-const Skiper106 = () => {
-  return (
-    <div className="bg-muted text-foreground flex h-full w-full flex-col items-center justify-center">
-      <div className="-mt-10 mb-20 grid content-start justify-items-center gap-6 text-center">
-        <span className="after:bg-linear-to-b after:to-foreground relative max-w-[12ch] text-xs uppercase leading-tight opacity-40 after:absolute after:left-1/2 after:top-full after:h-16 after:w-px after:from-transparent after:content-['']">
-          Try typing below
-        </span>
-      </div>
-      <div className="flex w-full flex-col items-center space-y-4">
-        <SmoothInput aria-label="Smooth caret input" />
-        <Input
-          placeholder="normal input"
-          className="caret-primary text-2xl"
-          wrapperClassName="max-w-[420px] p-4"
-          aria-label="Normal input"
-        />
-      </div>
-    </div>
-  );
-};
-
-export { Input, Skiper106, SmoothInput };
+export { Input, SmoothInput };

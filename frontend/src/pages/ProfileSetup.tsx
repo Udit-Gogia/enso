@@ -1,14 +1,11 @@
-import PageTransition from "@/components/common/PageTransition";
 import { PersonaSelector } from "@/features/auth/components/ProfileSelector";
 
 export default function ProfileSetup() {
   return (
-    <PageTransition>
-      <div className="min-h-screen w-screen overflow-x-hidden bg-black flex items-center justify-center">
-        <div className="w-screen h-screen">
-          <PersonaSelector />
-        </div>
+    <div className="min-h-screen w-screen overflow-x-hidden bg-black flex items-center justify-center">
+      <div className="w-screen h-screen">
+        <PersonaSelector />
       </div>
-    </PageTransition>
+    </div>
   );
 }

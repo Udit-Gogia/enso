@@ -1,28 +1,28 @@
 import { motion } from "framer-motion";
 
-export default function PageTransition({
+export function Reveal({
   children,
-  slideUp = false,
+  delay = 0,
 }: {
   children: React.ReactNode;
-  slideUp?: boolean;
+  delay?: number;
 }) {
   return (
     <motion.div
-      className="w-full h-full "
       initial={{
         opacity: 0,
-        scale: 0.995,
-        filter: "blur(6px)",
+        y: 8,
+        filter: "blur(8px)",
       }}
-      animate={{
+      whileInView={{
         opacity: 1,
-        scale: 1,
+        y: 0,
         filter: "blur(0px)",
       }}
-      exit={{ opacity: 0, y: slideUp ? -20 : 0 }}
+      viewport={{ once: true }}
       transition={{
-        duration: 0.5,
+        duration: 0.7,
+        delay,
         ease: [0.16, 1, 0.3, 1],
       }}
     >

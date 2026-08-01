@@ -68,7 +68,7 @@ export const StickyScroll = ({
 
         <div className="relative pointer-events-none">{header}</div>
 
-        <div className="flex h-[80vh] items-center justify-between px-24 pointer-events-none">
+        <div className="flex h-[80vh] items-center justify-between px-24 pointer-events-none overflow-x-clip">
           <div className="relative max-w-2xl">
             <div
               className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10"

@@ -7,7 +7,7 @@ export default function PublicLayout() {
   const outlet = useOutlet();
   console.log("render:", location.pathname, outlet?.type);
   return (
-    <div className="w-screen h-full">
+    <div className="w-full h-full">
       <AnimatePresence
         mode="wait"
         onExitComplete={() => console.log("exit complete fired")}

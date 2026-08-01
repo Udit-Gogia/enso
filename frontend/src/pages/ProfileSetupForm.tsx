@@ -1,5 +1,4 @@
 import { useParams, Navigate } from "react-router-dom";
-import PageTransition from "@/components/common/PageTransition";
 import { PersonaSetupForm } from "@/features/auth/components/SetupForm/ProfileSetupForm";
 import { Persona } from "@/features/auth/constants/types";
 
@@ -12,9 +11,5 @@ export default function ProfileSetupForm() {
     return <Navigate to="/" replace />;
   }
 
-  return (
-    <PageTransition>
-      <PersonaSetupForm persona={persona as Persona} />
-    </PageTransition>
-  );
+  return <PersonaSetupForm persona={persona as Persona} />;
 }

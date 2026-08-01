@@ -114,7 +114,7 @@ export function PersonaSelector() {
   }, []);
 
   return (
-    <div className="w-full h-screen  border border-black flex flex-col">
+    <div className="w-full h-screen flex flex-col">
       {/* ── Row 1: Black persona area ── */}
       <div className="relative flex basis-5/6 min-h-[320px] bg-black">
         {/* Persona panels */}

@@ -1,5 +1,6 @@
 import EnsoTitle from "@/components/common/EnsoTitle";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/Reveal";
 
 import { hasSetupToken, isLoggedIn, logout } from "@/lib/auth";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,7 +17,9 @@ export default function EnsoNavbar() {
 
   return (
     <header className="flex items-center justify-between py-6 sm:px-24 lg:px-24 ">
-      <EnsoTitle className="[&_img]:h-6 [&_img]:w-6 [&_span]:text-2xl" />
+      <Reveal delay={0.05}>
+        <EnsoTitle className="[&_img]:h-6 [&_img]:w-6 [&_span]:text-2xl" />
+      </Reveal>
       <div className="pointer-events-auto flex items-center gap-4 ">
         {setupPending ? (
           <Button
@@ -38,22 +41,7 @@ export default function EnsoNavbar() {
             </Button>
           </>
         ) : (
-          <>
-            {/* <Button
-              onClick={() => navigate("/login")}
-              variant={"ghost"}
-              className="text-base"
-              // className="text-[16px] font-medium text-ink hover:text-primary transition-colors duration-200 shadow-none hover:-translate-y-px "
-            >
-              Sign in
-            </Button>
-            <Button
-              variant="dark"
-              onClick={() => navigate("/register")}
-              className="hover:-translate-y-px transition-transform duration-200 bg-ink  "
-            >
-              Create account
-            </Button> */}
+          <Reveal delay={0.12}>
             <div
               className="flex space-x-2 items-center rounded-full p-1 transition duration-200 text-sm font-medium text-black"
               onMouseLeave={() => setHovered("signup")}
@@ -83,7 +71,7 @@ export default function EnsoNavbar() {
                 </Button>
               ))}
             </div>
-          </>
+          </Reveal>
         )}
       </div>{" "}
     </header>

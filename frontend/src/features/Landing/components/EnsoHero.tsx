@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 // import { hasSetupToken, isFirstTimeUser, isLoggedIn } from "@/lib/auth";
 import Grainient from "@/components/Grainient";
 import EnsoNavbar from "./EnsoNavbar";
+import { Reveal } from "@/components/ui/Reveal";
 
 const container: Variants = {
   hidden: {},
@@ -29,7 +30,7 @@ export function EnsoHero() {
   // const loggedIn = isLoggedIn();
 
   return (
-    <section className="h-screen  w-full relative overflow-hidden ">
+    <section className="h-screen w-full relative overflow-x-clip ">
       {/* Interactive background */}
       <div className="absolute top-0 w-full h-full">
         <Grainient
@@ -73,29 +74,35 @@ export function EnsoHero() {
           animate="show"
           className="flex flex-1 flex-col items-start justify-start my-28 gap-7 px-24 pb-12 text-start"
         >
-          <motion.h1
-            variants={item}
-            className="m-0 max-w-[14ch] text-balance font-display text-[clamp(46px,4.4vw,80px)] font-normal leading-[1.02] tracking-[-0.035em] text-surface "
-          >
-            The right people <span className="text-surface">nearby.</span>
-          </motion.h1>
+          <Reveal delay={0.15}>
+            <motion.h1
+              variants={item}
+              className="m-0 max-w-[14ch] text-balance font-display text-[clamp(46px,4.4vw,80px)] font-normal leading-[1.02] tracking-[-0.035em] text-surface "
+            >
+              The right people <span className="text-surface">nearby.</span>
+            </motion.h1>
+          </Reveal>
 
-          <motion.p
-            variants={item}
-            className="m-0 max-w-[600px] text-[clamp(17px,1.5vw,21px)] leading-[1.6] text-surface"
-          >
-            Connect with trusted local businesses, skilled individuals, <br />
-            and everyday services - all in one place.
-          </motion.p>
+          <Reveal delay={0.25}>
+            <motion.p
+              variants={item}
+              className="m-0 max-w-[600px] text-[clamp(17px,1.5vw,21px)] leading-[1.6] text-surface"
+            >
+              Connect with trusted local businesses, skilled individuals, <br />
+              and everyday services - all in one place.
+            </motion.p>
+          </Reveal>
 
           <motion.div variants={item} className=" max-w-[200px] w-full mt-1 ">
-            <Button
-              size="default"
-              variant="outline"
-              className="border-border-input w-full py-4 text-ink hover:-translate-y-px hover:border-black transition-all duration-200 active:scale-[0.98] rounded-full"
-            >
-              Explore Enso
-            </Button>
+            <Reveal delay={0.35}>
+              <Button
+                size="default"
+                variant="outline"
+                className="border-border-input w-full py-4 text-ink hover:-translate-y-px hover:border-black transition-all duration-200 active:scale-[0.98] rounded-full"
+              >
+                Explore Enso
+              </Button>
+            </Reveal>
           </motion.div>
         </motion.main>
       </div>

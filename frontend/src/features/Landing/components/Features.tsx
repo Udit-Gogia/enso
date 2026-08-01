@@ -4,7 +4,7 @@ import { FEATURES_CONTENT } from "../Constants/featuresContent";
 
 export function Features() {
   return (
-    <div className="w-full h-full bg-surface relative">
+    <div className="w-full h-full bg-surface relative overflow-x-clip">
       <StickyScroll
         backdrop={
           <MagneticDots
