@@ -34,7 +34,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
 
   const { submitSetupForm, onChangePersona } = usePersonaSetupForm(persona);
 
-  const { serviceCategories } = useServiceCategories();
+  const { serviceCategories } = useServiceCategories(persona);
 
   const accent = PERSONA_ACCENT[persona];
   const current = questions[currentIndex];

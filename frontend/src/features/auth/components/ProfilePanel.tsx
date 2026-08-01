@@ -42,7 +42,6 @@ export function PersonaPanel({
         style={
           selected
             ? {
-                backgroundColor: hexToRgba(backgroundHex, 0.08),
                 boxShadow: `0 0 0 1.5px ${hexToRgba(backgroundHex, 0.9)}, 0 24px 48px -20px ${hexToRgba(backgroundHex, 0.35)}`,
               }
             : undefined

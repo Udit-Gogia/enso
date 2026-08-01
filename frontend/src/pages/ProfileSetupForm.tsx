@@ -1,5 +1,5 @@
 import { useParams, Navigate } from "react-router-dom";
-import { PersonaSetupForm } from "@/features/auth/components/SetupForm/ProfileSetupForm";
+import { PersonaSetupForm } from "@/features/auth/components/SetupForm/PersonaSetupForm";
 import { Persona } from "@/features/auth/constants/types";
 
 const VALID_PERSONAS = ["customer", "vendor", "admin"];

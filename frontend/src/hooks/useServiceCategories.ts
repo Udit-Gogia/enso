@@ -1,9 +1,10 @@
 import { ServiceCategory } from "@/features/auth/constants/serviceCategoryComponentMap";
+import { Persona } from "@/features/auth/constants/types";
 import api from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export default function useServiceCategories() {
+export default function useServiceCategories(persona: Persona) {
   const [serviceCategories, setServiceCategories] = useState<ServiceCategory[]>(
     [],
   );
@@ -12,6 +13,11 @@ export default function useServiceCategories() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (persona !== "vendor") {
+      setServiceCategories([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     api
       .get("/api/categories/active")
