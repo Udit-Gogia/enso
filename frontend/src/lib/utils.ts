@@ -12,3 +12,10 @@ export function hexToRgba(hex: string, alpha: number): string {
   const b = parseInt(clean.substring(4, 6), 16);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
+
+export function toSentenceCase(str: string) {
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/^./, (char) => char.toUpperCase());
+}

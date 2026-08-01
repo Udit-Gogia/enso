@@ -13,14 +13,48 @@ import {
 import { PersonaPanelInput } from "./types";
 import { Palette } from "@/components/common/MagneticDots";
 
+// Single source of truth for the post-reveal entrance sequence.
+// All values in SECONDS, measured from the instant `revealed` becomes
+// true. Change a number here — nothing else needs recalculating.
+//
+// NOTE: Reveal's delay prop takes seconds (confirmed by its existing 0.05
+// and 2 values). BlurOutUp's appears to take milliseconds (inferred from
+// its existing 100/400 values, not confirmed — I haven't seen its
+// source). Bridged below with `* 1000` at the BlurOutUp call sites. If
+// that guess is wrong, this is the one place to fix it.
+const REVEAL_TIMELINE = {
+  logo: 0.05,
+  badge: 0.3,
+  heading: 0.45,
+  headingSettleDuration: 0.5, // how long BlurOutUp's own animation takes
+  panelGap: 0.45,
+  panelDuration: 0.6,
+  button: 2.5,
+} as const;
+
+// Panels start once the heading has actually finished settling, plus a
+// small breathing gap — not at some fixed guess from page-reveal.
+const PANEL_BASE_DELAY =
+  REVEAL_TIMELINE.heading + REVEAL_TIMELINE.headingSettleDuration + 0.2;
+
+function getPanelDelay(index: number): number {
+  return PANEL_BASE_DELAY + index * REVEAL_TIMELINE.panelGap;
+}
+
+const PANEL_STAGGER = {
+  baseDelay: 0.3, // seconds after reveal before the first card starts
+  gap: 0.15, // seconds between each subsequent card
+  duration: 0.6, // seconds each card takes to fade + rise in
+};
+
 const TIMELINE = {
   greetingFadeIn: { delay: 0, duration: 400 },
   greetingHold: { delay: 600 },
   bottomBarFadeIn: { delay: 1100, duration: 500 },
   greetingMove: { delay: 1100, duration: 500 },
-  panel1FadeIn: { delay: 1800, duration: 600 },
-  panel2FadeIn: { delay: 2200, duration: 600 },
-  panel3FadeIn: { delay: 2600, duration: 600 },
+  panel1FadeIn: { delay: 3000, duration: 600 },
+  panel2FadeIn: { delay: 3600, duration: 600 },
+  panel3FadeIn: { delay: 4200, duration: 600 },
 };
 
 // ─────────────────────────────────────────────────────────────
@@ -82,4 +116,11 @@ const panelDelays = [
   TIMELINE.panel3FadeIn,
 ];
 
-export { PANELS, panelDelays, TIMELINE };
+export {
+  PANELS,
+  panelDelays,
+  TIMELINE,
+  PANEL_STAGGER,
+  getPanelDelay,
+  REVEAL_TIMELINE,
+};
