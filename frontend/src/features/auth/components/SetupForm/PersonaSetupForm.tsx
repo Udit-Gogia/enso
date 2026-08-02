@@ -42,6 +42,8 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
 
   const isAnswered = (id: string) => {
     const val = answers[id];
+
+    if (id === "otp" && val.length !== current.otpLength) return false;
     if (val === undefined || val === null || val === "") return false;
     if (Array.isArray(val)) return val.length > 0;
     if (typeof val === "object") return val.open && val.close;
@@ -50,7 +52,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
 
   const canProceed = isAnswered(current.id) || current.isOptional;
   const isLast = currentIndex === questions.length - 1;
-  const isFirst = currentIndex === 0;
+  const isFirst = currentIndex === 2;
 
   function goNext() {
     if (!canProceed) return;
@@ -60,7 +62,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
 
   function goBack() {
     setDirection(-1);
-    setCurrentIndex((i) => i - 1);
+    setCurrentIndex((i) => (i > 2 ? i - 1 : i));
   }
 
   function handleJump(index: number) {
@@ -135,7 +137,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
                   <div className="flex flex-col gap-1.5">
                     <h2 className="font-display text-[clamp(24px,2.5vw,36px)] font-bold text-ink leading-tight tracking-tight">
                       {current.label}{" "}
-                      <span className="text-[clamp(16px,0.5vw,36px)] font-normal tracking-normal">
+                      <span className="text-[clamp(14px,0.25vw,36px)] font-normal text-ink-muted tracking-normal">
                         {current.isOptional ? "(Optional)" : ""}
                       </span>
                     </h2>
@@ -170,8 +172,8 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
                   onClick={goBack}
                   disabled={isFirst}
                   className="flex items-center gap-2 text-sm font-medium text-ink 
-                             disabled:opacity-0 disabled:pointer-events-none border border-ink-muted/20
-                             hover:bg-ink-muted/5 px-6 py-2.5 rounded-xl active:scale-[0.97] transition-all"
+                              disabled:pointer-events-none border border-ink-muted/20
+                             hover:bg-ink-muted/5 px-6 py-2.5 rounded-xl active:scale-[0.97] transition-all hover:shadow-md"
                 >
                   <ArrowLeft size={15} />
                   Back
@@ -182,7 +184,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
                     onClick={handleSubmit}
                     disabled={!canProceed}
                     className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
-                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97]"
+                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl"
                     style={{ backgroundColor: "#16161D" }}
                   >
                     Complete Setup
@@ -192,7 +194,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
                     onClick={goNext}
                     disabled={!canProceed}
                     className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
-                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97]"
+                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl"
                     style={{ backgroundColor: "#16161D" }}
                   >
                     Next

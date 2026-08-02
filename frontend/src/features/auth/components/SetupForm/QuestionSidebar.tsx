@@ -121,14 +121,14 @@ export function QuestionSidebar({
                 style={{ cursor: isClickable ? "pointer" : "default" }}
               >
                 <span
-                  className="text-md font-display leading-snug"
+                  className="text-md font-sans leading-snug"
                   style={{
                     color: isCurrent
                       ? "#16161D"
                       : answered
                         ? "#3A3D47"
                         : "#80828E",
-                    fontWeight: isCurrent ? 600 : 400,
+                    fontWeight: isCurrent ? 600 : answered ? 500 : 400,
                   }}
                 >
                   {q.label}

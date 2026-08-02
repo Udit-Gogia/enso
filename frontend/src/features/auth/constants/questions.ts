@@ -15,6 +15,7 @@ export interface Question {
     | "select";
   placeholder?: string;
   description?: string;
+  otpLength?: number;
   isOptional?: boolean;
 }
 
@@ -130,6 +131,7 @@ export const QUESTIONS: Record<Persona, Question[]> = {
       label: "Admin OTP",
       sidebarDescription: "Verify your admin access",
       type: "otp",
+      otpLength: 6,
       placeholder: "Enter your OTP",
       description:
         "Enter the OTP pre-set for your email to claim admin access.",

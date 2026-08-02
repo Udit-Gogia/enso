@@ -115,7 +115,7 @@ type SmoothInputProps = Omit<InputFieldProps, "type"> & {
   type?: SmoothInputType;
   allowDecimal?: boolean;
   allowNegative?: boolean;
-  ref: React.ForwardedRef<HTMLInputElement>;
+  ref?: React.ForwardedRef<HTMLInputElement>;
   onValidityChange?: (isValid: boolean) => void;
 };
 

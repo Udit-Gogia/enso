@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Grainient from "@/components/Grainient";
 import EnsoNavbar from "./EnsoNavbar";
 import { Reveal } from "@/components/ui/Reveal";
+import BlurOutUp from "@/components/smoothui/blur-out-up";
 
 const container: Variants = {
   hidden: {},
@@ -74,24 +75,24 @@ export function EnsoHero() {
           animate="show"
           className="flex flex-1 flex-col items-start justify-start my-28 gap-7 px-24 pb-12 text-start"
         >
-          <Reveal delay={0.15}>
-            <motion.h1
-              variants={item}
-              className="m-0 max-w-[14ch] text-balance font-display text-[clamp(46px,4.4vw,80px)] font-normal leading-[1.02] tracking-[-0.035em] text-surface "
-            >
-              The right people <span className="text-surface">nearby.</span>
-            </motion.h1>
-          </Reveal>
+          <motion.h1
+            variants={item}
+            className="m-0 max-w-[14ch] text-balance font-display text-[clamp(46px,4.4vw,80px)] font-normal leading-[1.02] tracking-[-0.035em] text-surface "
+          >
+            <BlurOutUp triggerOnView delay={0.15}>
+              The right people nearby.
+            </BlurOutUp>
+          </motion.h1>
 
-          <Reveal delay={0.25}>
-            <motion.p
-              variants={item}
-              className="m-0 max-w-[600px] text-[clamp(17px,1.5vw,21px)] leading-[1.6] text-surface"
-            >
-              Connect with trusted local businesses, skilled individuals, <br />
-              and everyday services - all in one place.
-            </motion.p>
-          </Reveal>
+          <motion.p
+            variants={item}
+            className="m-0  text-[clamp(17px,1.5vw,21px)] max-w-md leading-[1.6] text-surface"
+          >
+            <BlurOutUp triggerOnView delay={0.25}>
+              Connect with trusted local businesses, skilled individuals, and
+              everyday services - all in one place.
+            </BlurOutUp>
+          </motion.p>
 
           <motion.div variants={item} className=" max-w-[200px] w-full mt-1 ">
             <Reveal delay={0.35}>

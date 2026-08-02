@@ -50,16 +50,16 @@ export function PersonaPanel({
         accentColor={backgroundHex}
         selected={selected}
       >
-        <div className="relative z-10 flex h-full flex-col items-center text-center gap-5">
+        <div className="relative z-10 flex h-full flex-col items-center text-center gap-4">
           <div className="p-4 rounded-full shadow-lg bg-white border border-surface-page">
             {Icon && <Icon color={backgroundHex} size={24} />}
           </div>
 
           <div className="flex flex-col gap-3 items-center justify-center">
-            <p className="m-0 max-w-[14ch] text-balance font-display text-3xl font-bold leading-tight tracking-tight text-ink">
+            <p className="m-0 max-w-[14ch] text-balance font-display text-2xl font-bold leading-tight tracking-tight text-ink">
               {label}
             </p>
-            <p className="text-sm font-normal font-sans text-ink-body max-w-[27ch]">
+            <p className="text-sm font-medium font-sans text-ink-body max-w-[27ch]">
               {description}
             </p>
           </div>

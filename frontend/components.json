@@ -20,6 +20,7 @@
     "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
     "@react-bits": "https://reactbits.dev/r/{name}.json",
     "@skiper-ui": "https://skiper-ui.com/registry/{name}.json",
-    "@smoothui": "https://smoothui.dev/r/{name}.json"
+    "@smoothui": "https://smoothui.dev/r/{name}.json",
+    "@spell": "https://spell.sh/r/{name}.json"
   }
 }

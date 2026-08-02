@@ -45,7 +45,10 @@ export function PersonaSelector() {
         >
           <header className="flex w-full px-8 items-center justify-between">
             <Reveal delay={REVEAL_TIMELINE.logo} triggerOnView>
-              <EnsoTitle className="[&_img]:h-6 [&_img]:w-6 [&_span]:text-2xl" />
+              <EnsoTitle
+                redirectTo="home"
+                className="[&_img]:h-6 [&_img]:w-6 [&_span]:text-2xl"
+              />
             </Reveal>
           </header>
 

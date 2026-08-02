@@ -4,6 +4,8 @@ import { Question } from "../../constants/questions";
 import { MultiSelect } from "@/components/ui/MultiSelect";
 import { Select } from "@/components/ui/Select";
 import { Persona } from "../../constants/types";
+import AnimatedOTPInput from "@/components/smoothui/animated-o-t-p-input";
+import { SmoothInput } from "@/components/ui/SmoothInput";
 
 type QuestionsWithOptions = "CITIES" | "SERVICE_CATEGORIES";
 
@@ -29,9 +31,9 @@ export function QuestionInput({
   persona,
   options,
 }: QuestionInputProps) {
-  const baseInput = `w-full px-4 py-3 rounded-xl border border-border-input bg-surface
+  const baseInput = `w-full px-4 py-3 rounded-xl border border-border-primary bg-surface
     text-ink placeholder:text-ink-placeholder text-sm font-sans
-    focus:outline-none focus:ring-2 transition-all shadow-[inset_0_1px_2px_rgba(15,23,42,.02)]`;
+    focus:outline-none focus:ring-2 fodcus:ring-primary transition-all shadow-[inset_0_1px_2px_rgba(15,23,42,.02)]`;
 
   if (question.type === "textarea") {
     return (
@@ -47,7 +49,7 @@ export function QuestionInput({
 
   if (question.type === "tel") {
     return (
-      <input
+      <SmoothInput
         type="tel"
         inputMode="numeric"
         autoComplete="tel-national"
@@ -136,14 +138,31 @@ export function QuestionInput({
     );
   }
 
+  if (question.type === "otp") {
+    return (
+      <AnimatedOTPInput
+        maxLength={question.otpLength}
+        onChange={onChange}
+        value={value}
+      />
+    );
+  }
+
   return (
-    <input
-      type={question.type}
-      className={baseInput}
-      autoFocus
-      placeholder={question.placeholder}
+    <SmoothInput
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value)}
+      placeholder={question.placeholder}
+      autoFocus
+      className={baseInput}
     />
+    // <input
+    //   type={question.type}
+    //   className={baseInput}
+    //   autoFocus
+    //   placeholder={question.placeholder}
+    //   value={value ?? ""}
+    //   onChange={(e) => onChange(e.target.value)}
+    // />
   );
 }

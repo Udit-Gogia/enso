@@ -1,6 +1,7 @@
 import { MagneticDots } from "@/components/common/MagneticDots";
 import { StickyScroll } from "../../../components/ui/sticky-scroll-reveal";
 import { FEATURES_CONTENT } from "../Constants/featuresContent";
+import { Signature } from "@/components/signature";
 
 export function Features() {
   return (
@@ -15,7 +16,7 @@ export function Features() {
           />
         }
         header={
-          <div className="pt-12 flex flex-col items-center text-center relative">
+          <div className="pt-2 flex flex-col items-center text-center relative">
             <div
               className="pointer-events-none absolute left-0 right-0 top-0 z-10"
               style={{
@@ -35,6 +36,9 @@ export function Features() {
                 }}
               />
               <div className="rounded-3xl px-10 py-8 relative z-20">
+                <div className="rounded-2xl mx-auto w-fit">
+                  <Signature text="Enso." fontSize={16} color="#000" inView />
+                </div>
                 <h1 className="font-display text-6xl font-semibold tracking-tight">
                   Built on certainty.
                 </h1>
