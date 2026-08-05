@@ -43,8 +43,8 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
   const isAnswered = (id: string) => {
     const val = answers[id];
 
-    if (id === "otp" && val.length !== current.otpLength) return false;
     if (val === undefined || val === null || val === "") return false;
+    if (id === "otp" && val.length !== current.otpLength) return false;
     if (Array.isArray(val)) return val.length > 0;
     if (typeof val === "object") return val.open && val.close;
     return true;

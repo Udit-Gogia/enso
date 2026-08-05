@@ -1,12 +1,14 @@
+// dto/CustomerProfileResponse.java
 package com.enso.backend.dto;
 
 import com.enso.backend.model.ProfileResponse;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import lombok.AllArgsConstructor;
-
-
-@AllArgsConstructor
+@Getter
+@SuperBuilder
+@NoArgsConstructor
 public class CustomerProfileResponse extends ProfileResponse {
-    public String preferredLocation;
-
+    private String preferredLocation;
 }

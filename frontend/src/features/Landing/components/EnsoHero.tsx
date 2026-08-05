@@ -6,6 +6,8 @@ import Grainient from "@/components/Grainient";
 import EnsoNavbar from "./EnsoNavbar";
 import { Reveal } from "@/components/ui/Reveal";
 import BlurOutUp from "@/components/smoothui/blur-out-up";
+import { isLoggedIn } from "@/lib/auth";
+import { useNavigate } from "react-router-dom";
 
 const container: Variants = {
   hidden: {},
@@ -29,6 +31,8 @@ export function EnsoHero() {
   // const firstTimeUser = isFirstTimeUser();
   // const setupPending = hasSetupToken();
   // const loggedIn = isLoggedIn();
+  const navigate = useNavigate();
+  const loggedIn = isLoggedIn();
 
   return (
     <section className="h-screen w-full relative overflow-x-clip ">
@@ -99,6 +103,9 @@ export function EnsoHero() {
               <Button
                 size="default"
                 variant="outline"
+                onClick={() => {
+                  loggedIn ? navigate("/dashboard") : navigate("/register");
+                }}
                 className="border-border-input w-full py-4 text-ink hover:-translate-y-px hover:border-black transition-all duration-200 active:scale-[0.98] rounded-full"
               >
                 Explore Enso

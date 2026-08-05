@@ -1,19 +1,23 @@
+// dto/VendorProfileResponse.java
 package com.enso.backend.dto;
 
 import java.time.LocalTime;
+import java.util.List;
 
 import com.enso.backend.model.ProfileResponse;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import lombok.AllArgsConstructor;
-
-
-@AllArgsConstructor
+@Getter
+@SuperBuilder
+@NoArgsConstructor
 public class VendorProfileResponse extends ProfileResponse {
-    public String bio;
-    public String businessName;
-    public int experience;
-    public String location;
-    public LocalTime openTime;
-    public LocalTime closeTime;
-
+    private String bio;
+    private String businessName;
+    private int experience;
+    private LocalTime openTime;
+    private LocalTime closeTime;
+    private List<String> categories;
+    private boolean isVerified;
 }

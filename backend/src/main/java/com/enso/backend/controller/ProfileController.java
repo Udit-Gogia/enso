@@ -2,6 +2,7 @@ package com.enso.backend.controller;
 
 import com.enso.backend.dto.AuthResponse;
 import com.enso.backend.dto.ProfileSetupRequest;
+import com.enso.backend.dto.ProfileUpdateRequest;
 import com.enso.backend.model.ProfileResponse;
 import com.enso.backend.security.JwtUtil;
 import com.enso.backend.service.ProfileService;
@@ -43,6 +44,19 @@ public class ProfileController {
         String email = jwtUtil.extractUsername(token);
         return ResponseEntity.ok(profileService.getProfile(email));
 
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<ProfileResponse> updateProfile(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody ProfileUpdateRequest request) {
+        String token = authHeader.substring(7);
+
+        if (!jwtUtil.isAccessToken(token)) {
+            throw new RuntimeException("Invalid token type for update profile");
+        }
+        String email = jwtUtil.extractUsername(token);
+        return ResponseEntity.ok(profileService.updateProfile(email, request));
     }
 
 }
