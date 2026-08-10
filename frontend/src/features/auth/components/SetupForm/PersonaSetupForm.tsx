@@ -9,7 +9,7 @@ import { MagneticDots } from "@/components/common/MagneticDots";
 import { Button } from "@/components/ui/button";
 import usePersonaSetupForm from "../../hooks/usePersonaSetupForm";
 
-import useServiceCategories from "@/hooks/useServiceCategories";
+import useServiceCategories from "@/features/auth/hooks/useServiceCategories";
 import { CITIES } from "@/constants/cities";
 import { Persona } from "../../constants/types";
 

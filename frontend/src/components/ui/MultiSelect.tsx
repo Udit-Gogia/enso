@@ -116,8 +116,11 @@ export function MultiSelect({
                     key={opt.code}
                     onClick={() => toggle(opt.code)}
                     className="flex items-center justify-between px-3 py-2.5 
-                             text-sm cursor-pointer hover:bg-surface-page transition-all hover:pl-4"
-                    style={{ color: isSelected ? accent : "#16161D" }}
+                             text-sm cursor-pointer hover:bg-surface-page transition-all hover:pl-4 "
+                    style={{
+                      color: isSelected ? accent : "#16161D",
+                      fontWeight: isSelected ? 500 : 400,
+                    }}
                   >
                     <span>{opt.name}</span>
                     {isSelected && (

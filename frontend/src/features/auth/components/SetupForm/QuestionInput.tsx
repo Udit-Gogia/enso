@@ -39,6 +39,7 @@ export function QuestionInput({
     return (
       <textarea
         autoFocus
+        maxLength={200}
         className={`${baseInput} resize-none min-h-[120px]`}
         placeholder={question.placeholder}
         value={value ?? ""}
@@ -74,6 +75,7 @@ export function QuestionInput({
   if (question.type === "time-range") {
     const open = value?.open ?? "";
     const close = value?.close ?? "";
+    console.log({ open, close });
     return (
       <div className="flex items-center gap-4">
         <div className="flex flex-col gap-1.5 flex-1">
@@ -83,6 +85,7 @@ export function QuestionInput({
             className={baseInput}
             value={open}
             autoFocus
+            defaultValue={"08:00"}
             onChange={(e) => onChange({ open: e.target.value, close })}
           />
         </div>
@@ -103,9 +106,6 @@ export function QuestionInput({
   }
 
   if (question.type === "select") {
-    console.log("option", options);
-    console.log("value", value);
-
     return (
       <Select
         options={(options?.CITIES ?? []).map((opt) => ({
@@ -121,9 +121,6 @@ export function QuestionInput({
   }
 
   if (question.type === "tags") {
-    console.log("option", options);
-    console.log("value", value);
-
     return (
       <MultiSelect
         options={(options?.SERVICE_CATEGORIES ?? []).map((opt) => ({

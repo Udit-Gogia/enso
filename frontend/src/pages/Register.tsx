@@ -13,7 +13,10 @@ const formSchema = z.object({
     .trim()
     .min(3, "Username must be at least 3 characters.")
     .max(24, "Username can't exceed 24 characters.")
-    .regex(/^[a-zA-Z0-9._]+$/, "Only letters, numbers, dots and underscores."),
+    .regex(
+      /^(?!.*\s{2,})(?!\s)[a-zA-Z0-9._ ]+(?<!\s)$/,
+      "Only letters, numbers, spaces, dots and underscores are allowed.",
+    ),
   email: z.string().trim().email("Please enter a valid email address."),
   password: z.string().min(8, "Password must be at least 8 characters."),
 });
@@ -54,9 +57,9 @@ export function Register() {
           <AuthField
             name="name"
             control={form.control}
-            label="Username"
-            placeholder="johnsmith"
-            autoComplete="username"
+            label="Name"
+            placeholder="John Smith"
+            autoComplete="name"
             disabled={form.formState.isSubmitting}
           />
           <AuthField

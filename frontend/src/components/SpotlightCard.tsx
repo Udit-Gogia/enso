@@ -15,6 +15,7 @@ interface SpotlightCardProps extends React.PropsWithChildren {
    *  spotlightColor, which is tuned low for an ambient/hover glow. */
   accentColor?: string;
   selected?: boolean;
+  spotlightPosition?: string;
 }
 
 const IDLE_SPOTLIGHT_POSITION = "65% 18%";
@@ -29,6 +30,7 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
   spotlightColor = "rgba(255, 255, 255, 0.25)",
   accentColor = "#ffffff",
   selected = false,
+  spotlightPosition,
 }) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -70,6 +72,8 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
     setRevealOrigin({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
+  const SPOTLIGHT_POSITION = spotlightPosition ?? IDLE_SPOTLIGHT_POSITION;
+
   return (
     <div
       ref={divRef}
@@ -87,7 +91,7 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
         className="pointer-events-none absolute inset-0 transition-opacity duration-500 ease-in-out"
         style={{
           opacity: isActive ? 0 : 0.7,
-          background: `radial-gradient(circle at ${IDLE_SPOTLIGHT_POSITION}, ${spotlightColor}, transparent 70%)`,
+          background: `radial-gradient(circle at ${SPOTLIGHT_POSITION}, ${spotlightColor}, transparent 70%)`,
         }}
       />
       {/* Interactive spotlight — tracks the cursor on hover/focus */}

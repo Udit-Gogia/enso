@@ -1,61 +1,227 @@
 import EnsoTitle from "./EnsoTitle";
-import { useLocation } from "react-router-dom";
+
 import SidebarOption from "./SidebarOption";
 import {
   DASHBOARD_FIELD,
   DASHBOARD_FIELDS,
 } from "@/constants/sidebarConstants";
 import { useState } from "react";
-import ROUTES from "@/routes/Routes";
+
 import { Button } from "@base-ui/react";
-import { LogOutIcon } from "lucide-react";
+import { LogOutIcon, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { motion } from "framer-motion";
 import { logout } from "@/lib/auth";
 
-export default function Sidebar() {
-  const location = useLocation();
+const ENSO_EASE = [0.16, 1, 0.3, 1] as const;
 
+export default function Sidebar() {
   const [hovered, setHovered] = useState<string | null>(null);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const onHoverChange = (option: string | null) => {
     setHovered(option);
   };
 
+  const toggleSidebar = () => {
+    setIsCollapsed((prev) => !prev);
+  };
+
   return (
-    <div
-      id="sidebar"
-      className="bg-white p-4 rounded-xl h-full shadow-md basis-1/5 flex flex-col justify-between gap-10 font-sans"
+    <aside
+      className={`
+        relative
+        flex
+        h-full
+        shrink-0
+        flex-col
+        overflow-hidden
+        rounded-2xl
+        border
+        border-border
+        bg-surface
+        shadow-card
+        transition-[width]
+        duration-500
+        ease-[cubic-bezier(0.16,1,0.3,1)]
+        ${isCollapsed ? "w-[76px]" : "w-[280px]"}
+      `}
     >
-      <div className="flex flex-col gap-10">
-        <div className="px-4 py-1 w-full">
-          <EnsoTitle
-            redirectTo="dashboard"
-            className="mx-auto text-2xl [&_img]:h-6 [&_img]:w-6 "
-          />
-        </div>
+      {/* ============================================================
+          HEADER
+      ============================================================ */}
+      <div className="relative h-20 shrink-0">
+        {/* Enso Logo */}
+        <motion.div
+          initial={false}
+          animate={{
+            opacity: isCollapsed ? 0 : 1,
+            filter: isCollapsed ? "blur(6px)" : "blur(0px)",
+            x: isCollapsed ? -6 : 0,
+          }}
+          transition={{
+            duration: 0.45,
+            ease: ENSO_EASE,
+          }}
+          className={`
+            absolute
+            left-5
+            mt-5
+            -translate-y-1/2
+            whitespace-nowrap
+            ${isCollapsed ? "pointer-events-none" : "pointer-events-auto"}
+          `}
+        >
+          <EnsoTitle />
+        </motion.div>
 
-        <div>
-          {DASHBOARD_FIELDS.map((field: DASHBOARD_FIELD) => {
-            return (
-              <SidebarOption
-                key={field.id}
-                field={field}
-                hovered={hovered}
-                onHoverChange={onHoverChange}
-                isSelected={location.pathname === ROUTES[field.redirectPath]}
-              />
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="px-4 py-1 group/sidebar relative cursor-pointer rounded-sm hover:bg-neutral-200/50 ">
-        <Button onClick={logout} className="flex items-center gap-2 py-2">
-          <LogOutIcon className="h-5 w-5 text-neutral-700" />
-          <span className="text-sm font-medium text-neutral-700 transition-transform ease-linear duration-150 group-hover/sidebar:translate-x-1">
-            Logout
-          </span>
+        {/* Sidebar Toggle */}
+        <Button
+          onClick={toggleSidebar}
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          className={`
+            group
+            absolute
+            top-1/2
+            flex
+            h-9
+            w-9
+            -translate-y-1/2
+            items-center
+            justify-center
+            rounded-lg
+            text-ink-muted
+            transition-all
+            duration-200
+            hover:bg-surface-page
+            hover:text-ink-secondary
+            active:scale-95
+            ${isCollapsed ? "left-1/2 -translate-x-1/2" : "right-4"}
+          `}
+        >
+          <motion.div
+            initial={false}
+            animate={{
+              rotate: isCollapsed ? 180 : 0,
+            }}
+            transition={{
+              duration: 0.35,
+              ease: ENSO_EASE,
+            }}
+          >
+            {isCollapsed ? (
+              <PanelLeftOpen className="h-[18px] w-[18px]" />
+            ) : (
+              <PanelLeftClose className="h-[18px] w-[18px]" />
+            )}
+          </motion.div>
         </Button>
       </div>
-    </div>
+
+      {/* ============================================================
+          NAVIGATION
+      ============================================================ */}
+      <nav
+        className={`
+          flex
+          flex-1
+          flex-col
+          gap-1
+          ${isCollapsed ? "px-2" : "px-3"}
+        `}
+      >
+        {DASHBOARD_FIELDS.map((field: DASHBOARD_FIELD) => (
+          <SidebarOption
+            key={field.id}
+            field={field}
+            hovered={hovered}
+            onHoverChange={onHoverChange}
+            // isSelected={location.pathname === ROUTES[field.redirectPath]}
+            collapsed={isCollapsed}
+          />
+        ))}
+      </nav>
+
+      {/* ============================================================
+          LOGOUT
+      ============================================================ */}
+      <div
+        className={`
+          shrink-0
+          pb-3
+          ${isCollapsed ? "px-2" : "px-3"}
+        `}
+      >
+        <Button
+          onClick={logout}
+          aria-label="Logout"
+          title={isCollapsed ? "Logout" : undefined}
+          className={`
+            group
+            relative
+            flex
+            h-11
+            w-full
+            items-center
+            rounded-lg
+            text-ink-body
+            transition-all
+            duration-200
+            hover:bg-surface-page
+            hover:text-ink
+            active:scale-[0.98]
+            ${isCollapsed ? "justify-center" : "justify-start"}
+          `}
+        >
+          {/* Icon */}
+          <motion.div
+            initial={false}
+            animate={{
+              x: isCollapsed ? 0 : 0,
+            }}
+            className={`
+              flex
+              shrink-0
+              items-center
+              justify-center
+              ${isCollapsed ? "" : "ml-3"}
+            `}
+          >
+            <LogOutIcon
+              className="
+                h-[19px]
+                w-[19px]
+                transition-transform
+                duration-200
+                group-hover:translate-x-0.5
+              "
+            />
+          </motion.div>
+
+          {/* Label */}
+          <motion.span
+            initial={false}
+            animate={{
+              opacity: isCollapsed ? 0 : 1,
+              x: isCollapsed ? -6 : 0,
+              filter: isCollapsed ? "blur(6px)" : "blur(0px)",
+            }}
+            transition={{
+              duration: 0.45,
+              ease: ENSO_EASE,
+            }}
+            className={`
+              absolute
+              left-12
+              whitespace-nowrap
+              text-sm
+              font-medium
+              ${isCollapsed ? "pointer-events-none" : "pointer-events-auto"}
+            `}
+          >
+            Logout
+          </motion.span>
+        </Button>
+      </div>
+    </aside>
   );
 }

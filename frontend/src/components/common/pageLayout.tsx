@@ -10,15 +10,17 @@ export default function PageLayout() {
 
   return (
     <Reveal triggerOnView>
-      <div className="w-screen h-screen bg-surface">
-        <div className="flex p-4 gap-4 h-full w-full">
+      <div className="w-screen h-screen overflow-hidden bg-surface">
+        <div className="flex p-4 h-full w-full">
           <Sidebar />
 
-          <AnimatePresence mode="wait">
-            <PageTransition key={location.pathname} slideUp>
-              {outlet}
-            </PageTransition>
-          </AnimatePresence>
+          <div className="flex-1 min-h-0 h-full overflow-y-auto">
+            <AnimatePresence mode="wait">
+              <PageTransition key={location.pathname} slideUp>
+                {outlet}
+              </PageTransition>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </Reveal>
