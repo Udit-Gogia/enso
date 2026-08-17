@@ -24,7 +24,9 @@ export default function Myprofile() {
         className="absolute inset-0 h-full w-full"
       />
       <div className="relative z-20 ">
-        {profile.role === "VENDOR" && <VendorProfilePage profile={profile} />}
+        {profile.role === "VENDOR" && (
+          <VendorProfilePage savedProfile={profile} />
+        )}
       </div>
     </section>
   );

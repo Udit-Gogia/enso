@@ -1,7 +1,7 @@
 import { VendorProfile } from "./constants/types";
 
-// ---- Client-side completion calc ----
 export function computeCompletion(p: VendorProfile) {
+  console.log("p is", p);
   const checks = {
     "Business Information": Boolean(
       p.businessName && p.experience !== null && p.location != null,

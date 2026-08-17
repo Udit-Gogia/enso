@@ -80,9 +80,12 @@ const sanitizeNumberInput = (
   if (allowDecimal) {
     const firstDot = value.indexOf(".");
     if (firstDot !== -1) {
-      value =
-        value.slice(0, firstDot + 1) +
-        value.slice(firstDot + 1).replace(/\./g, "");
+      const integerPart = value.slice(0, firstDot + 1);
+      const fractionalPart = value
+        .slice(firstDot + 1)
+        .replace(/\./g, "")
+        .slice(0, 2);
+      value = integerPart + fractionalPart;
     }
   } else {
     value = value.replace(/\./g, "");
@@ -166,8 +169,8 @@ const SmoothInput = ({
       },
       placeholder: {
         type: "text",
-        default: placeholder ?? "smooth input",
-        placeholder: "Empty state text…",
+        default: placeholder ?? "",
+        placeholder: "",
       },
       fontSize: [24, 12, 48, 2],
       spring: {
@@ -209,8 +212,7 @@ const SmoothInput = ({
   const supportsCustomCaret = SELECTION_API_TYPES.has(renderedType);
   const resolvedInputMode = getInputMode(activeType, allowDecimal);
 
-  const displayPlaceholder =
-    params.placeholder || placeholder || "smooth input";
+  const displayPlaceholder = params.placeholder || placeholder || "";
 
   const isEmailInvalid =
     activeType === "email" &&
@@ -248,20 +250,44 @@ const SmoothInput = ({
     measureSpan.style.fontVariationSettings = styles.fontVariationSettings;
   };
 
-  const measurePrefixWidth = (text: string) => {
-    const input = inputRef.current;
+  // Pure text-run width — no assumptions about where inside the input
+  // that run is actually drawn. Alignment is handled separately in
+  // getTextStartX below.
+  const measureTextWidth = (text: string): number | null => {
     const measureSpan = measureRef.current;
-    if (!input || !measureSpan) return null;
+    if (!measureSpan) return null;
 
     syncMeasureSpan();
     measureSpan.textContent = text;
+    return measureSpan.offsetWidth;
+  };
 
-    const paddingLeft =
-      parseFloat(window.getComputedStyle(input).paddingLeft) || 0;
+  // Where (in clientWidth-relative px) does the visible string actually
+  // start, given the input's own text-align? Native inputs draw text
+  // flush-left, flush-right, or centered depending on this — the old
+  // code assumed flush-left unconditionally, which is what produced the
+  // gap between the fake caret and the real glyphs on text-right inputs.
+  const getTextStartX = (input: HTMLInputElement, fullTextWidth: number) => {
+    const styles = window.getComputedStyle(input);
+    const paddingLeft = parseFloat(styles.paddingLeft) || 0;
+    const paddingRight = parseFloat(styles.paddingRight) || 0;
+    const contentWidth = input.clientWidth - paddingLeft - paddingRight;
+    const align = styles.textAlign;
 
-    return text.length > 0
-      ? measureSpan.offsetWidth + paddingLeft
-      : paddingLeft - 1;
+    if (align === "right" || align === "end") {
+      return Math.max(
+        paddingLeft,
+        input.clientWidth - paddingRight - fullTextWidth,
+      );
+    }
+
+    if (align === "center") {
+      return paddingLeft + Math.max(0, (contentWidth - fullTextWidth) / 2);
+    }
+
+    // left / start (default) — keep the original 1px hairline nudge for
+    // the empty-input caret-at-start case.
+    return paddingLeft - (fullTextWidth === 0 ? 1 : 0);
   };
 
   const scrollCaretIntoView = (
@@ -309,12 +335,19 @@ const SmoothInput = ({
     const hasSelection = selectionStart !== selectionEnd;
     const caretIndex = getCaretIndex(target);
     const isPassword = target.type === "password";
+    const fullDisplayText = isPassword
+      ? PASSWORD_CHAR.repeat(target.value.length)
+      : target.value;
     const textBeforeCaret = isPassword
       ? PASSWORD_CHAR.repeat(caretIndex)
       : target.value.slice(0, caretIndex);
 
-    const absoluteWidth = measurePrefixWidth(textBeforeCaret);
-    if (absoluteWidth === null) return;
+    const prefixWidth = measureTextWidth(textBeforeCaret);
+    const fullWidth = measureTextWidth(fullDisplayText);
+    if (prefixWidth === null || fullWidth === null) return;
+
+    const textStartX = getTextStartX(target, fullWidth);
+    const absoluteWidth = textStartX + prefixWidth;
 
     scrollCaretIntoView(target, absoluteWidth);
 
@@ -420,6 +453,7 @@ const SmoothInput = ({
           value={inputValue}
           onChange={(e) => {
             if (activeType === "number") {
+              console.log("input and param", e.target.value, allowDecimal);
               e.target.value = sanitizeNumberInput(
                 e.target.value,
                 allowDecimal,

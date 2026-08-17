@@ -11,7 +11,7 @@ export interface BaseProfile {
 export interface VendorProfile extends BaseProfile {
   role: "VENDOR";
   bio: string | null;
-  experience: number;
+  experience: string;
   openTime: string; // "08:00"
   closeTime: string; // "21:00"
   businessName: string;
@@ -29,3 +29,9 @@ export interface AdminProfile extends BaseProfile {
 }
 
 export type UserProfile = VendorProfile | CustomerProfile | AdminProfile;
+
+export type VendorEditableSection =
+  | "business"
+  | "contact"
+  | "categories"
+  | "timings";
