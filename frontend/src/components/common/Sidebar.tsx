@@ -59,7 +59,7 @@ export default function Sidebar() {
             x: isCollapsed ? -6 : 0,
           }}
           transition={{
-            duration: 0.45,
+            duration: 1,
             ease: ENSO_EASE,
           }}
           className={`
@@ -104,7 +104,7 @@ export default function Sidebar() {
               rotate: isCollapsed ? 180 : 0,
             }}
             transition={{
-              duration: 0.35,
+              duration: 0.5,
               ease: ENSO_EASE,
             }}
           >
@@ -176,7 +176,7 @@ export default function Sidebar() {
           <motion.div
             initial={false}
             animate={{
-              x: isCollapsed ? 0 : 0,
+              x: 0,
             }}
             className={`
               flex

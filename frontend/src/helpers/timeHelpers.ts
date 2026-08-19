@@ -28,4 +28,25 @@ function getMinutesUntil(time: string): number {
   return targetMinutes - currentMinutes;
 }
 
-export { formatDate, getMinutesFromTime, getCurrentMinutes, getMinutesUntil };
+function formatTime(time: string) {
+  const [hours, minutes] = time.split(":");
+  const hour = Number(hours);
+
+  const period = hour >= 12 ? "PM" : "AM";
+  const formattedHour = hour % 12 || 12;
+
+  return `${String(formattedHour).padStart(2, "0")}:${minutes} ${period}`;
+}
+
+formatTime("08:00:00"); // "08:00 AM"
+formatTime("21:00:00"); // "09:00 PM"
+formatTime("00:30:00"); // "12:30 AM"
+formatTime("12:45:00"); // "12:45 PM"
+
+export {
+  formatDate,
+  getMinutesFromTime,
+  getCurrentMinutes,
+  getMinutesUntil,
+  formatTime,
+};

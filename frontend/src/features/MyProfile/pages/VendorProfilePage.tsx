@@ -14,104 +14,45 @@ import {
 } from "lucide-react";
 import SpotlightCard from "@/components/SpotlightCard";
 import { computeCompletion } from "../helper";
-import { VendorEditableSection, VendorProfile } from "../constants/types";
+import { VendorProfile } from "../constants/types";
 import { SectionCard } from "../components/SectionCard";
 import { InfoRow } from "../components/InfoRow";
 
 import CircularProgress from "../components/CircularProgress";
 import {
   formatDate,
+  formatTime,
   getCurrentMinutes,
   getMinutesFromTime,
   getMinutesUntil,
 } from "@/helpers/timeHelpers";
 import { DisplayTags } from "../components/DisplayTags";
-import { useState } from "react";
+
 import { SmoothInput } from "@/components/ui/SmoothInput";
 import { Select } from "@/components/ui/Select";
 import { CITIES } from "@/constants/cities";
+
+import { MultiSelect } from "@/components/ui/MultiSelect";
+import useVendorProfile from "../hooks/useVendorProfile";
 
 export function VendorProfilePage({
   savedProfile,
 }: {
   savedProfile: VendorProfile;
 }) {
-  const [profile, setProfile] = useState<VendorProfile>(savedProfile);
-
-  const [editingSections, setEditingSections] = useState<
-    Set<VendorEditableSection>
-  >(new Set());
-
-  const startEditing = (section: VendorEditableSection) => {
-    setEditingSections((prev) => {
-      const next = new Set(prev);
-      next.add(section);
-      return next;
-    });
-  };
-
-  const stopEditing = (section: VendorEditableSection) => {
-    setEditingSections((prev) => {
-      const next = new Set(prev);
-      next.delete(section);
-      return next;
-    });
-  };
-
-  const cancelBusinessEdit = () => {
-    setProfile((prev) => ({
-      ...prev,
-      businessName: savedProfile.businessName,
-      experience: savedProfile.experience,
-    }));
-
-    stopEditing("business");
-  };
-
-  const cancelContactEdit = () => {
-    setProfile((prev) => ({
-      ...prev,
-      email: savedProfile.email,
-      phone: savedProfile.phone,
-      location: savedProfile.location,
-    }));
-    stopEditing("contact");
-  };
-
-  const saveBusinessInfo = async () => {
-    const payload = {
-      businessName: profile.businessName,
-      experience: profile.experience,
-    };
-
-    // API CALL TO UPDATE PROFILE
-    //await updateVendorProfile(payload);
-
-    stopEditing("business");
-  };
-  const saveContactInfo = async () => {
-    const payload = {
-      phone: profile.phone,
-      location: profile.location,
-    };
-
-    // API CALL TO UPDATE PROFILE
-    //await updateVendorProfile(payload);
-
-    stopEditing("contact");
-  };
-
-  const saveTimings = async () => {
-    const payload = {
-      openTime: profile.openTime,
-      closeTime: profile.closeTime,
-    };
-
-    // API CALL TO UPDATE PROFILE
-    //await updateVendorProfile(payload);
-
-    stopEditing("timings");
-  };
+  const {
+    profile,
+    serviceCategories,
+    saveBusinessInfo,
+    saveContactInfo,
+    saveServiceCategories,
+    cancelBusinessEdit,
+    cancelContactEdit,
+    cancelServiceCateroryEdit,
+    enableEditing,
+    isEditingSection,
+    updateProfile,
+  } = useVendorProfile(savedProfile);
 
   const { pct, checks } = computeCompletion(profile);
 
@@ -216,47 +157,47 @@ export function VendorProfilePage({
           iconBg="bg-rose-100"
           editable
           title="Business Information"
-          onEditClick={() => startEditing("business")}
+          onEditClick={() => enableEditing("business")}
           onCancelEdit={cancelBusinessEdit}
           onSaveEdit={saveBusinessInfo}
-          displayEditActionButton={editingSections.has("business")}
+          displayEditActionButton={isEditingSection("business")}
         >
           <InfoRow
             label="Business Name"
             value={profile.businessName}
-            isEditing={editingSections.has("business")}
+            isEditing={isEditingSection("business")}
             EditInput={
               <SmoothInput
                 value={profile.businessName}
                 type="text"
                 placeholder="Business Name"
-                className={`text-sm text-right ${editingSections.has("business") ? "text-brand-blue-deep" : ""} h-min`}
+                className={`text-sm text-right ${isEditingSection("business") ? "text-brand-blue-deep" : ""} h-min`}
                 autoFocus
-                onChange={(e) =>
-                  setProfile((prev) => ({
-                    ...prev,
+                onChange={(e) => {
+                  updateProfile({
+                    ...profile,
                     businessName: e.target.value,
-                  }))
-                }
+                  });
+                }}
               />
             }
           />
           <InfoRow
             label="Experience"
             value={`${profile.experience} years`}
-            isEditing={editingSections.has("business")}
+            isEditing={isEditingSection("business")}
             EditInput={
               <SmoothInput
                 value={profile.experience}
                 type="number"
                 allowDecimal
                 placeholder="Experience in years"
-                className={`text-sm text-right ${editingSections.has("business") ? "text-brand-blue-deep" : ""}`}
+                className={`text-sm text-right ${isEditingSection("business") ? "text-brand-blue-deep" : ""}`}
                 onChange={(e) =>
-                  setProfile((prev) => ({
-                    ...prev,
+                  updateProfile({
+                    ...profile,
                     experience: e.target.value,
-                  }))
+                  })
                 }
               />
             }
@@ -273,16 +214,16 @@ export function VendorProfilePage({
           iconBg="bg-amber/5"
           title="Contact Information"
           editable
-          onEditClick={() => startEditing("contact")}
+          onEditClick={() => enableEditing("contact")}
           onCancelEdit={cancelContactEdit}
           onSaveEdit={saveContactInfo}
-          displayEditActionButton={editingSections.has("contact")}
+          displayEditActionButton={isEditingSection("contact")}
         >
           <InfoRow label="Email" value={profile.email} />
           <InfoRow
             label="Phone"
             value={profile.phone}
-            isEditing={editingSections.has("contact")}
+            isEditing={isEditingSection("contact")}
             EditInput={
               <SmoothInput
                 value={profile.phone}
@@ -293,15 +234,15 @@ export function VendorProfilePage({
                 maxLength={10}
                 pattern="[6-9][0-9]{9}"
                 placeholder="phone"
-                className={`text-sm text-right ${editingSections.has("contact") ? "text-brand-blue-deep" : ""}`}
+                className={`text-sm text-right ${isEditingSection("contact") ? "text-brand-blue-deep" : ""}`}
                 onChange={(e) => {
                   const digits = e.target.value.replace(/\D/g, "");
 
                   // Limit to 10 digits
-                  setProfile((prev) => ({
-                    ...prev,
+                  updateProfile({
+                    ...profile,
                     phone: digits.slice(0, 10),
-                  }));
+                  });
                 }}
               />
             }
@@ -309,7 +250,7 @@ export function VendorProfilePage({
           <InfoRow
             label="Location"
             value={profile.location ?? "-"}
-            isEditing={editingSections.has("contact")}
+            isEditing={isEditingSection("contact")}
             EditInput={
               <Select
                 options={CITIES}
@@ -319,10 +260,10 @@ export function VendorProfilePage({
                 inputClassName="text-brand-blue-deep font-semibold text-right mr-4"
                 value={profile.location ?? ""}
                 onChange={(city: string) =>
-                  setProfile((prev) => ({
-                    ...prev,
+                  updateProfile({
+                    ...profile,
                     location: city,
-                  }))
+                  })
                 }
               />
             }
@@ -330,24 +271,59 @@ export function VendorProfilePage({
         </SectionCard>
 
         <SectionCard
-          icon={<Store size={16} className="text-primary" />}
-          iconBg="bg-primary/10"
+          icon={<Store size={16} className="text-brand-blue" />}
+          iconBg="bg-brand-blue/10"
           title="Service Categories"
           desc="Your profile appears in searches for these categories."
           className="col-span-2"
           editable
+          onEditClick={() => enableEditing("categories")}
+          onCancelEdit={cancelServiceCateroryEdit}
+          onSaveEdit={saveServiceCategories}
+          displayEditActionButton={isEditingSection("categories")}
         >
-          <DisplayTags tags={profile.categories} theme="vendor" />
+          <DisplayTags
+            tags={profile.categories}
+            noTagMessage="Select atleast 1 service category to appear in search result."
+          />
+          {isEditingSection("categories") ? (
+            <MultiSelect
+              options={(serviceCategories ?? []).map((opt) => ({
+                code: opt.code,
+                name: opt.name,
+              }))}
+              value={profile.categories ?? []}
+              onChange={(value) => {
+                updateProfile({
+                  ...profile,
+                  categories: value,
+                });
+              }}
+              autoFocus
+              placeholder={"Search or select services..."}
+              persona={"customer"}
+              containerClassName="!focus:outline-none focus-within:ring-0 text-right  mt-4 border-2 px-3 py-2 border-brand-blue"
+              displayChips={false}
+              dropdownClassName="max-h-40 shadow-card !text-primary"
+              inputClassName="text-brand-blue-deep "
+            />
+          ) : (
+            <></>
+          )}
         </SectionCard>
 
         <SectionCard
-          icon={<Clock size={16} className="text-success" />}
-          iconBg="bg-green-100"
+          icon={<Clock size={16} className="text-primary" />}
+          iconBg="bg-primary/10"
           title="Store Timings"
           editable
         >
-          <InfoRow label="Open Time" value={profile.openTime} />
-          <InfoRow label="Close Time" value={profile.closeTime} isLast />
+          <InfoRow label="Open Time" value={formatTime(profile.openTime)} />
+          <InfoRow
+            label="Close Time"
+            value={formatTime(profile.closeTime)}
+            isLast
+          />
           {isOpenNow && (
             <div className="flex items-center gap-2 mt-2 rounded-sm bg-success/10 text-success border font-medium border-ink-placeholder/20 text-sm px-3 py-2">
               <Calendar size={16} strokeWidth={3} />
@@ -359,8 +335,8 @@ export function VendorProfilePage({
         </SectionCard>
 
         <SectionCard
-          icon={<Info size={16} className="text-brand-blue" />}
-          iconBg="bg-brand-blue/10"
+          icon={<Info size={16} className="text-success" />}
+          iconBg="bg-green-100"
           title="Profile Completion"
         >
           <div className="flex gap-4 items-center">

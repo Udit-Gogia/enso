@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Check, ChevronDown, X } from "lucide-react";
 import { Persona } from "@/features/auth/constants/types";
+import { cn } from "@/lib/utils";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
   customer: "#1A73E8",
@@ -19,6 +20,11 @@ interface MultiSelectProps {
   onChange: (codes: string[]) => void;
   placeholder?: string;
   persona: Persona;
+  containerClassName?: string;
+  dropdownClassName?: string;
+  inputClassName?: string;
+  displayChips?: boolean;
+  autoFocus?: boolean;
 }
 
 export function MultiSelect({
@@ -27,9 +33,13 @@ export function MultiSelect({
   onChange,
   placeholder = "Search or select...",
   persona,
+  containerClassName,
+  displayChips = true,
+  autoFocus = false,
+  inputClassName,
 }: MultiSelectProps) {
   const accent = PERSONA_ACCENT[persona];
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(autoFocus);
   const [search, setSearch] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -71,16 +81,21 @@ export function MultiSelect({
       <div className="relative">
         {/* Trigger */}
         <div
-          className="flex items-center justify-between w-full px-4 py-3 rounded-xl 
-                   border border-border-input bg-surface text-sm cursor-pointer
-                   focus-within:ring-2 transition-all"
+          className={cn(
+            "flex items-center justify-between w-full px-4 py-3 rounded-xl border border-border-input bg-surface text-sm cursor-pointer focus-within:ring-2 transition-all",
+            containerClassName,
+          )}
           style={{ focusWithinRingColor: accent } as any}
           onClick={() => setOpen((prev) => !prev)}
         >
           <input
-            className="flex-1 bg-transparent outline-none text-ink placeholder:text-ink-placeholder"
+            className={cn(
+              "flex-1 bg-transparent outline-none text-ink placeholder:text-ink-placeholder",
+              inputClassName,
+            )}
             placeholder={open ? "Search services..." : placeholder}
             value={search}
+            autoFocus={autoFocus}
             onChange={(e) => {
               setSearch(e.target.value);
               setOpen(true);
@@ -134,7 +149,7 @@ export function MultiSelect({
         )}
       </div>
       {/* Selected chips */}
-      {selectedOptions.length > 0 && (
+      {displayChips && selectedOptions.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mt-1">
           {selectedOptions.map((opt) => (
             <span
