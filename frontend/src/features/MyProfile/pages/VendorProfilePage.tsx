@@ -3,37 +3,26 @@ import {
   Mail,
   Phone,
   MapPin,
-  Clock,
   KeyRound,
   Trash2,
   ChevronRight,
   Briefcase,
-  Calendar,
-  Store,
-  Info,
 } from "lucide-react";
 import SpotlightCard from "@/components/SpotlightCard";
-import { computeCompletion } from "../helper";
-import { VendorProfile } from "../constants/types";
-import { SectionCard } from "../components/SectionCard";
-import { InfoRow } from "../components/InfoRow";
-
-import CircularProgress from "../components/CircularProgress";
-import {
-  formatDate,
-  formatTime,
-  getCurrentMinutes,
-  getMinutesFromTime,
-  getMinutesUntil,
-} from "@/helpers/timeHelpers";
-import { DisplayTags } from "../components/DisplayTags";
-
-import { SmoothInput } from "@/components/ui/SmoothInput";
-import { Select } from "@/components/ui/Select";
-import { CITIES } from "@/constants/cities";
-
-import { MultiSelect } from "@/components/ui/MultiSelect";
+import { VendorEditableSection, VendorProfile } from "../constants/types";
 import useVendorProfile from "../hooks/useVendorProfile";
+import BusinessInformation from "../components/Vendor/BusinessInformation";
+import ContactInformation from "../components/Vendor/ContactInformation";
+import ServiceCategories from "../components/Vendor/ServiceCategories";
+import StoreTimings from "../components/Vendor/StoreTimings";
+import ProfileCompletion from "../components/Vendor/ProfileCompletion";
+
+export type VendorProfileMetricProps = {
+  profile: VendorProfile;
+  enableEditing: (section: VendorEditableSection) => void;
+  updateProfile: (updatedProfile: VendorProfile) => void;
+  isEditingSection: (section: VendorEditableSection) => boolean;
+};
 
 export function VendorProfilePage({
   savedProfile,
@@ -53,20 +42,6 @@ export function VendorProfilePage({
     isEditingSection,
     updateProfile,
   } = useVendorProfile(savedProfile);
-
-  const { pct, checks } = computeCompletion(profile);
-
-  const isOpenNow =
-    getCurrentMinutes() >= getMinutesFromTime(profile.openTime) &&
-    getCurrentMinutes() < getMinutesFromTime(profile.closeTime);
-
-  const minutesUntilClose = getMinutesUntil(profile.closeTime);
-
-  const hours = Math.floor(minutesUntilClose / 60);
-  const minutes = minutesUntilClose % 60;
-
-  const pendingText =
-    hours > 0 ? `Closes in ${hours}h ${minutes}m` : `Closes in ${minutes}m`;
 
   return (
     <div className="max-w-4xl mx-auto p-8 pt-0 space-y-6 font-sans">
@@ -152,219 +127,42 @@ export function VendorProfilePage({
       </SpotlightCard>
 
       <div className="grid grid-cols-2 gap-6">
-        <SectionCard
-          icon={<Store size={16} className="text-rose-500" />}
-          iconBg="bg-rose-100"
-          editable
-          title="Business Information"
-          onEditClick={() => enableEditing("business")}
-          onCancelEdit={cancelBusinessEdit}
-          onSaveEdit={saveBusinessInfo}
-          displayEditActionButton={isEditingSection("business")}
-        >
-          <InfoRow
-            label="Business Name"
-            value={profile.businessName}
-            isEditing={isEditingSection("business")}
-            EditInput={
-              <SmoothInput
-                value={profile.businessName}
-                type="text"
-                placeholder="Business Name"
-                className={`text-sm text-right ${isEditingSection("business") ? "text-brand-blue-deep" : ""} h-min`}
-                autoFocus
-                onChange={(e) => {
-                  updateProfile({
-                    ...profile,
-                    businessName: e.target.value,
-                  });
-                }}
-              />
-            }
-          />
-          <InfoRow
-            label="Experience"
-            value={`${profile.experience} years`}
-            isEditing={isEditingSection("business")}
-            EditInput={
-              <SmoothInput
-                value={profile.experience}
-                type="number"
-                allowDecimal
-                placeholder="Experience in years"
-                className={`text-sm text-right ${isEditingSection("business") ? "text-brand-blue-deep" : ""}`}
-                onChange={(e) =>
-                  updateProfile({
-                    ...profile,
-                    experience: e.target.value,
-                  })
-                }
-              />
-            }
-          />
-          <InfoRow label="Member Since" value={formatDate(profile.createdAt)} />
-          <InfoRow
-            label="Verified"
-            value={profile.isVerified ? "Verified" : "Not Verified"}
-          />
-        </SectionCard>
+        <BusinessInformation
+          cancelBusinessEdit={cancelBusinessEdit}
+          enableEditing={enableEditing}
+          isEditingSection={isEditingSection}
+          profile={profile}
+          saveBusinessInfo={saveBusinessInfo}
+          updateProfile={updateProfile}
+        />
 
-        <SectionCard
-          icon={<Mail size={16} className="text-amber " />}
-          iconBg="bg-amber/5"
-          title="Contact Information"
-          editable
-          onEditClick={() => enableEditing("contact")}
-          onCancelEdit={cancelContactEdit}
-          onSaveEdit={saveContactInfo}
-          displayEditActionButton={isEditingSection("contact")}
-        >
-          <InfoRow label="Email" value={profile.email} />
-          <InfoRow
-            label="Phone"
-            value={profile.phone}
-            isEditing={isEditingSection("contact")}
-            EditInput={
-              <SmoothInput
-                value={profile.phone}
-                type="tel"
-                inputMode="numeric"
-                autoComplete="tel-national"
-                autoFocus
-                maxLength={10}
-                pattern="[6-9][0-9]{9}"
-                placeholder="phone"
-                className={`text-sm text-right ${isEditingSection("contact") ? "text-brand-blue-deep" : ""}`}
-                onChange={(e) => {
-                  const digits = e.target.value.replace(/\D/g, "");
+        <ContactInformation
+          cancelContactEdit={cancelContactEdit}
+          isEditingSection={isEditingSection}
+          enableEditing={enableEditing}
+          profile={profile}
+          saveContactInfo={saveContactInfo}
+          updateProfile={updateProfile}
+        />
 
-                  // Limit to 10 digits
-                  updateProfile({
-                    ...profile,
-                    phone: digits.slice(0, 10),
-                  });
-                }}
-              />
-            }
-          />
-          <InfoRow
-            label="Location"
-            value={profile.location ?? "-"}
-            isEditing={isEditingSection("contact")}
-            EditInput={
-              <Select
-                options={CITIES}
-                persona="customer"
-                containerClassName="!p-0 !focus:outline-none !border-none focus-within:ring-0 text-right"
-                dropdownClassName="max-h-40 shadow-card"
-                inputClassName="text-brand-blue-deep font-semibold text-right mr-4"
-                value={profile.location ?? ""}
-                onChange={(city: string) =>
-                  updateProfile({
-                    ...profile,
-                    location: city,
-                  })
-                }
-              />
-            }
-          />
-        </SectionCard>
+        <ServiceCategories
+          cancelServiceCateroryEdit={cancelServiceCateroryEdit}
+          enableEditing={enableEditing}
+          isEditingSection={isEditingSection}
+          profile={profile}
+          updateProfile={updateProfile}
+          saveServiceCategories={saveServiceCategories}
+          serviceCategories={serviceCategories}
+        />
 
-        <SectionCard
-          icon={<Store size={16} className="text-brand-blue" />}
-          iconBg="bg-brand-blue/10"
-          title="Service Categories"
-          desc="Your profile appears in searches for these categories."
-          className="col-span-2"
-          editable
-          onEditClick={() => enableEditing("categories")}
-          onCancelEdit={cancelServiceCateroryEdit}
-          onSaveEdit={saveServiceCategories}
-          displayEditActionButton={isEditingSection("categories")}
-        >
-          <DisplayTags
-            tags={profile.categories}
-            noTagMessage="Select atleast 1 service category to appear in search result."
-          />
-          {isEditingSection("categories") ? (
-            <MultiSelect
-              options={(serviceCategories ?? []).map((opt) => ({
-                code: opt.code,
-                name: opt.name,
-              }))}
-              value={profile.categories ?? []}
-              onChange={(value) => {
-                updateProfile({
-                  ...profile,
-                  categories: value,
-                });
-              }}
-              autoFocus
-              placeholder={"Search or select services..."}
-              persona={"customer"}
-              containerClassName="!focus:outline-none focus-within:ring-0 text-right  mt-4 border-2 px-3 py-2 border-brand-blue"
-              displayChips={false}
-              dropdownClassName="max-h-40 shadow-card !text-primary"
-              inputClassName="text-brand-blue-deep "
-            />
-          ) : (
-            <></>
-          )}
-        </SectionCard>
+        <StoreTimings
+          enableEditing={enableEditing}
+          isEditingSection={isEditingSection}
+          profile={profile}
+          updateProfile={updateProfile}
+        />
 
-        <SectionCard
-          icon={<Clock size={16} className="text-primary" />}
-          iconBg="bg-primary/10"
-          title="Store Timings"
-          editable
-        >
-          <InfoRow label="Open Time" value={formatTime(profile.openTime)} />
-          <InfoRow
-            label="Close Time"
-            value={formatTime(profile.closeTime)}
-            isLast
-          />
-          {isOpenNow && (
-            <div className="flex items-center gap-2 mt-2 rounded-sm bg-success/10 text-success border font-medium border-ink-placeholder/20 text-sm px-3 py-2">
-              <Calendar size={16} strokeWidth={3} />
-              <span>Open Now</span>
-              <span className="font-bold">·</span>
-              <span>{pendingText}</span>
-            </div>
-          )}
-        </SectionCard>
-
-        <SectionCard
-          icon={<Info size={16} className="text-success" />}
-          iconBg="bg-green-100"
-          title="Profile Completion"
-        >
-          <div className="flex gap-4 items-center">
-            <CircularProgress percentage={pct} size={125} strokeWidth={4} />
-            <div>
-              <h3 className="font-semibold text-ink-900 mb-2">
-                {pct === 100
-                  ? "Great job! Your profile is complete."
-                  : "Finish setting up your profile."}
-              </h3>
-              <ul className="space-y-1">
-                {Object.entries(checks).map(([label, done]) => (
-                  <li
-                    key={label}
-                    className={`text-sm flex items-center gap-2 ${done ? "text-success font-medium" : "text-ink-muted"}`}
-                  >
-                    <CheckCircle2
-                      size={14}
-                      fill={done ? "#34a853" : "#fff"}
-                      color={done ? "#fff" : "#80828e"}
-                    />
-                    {label}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </SectionCard>
+        <ProfileCompletion profile={profile} />
       </div>
 
       {/* UI shell only — no backend endpoints for these yet */}
