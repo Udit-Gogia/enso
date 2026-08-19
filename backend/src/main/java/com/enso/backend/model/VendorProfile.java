@@ -28,7 +28,7 @@ public class VendorProfile  {
 
     private String businessName;
     private String bio;
-    private int yearsOfExperience;
+    private Double yearsOfExperience;
     private LocalTime openTime;
     private LocalTime closeTime;
 

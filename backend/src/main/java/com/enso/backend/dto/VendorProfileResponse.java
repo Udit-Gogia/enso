@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 public class VendorProfileResponse extends ProfileResponse {
     private String bio;
     private String businessName;
-    private int experience;
+    private Double experience;
     private LocalTime openTime;
     private LocalTime closeTime;
     private List<String> categories;

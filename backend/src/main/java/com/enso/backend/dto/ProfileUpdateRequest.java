@@ -14,7 +14,7 @@ public class ProfileUpdateRequest {
 
     private JsonNullable<String> bio = JsonNullable.undefined();
     private JsonNullable<String> businessName = JsonNullable.undefined();
-    private JsonNullable<Integer> yearsOfExperience = JsonNullable.undefined();
+    private JsonNullable<Double> yearsOfExperience = JsonNullable.undefined();
     private JsonNullable<String> openTime = JsonNullable.undefined();
     private JsonNullable<String> closeTime = JsonNullable.undefined();
     private JsonNullable<List<String>> categoryCodes = JsonNullable.undefined();

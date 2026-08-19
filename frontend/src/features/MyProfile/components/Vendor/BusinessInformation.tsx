@@ -4,17 +4,17 @@ import { InfoRow } from "../InfoRow";
 import { SmoothInput } from "@/components/ui/SmoothInput";
 import { formatDate } from "@/helpers/timeHelpers";
 import { VendorProfileMetricProps } from "../../pages/VendorProfilePage";
+import { VendorEditableSection } from "../../constants/types";
 
 type BusinessInformationProps = VendorProfileMetricProps & {
   cancelBusinessEdit: () => void;
-  saveBusinessInfo: () => Promise<void>;
 };
 
 export default function BusinessInformation({
   profile,
   enableEditing,
   cancelBusinessEdit,
-  saveBusinessInfo,
+  saveProfile,
   isEditingSection,
   updateProfile,
 }: BusinessInformationProps) {
@@ -26,7 +26,7 @@ export default function BusinessInformation({
       title="Business Information"
       onEditClick={() => enableEditing("business")}
       onCancelEdit={cancelBusinessEdit}
-      onSaveEdit={saveBusinessInfo}
+      onSaveEdit={() => saveProfile("business")}
       displayEditActionButton={isEditingSection("business")}
     >
       <InfoRow

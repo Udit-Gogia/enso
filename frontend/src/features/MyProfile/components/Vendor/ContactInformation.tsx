@@ -8,14 +8,13 @@ import { VendorProfileMetricProps } from "../../pages/VendorProfilePage";
 
 type ContactInformationProps = VendorProfileMetricProps & {
   cancelContactEdit: () => void;
-  saveContactInfo: () => Promise<void>;
 };
 
 export default function ContactInformation({
   profile,
   enableEditing,
   cancelContactEdit,
-  saveContactInfo,
+  saveProfile,
   isEditingSection,
   updateProfile,
 }: ContactInformationProps) {
@@ -27,7 +26,7 @@ export default function ContactInformation({
       editable
       onEditClick={() => enableEditing("contact")}
       onCancelEdit={cancelContactEdit}
-      onSaveEdit={saveContactInfo}
+      onSaveEdit={() => saveProfile("contact")}
       displayEditActionButton={isEditingSection("contact")}
     >
       <InfoRow label="Email" value={profile.email} />

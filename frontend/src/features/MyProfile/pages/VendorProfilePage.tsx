@@ -22,6 +22,7 @@ export type VendorProfileMetricProps = {
   enableEditing: (section: VendorEditableSection) => void;
   updateProfile: (updatedProfile: VendorProfile) => void;
   isEditingSection: (section: VendorEditableSection) => boolean;
+  saveProfile: (section: VendorEditableSection) => Promise<void>;
 };
 
 export function VendorProfilePage({
@@ -32,9 +33,7 @@ export function VendorProfilePage({
   const {
     profile,
     serviceCategories,
-    saveBusinessInfo,
-    saveContactInfo,
-    saveServiceCategories,
+    saveProfile,
     cancelBusinessEdit,
     cancelContactEdit,
     cancelServiceCateroryEdit,
@@ -132,7 +131,7 @@ export function VendorProfilePage({
           enableEditing={enableEditing}
           isEditingSection={isEditingSection}
           profile={profile}
-          saveBusinessInfo={saveBusinessInfo}
+          saveProfile={saveProfile}
           updateProfile={updateProfile}
         />
 
@@ -141,7 +140,7 @@ export function VendorProfilePage({
           isEditingSection={isEditingSection}
           enableEditing={enableEditing}
           profile={profile}
-          saveContactInfo={saveContactInfo}
+          saveProfile={saveProfile}
           updateProfile={updateProfile}
         />
 
@@ -151,7 +150,7 @@ export function VendorProfilePage({
           isEditingSection={isEditingSection}
           profile={profile}
           updateProfile={updateProfile}
-          saveServiceCategories={saveServiceCategories}
+          saveProfile={saveProfile}
           serviceCategories={serviceCategories}
         />
 
@@ -159,6 +158,7 @@ export function VendorProfilePage({
           enableEditing={enableEditing}
           isEditingSection={isEditingSection}
           profile={profile}
+          saveProfile={saveProfile}
           updateProfile={updateProfile}
         />
 

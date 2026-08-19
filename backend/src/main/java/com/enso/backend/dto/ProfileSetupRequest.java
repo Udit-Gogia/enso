@@ -24,7 +24,7 @@ public class ProfileSetupRequest {
     // Vendor fields
     private String businessName;
     private String bio;
-    private Integer yearsOfExperience;
+    private Double yearsOfExperience;
     private String openTime;
     private String closeTime;
     private List<String> categoryCodes;

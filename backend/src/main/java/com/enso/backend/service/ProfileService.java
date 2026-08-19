@@ -179,6 +179,9 @@ public class ProfileService {
     }
 
     public ProfileResponse updateProfile(String email, ProfileUpdateRequest request) {
+
+        System.out.println(request);
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

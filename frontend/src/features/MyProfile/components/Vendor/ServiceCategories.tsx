@@ -7,16 +7,15 @@ import { VendorProfileMetricProps } from "../../pages/VendorProfilePage";
 
 type ServiceCategoriesProps = VendorProfileMetricProps & {
   cancelServiceCateroryEdit: () => void;
-  saveServiceCategories: () => Promise<void>;
   serviceCategories: ServiceCategory[];
 };
 
 export default function ServiceCategories({
   profile,
   serviceCategories,
+  saveProfile,
   enableEditing,
   cancelServiceCateroryEdit,
-  saveServiceCategories,
   isEditingSection,
   updateProfile,
 }: ServiceCategoriesProps) {
@@ -30,7 +29,7 @@ export default function ServiceCategories({
       editable
       onEditClick={() => enableEditing("categories")}
       onCancelEdit={cancelServiceCateroryEdit}
-      onSaveEdit={saveServiceCategories}
+      onSaveEdit={() => saveProfile("categories")}
       displayEditActionButton={isEditingSection("categories")}
     >
       <DisplayTags

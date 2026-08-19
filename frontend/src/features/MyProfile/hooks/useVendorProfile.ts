@@ -1,6 +1,8 @@
 import useServiceCategories from "@/features/auth/hooks/useServiceCategories";
 import { useState } from "react";
 import { VendorEditableSection, VendorProfile } from "../constants/types";
+import api from "@/lib/axios";
+import { toast } from "sonner";
 
 export default function useVendorProfile(savedProfile: VendorProfile) {
   const [profile, setProfile] = useState<VendorProfile>(savedProfile);
@@ -53,72 +55,50 @@ export default function useVendorProfile(savedProfile: VendorProfile) {
   const cancelContactEdit = () => {
     setProfile((prev) => ({
       ...prev,
-      email: savedProfile.email,
       phone: savedProfile.phone,
       location: savedProfile.location,
     }));
     stopEditing("contact");
   };
 
-  const saveBusinessInfo = async () => {
-    const payload = {
-      businessName: profile.businessName,
-      experience: profile.experience,
-    };
-
-    // API CALL TO UPDATE PROFILE
-    //await updateVendorProfile(payload);
-
-    stopEditing("business");
+  const updateProfile = (updatedProfile: VendorProfile) => {
+    setProfile(updatedProfile);
   };
 
-  const saveServiceCategories = async () => {
-    const payload = {
-      categoryCodes: profile.categories,
-    };
-
-    // API CALL TO UPDATE PROFILE
-    //await updateVendorProfile(payload);
-
-    stopEditing("categories");
-  };
-
-  const saveContactInfo = async () => {
+  const saveProfile = async (section: VendorEditableSection) => {
     const payload = {
       phone: profile.phone,
       location: profile.location,
-    };
-
-    // API CALL TO UPDATE PROFILE
-    //await updateVendorProfile(payload);
-
-    stopEditing("contact");
-  };
-
-  const saveTimings = async () => {
-    const payload = {
+      profilePhotoUrl: profile.profilePhotoUrl,
+      preferredLocation: null,
+      bio: profile.bio,
+      businessName: profile.businessName,
+      yearsOfExperience: profile.experience,
       openTime: profile.openTime,
       closeTime: profile.closeTime,
+      categoryCodes: profile.categories,
     };
 
-    // API CALL TO UPDATE PROFILE
-    //await updateVendorProfile(payload);
+    try {
+      const response = await api.put("/api/profile/update", payload);
 
-    stopEditing("timings");
-  };
+      console.log("Response", response);
 
-  const updateProfile = (updatedProfile: VendorProfile) => {
-    setProfile(updatedProfile);
+      if (response.status === 200) {
+        toast.success("Profile Updated");
+      }
+      stopEditing(section);
+    } catch (Exception) {
+      toast.error("Failed to update profile!");
+    }
   };
 
   return {
     profile,
     serviceCategories,
-    saveBusinessInfo,
-    saveContactInfo,
-    saveServiceCategories,
-    saveTimings,
+
     cancelBusinessEdit,
+    saveProfile,
     cancelContactEdit,
     cancelServiceCateroryEdit,
     enableEditing,
