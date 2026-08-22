@@ -4,7 +4,7 @@ import { Persona } from "@/features/auth/constants/types";
 import { cn } from "@/lib/utils";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
-  customer: "#1A73E8",
+  customer: "#7e7de8",
   vendor: "#C5221F",
   admin: "#188038",
 };
@@ -71,15 +71,15 @@ export function Select({
         {/* Trigger */}
         <div
           className={cn(
-            "flex items-center justify-between w-full px-4 py-3 rounded-xl border border-border-input bg-surface text-sm cursor-pointer focus-within:ring-2 transition-all",
+            "flex items-center justify-between w-full px-4 py-3 rounded-xl border border-border-input bg-surface text-sm cursor-pointer focus-within:ring-2 transition-all ",
             containerClassName,
           )}
-          style={{ focusWithinRingColor: accent } as any}
+          style={{ "--tw-ring-color": accent } as any}
           onClick={() => setOpen((prev) => !prev)}
         >
           <input
             className={cn(
-              "flex-1 bg-transparent outline-none text-ink placeholder:text-ink-placeholder",
+              "flex-1 bg-transparent outline-none text-ink placeholder:text-ink-placeholder ",
               inputClassName,
             )}
             placeholder={open ? "Search services..." : placeholder}

@@ -11,6 +11,7 @@ import Analytics from "@/pages/Analytics";
 import Myprofile from "@/pages/Myprofile";
 import PageLayout from "@/components/common/pageLayout";
 import PublicLayout from "@/components/common/publicLayout";
+import VendorSearchPage from "@/features/VendorSearch/pages/VendorSearchPage";
 
 export default function AnimatedRoutes() {
   return (
@@ -65,6 +66,14 @@ export default function AnimatedRoutes() {
           element={
             <ProtectedRoute require="auth">
               <Analytics />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.VENDOR_SEARCH}
+          element={
+            <ProtectedRoute require="auth">
+              <VendorSearchPage />
             </ProtectedRoute>
           }
         />

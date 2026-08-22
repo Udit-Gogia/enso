@@ -1,5 +1,5 @@
 import { Screens } from "@/routes/Routes";
-import { LayoutGrid, LucideProps, PieChart, User } from "lucide-react";
+import { LayoutGrid, LucideProps, PieChart, Search, User } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 export type DASHBOARD_FIELD = {
@@ -17,6 +17,12 @@ export const DASHBOARD_FIELDS: DASHBOARD_FIELD[] = [
     label: "Dashboard",
     icon: LayoutGrid,
     redirectPath: "DASHBOARD",
+  },
+  {
+    id: "vendor-search",
+    label: "Find Vendors",
+    icon: Search,
+    redirectPath: "VENDOR_SEARCH",
   },
   {
     id: "profile",

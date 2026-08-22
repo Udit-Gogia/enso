@@ -8,9 +8,8 @@ export default function ProfilePageLayout({
   ProfileOverviewChild: React.ReactNode;
   ProfileInformationChildren: React.ReactNode;
 }) {
-  console.log("Called ProfilePageLayout");
   return (
-    <div className="max-w-4xl mx-auto p-8 pt-0 space-y-6 font-sans overflow-x-hidden">
+    <div className="max-w-5xl mx-auto p-8 pt-0 space-y-6 font-sans overflow-x-hidden">
       <div className="relative">
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"

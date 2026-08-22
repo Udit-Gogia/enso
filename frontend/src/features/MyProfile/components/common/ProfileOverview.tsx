@@ -11,8 +11,8 @@ import { UserRole } from "../../constants/types";
 import { toSentenceCase } from "@/lib/utils";
 
 const roleColors: Record<UserRole, String> = {
-  VENDOR: "bg-rose-100 shadow-rose-200 border-rose-200 text-rose-500",
-  ADMIN: "bg-green-100 shadow-green-200 border-green-200 text-success",
+  VENDOR: "bg-rose-100 shadow-des border-rose-200 text-rose-500",
+  ADMIN: "bg-green-100 shadow-success/120 border-green-200 text-success",
   CUSTOMER:
     "bg-brand-blue/10 shadow-brand-blue/20 border-brand-blue/20 text-brand-blue",
 };

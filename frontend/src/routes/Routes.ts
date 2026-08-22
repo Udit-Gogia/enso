@@ -6,6 +6,7 @@ export type Screens =
   | "PROFILE_SETUP"
   | "ANALYTICS"
   | "MY_PROFILE"
+  | "VENDOR_SEARCH"
   | "PERSONA_PROFILE_SETUP";
 
 const ROUTES: Record<Screens, string> = {
@@ -16,6 +17,7 @@ const ROUTES: Record<Screens, string> = {
   PROFILE_SETUP: "/profile-setup",
   ANALYTICS: "/analytics",
   MY_PROFILE: "/my-profile",
+  VENDOR_SEARCH: "/vendors",
   PERSONA_PROFILE_SETUP: "/profile-setup/:persona",
 };
 

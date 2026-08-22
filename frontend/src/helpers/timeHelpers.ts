@@ -38,11 +38,6 @@ function formatTime(time: string) {
   return `${String(formattedHour).padStart(2, "0")}:${minutes} ${period}`;
 }
 
-formatTime("08:00:00"); // "08:00 AM"
-formatTime("21:00:00"); // "09:00 PM"
-formatTime("00:30:00"); // "12:30 AM"
-formatTime("12:45:00"); // "12:45 PM"
-
 export {
   formatDate,
   getMinutesFromTime,
