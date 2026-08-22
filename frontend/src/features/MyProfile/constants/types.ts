@@ -38,3 +38,5 @@ export type VendorEditableSection =
   | "timings";
 
 export type CustomerEditableSection = "contact";
+
+export type AdminEditableSection = "contact";

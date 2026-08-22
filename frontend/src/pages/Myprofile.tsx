@@ -1,5 +1,7 @@
 import { MagneticDots } from "@/components/common/MagneticDots";
+import { Reveal } from "@/components/ui/Reveal";
 import useGetProfile from "@/features/MyProfile/hooks/useGetProfile";
+import AdminProfilePage from "@/features/MyProfile/pages/AdminProfilePage";
 import CustomerProfilePage from "@/features/MyProfile/pages/CustomerProfilePage";
 import { VendorProfilePage } from "@/features/MyProfile/pages/VendorProfilePage";
 
@@ -24,15 +26,20 @@ export default function Myprofile() {
         intensity={1}
         className="absolute inset-0 h-full w-full"
       />
-      <div className="relative z-20 ">
-        {profile.role === "VENDOR" && (
-          <VendorProfilePage savedProfile={profile} />
-        )}
+      <Reveal>
+        <div className="relative z-20 ">
+          {profile.role === "VENDOR" && (
+            <VendorProfilePage savedProfile={profile} />
+          )}
 
-        {profile.role === "CUSTOMER" && (
-          <CustomerProfilePage savedProfile={profile} />
-        )}
-      </div>
+          {profile.role === "CUSTOMER" && (
+            <CustomerProfilePage savedProfile={profile} />
+          )}
+          {profile.role === "ADMIN" && (
+            <AdminProfilePage savedProfile={profile} />
+          )}
+        </div>
+      </Reveal>
     </section>
   );
 }

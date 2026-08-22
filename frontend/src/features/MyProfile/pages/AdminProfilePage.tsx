@@ -2,21 +2,21 @@ import ProfileOverview from "../components/common/ProfileOverview";
 import ProfilePageLayout from "../components/common/ProfilePageLayout";
 import ContactInformation from "../components/Vendor/ContactInformation";
 import ProfileCompletion from "../components/Vendor/ProfileCompletion";
-import { CustomerEditableSection, CustomerProfile } from "../constants/types";
-import useCustomerProfile from "../hooks/useCustomerProfile";
+import { AdminEditableSection, AdminProfile } from "../constants/types";
+import useAdminProfile from "../hooks/useAdminProfile";
 
-export type CustomerProfileMetricProps = {
-  profile: CustomerProfile;
-  enableEditing: (section: CustomerEditableSection) => void;
-  updateProfile: (updatedProfile: CustomerProfile) => void;
-  isEditingSection: (section: CustomerEditableSection) => boolean;
-  saveProfile: (section: CustomerEditableSection) => Promise<void>;
+export type AdminProfileMetricProps = {
+  profile: AdminProfile;
+  enableEditing: (section: AdminEditableSection) => void;
+  updateProfile: (updatedProfile: AdminProfile) => void;
+  isEditingSection: (section: AdminEditableSection) => boolean;
+  saveProfile: (section: AdminEditableSection) => Promise<void>;
 };
 
-export default function CustomerProfilePage({
+export default function AdminProfilePage({
   savedProfile,
 }: {
-  savedProfile: CustomerProfile;
+  savedProfile: AdminProfile;
 }) {
   const {
     cancelContactEdit,
@@ -25,7 +25,7 @@ export default function CustomerProfilePage({
     profile,
     saveProfile,
     updateProfile,
-  } = useCustomerProfile(savedProfile);
+  } = useAdminProfile(savedProfile);
 
   return (
     <ProfilePageLayout
@@ -42,7 +42,7 @@ export default function CustomerProfilePage({
         <>
           <ContactInformation
             cancelContactEdit={cancelContactEdit}
-            role="CUSTOMER"
+            role="ADMIN"
             props={{
               isEditingSection: isEditingSection,
               enableEditing: enableEditing,

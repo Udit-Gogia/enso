@@ -4,6 +4,7 @@ import {
   Mail,
   MapPin,
   Phone,
+  ShieldIcon,
   User,
 } from "lucide-react";
 import { UserRole } from "../../constants/types";
@@ -11,7 +12,7 @@ import { toSentenceCase } from "@/lib/utils";
 
 const roleColors: Record<UserRole, String> = {
   VENDOR: "bg-rose-100 shadow-rose-200 border-rose-200 text-rose-500",
-  ADMIN: "bg-blue-100 shadow-blue-200 border-blue-200",
+  ADMIN: "bg-green-100 shadow-green-200 border-green-200 text-success",
   CUSTOMER:
     "bg-brand-blue/10 shadow-brand-blue/20 border-brand-blue/20 text-brand-blue",
 };
@@ -47,6 +48,9 @@ export default function ProfileOverview({
           )}
           {role === "CUSTOMER" && (
             <User className="text-brand-blue" size={44} />
+          )}
+          {role === "ADMIN" && (
+            <ShieldIcon className="text-success" size={44} />
           )}
         </div>
 
