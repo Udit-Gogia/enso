@@ -57,14 +57,6 @@ export const QUESTIONS: Record<Persona, Question[]> = {
       placeholder: "e.g. Pune",
       description: "Which city are you based in?",
     },
-    {
-      id: "preferredLocation",
-      label: "Preferred Area",
-      sidebarDescription: "Your go-to neighbourhood",
-      type: "text",
-      placeholder: "e.g. Baner, Kothrud",
-      description: "Where do you usually need services?",
-    },
   ],
   vendor: [
     {

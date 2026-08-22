@@ -1,15 +1,26 @@
-import { VendorProfile } from "./constants/types";
+import { UserProfile } from "./constants/types";
 
-export function computeCompletion(p: VendorProfile) {
-  console.log("p is", p);
-  const checks = {
-    "Business Information": Boolean(
-      p.businessName && p.experience !== null && p.location != null,
-    ),
+export function computeCompletion(p: UserProfile) {
+  const checks: Record<string, boolean> = {
     "Contact Details": Boolean(p.phone),
-    "Store Timings": Boolean(p.openTime && p.closeTime),
-    "Categories & Bio": Boolean(p.categories.length > 0 && p.bio),
+    Location: Boolean(p.location),
   };
+
+  if (p.role === "VENDOR") {
+    checks["Business Information"] = Boolean(
+      p.businessName && p.experience && p.location,
+    );
+
+    checks["Store Timings"] = Boolean(p.openTime && p.closeTime);
+
+    checks["Categories & Bio"] = Boolean(p.categories.length > 0 && p.bio);
+  }
+
   const done = Object.values(checks).filter(Boolean).length;
-  return { pct: Math.round((done / 4) * 100), checks };
+  const total = Object.keys(checks).length;
+
+  return {
+    pct: Math.round((done / total) * 100),
+    checks,
+  };
 }

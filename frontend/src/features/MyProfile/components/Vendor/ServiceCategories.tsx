@@ -6,7 +6,7 @@ import { ServiceCategory } from "@/features/auth/constants/serviceCategoryCompon
 import { VendorProfileMetricProps } from "../../pages/VendorProfilePage";
 
 type ServiceCategoriesProps = VendorProfileMetricProps & {
-  cancelServiceCateroryEdit: () => void;
+  cancelServiceCategoryEdit: () => void;
   serviceCategories: ServiceCategory[];
 };
 
@@ -15,7 +15,7 @@ export default function ServiceCategories({
   serviceCategories,
   saveProfile,
   enableEditing,
-  cancelServiceCateroryEdit,
+  cancelServiceCategoryEdit,
   isEditingSection,
   updateProfile,
 }: ServiceCategoriesProps) {
@@ -28,7 +28,7 @@ export default function ServiceCategories({
       className="col-span-2"
       editable
       onEditClick={() => enableEditing("categories")}
-      onCancelEdit={cancelServiceCateroryEdit}
+      onCancelEdit={cancelServiceCategoryEdit}
       onSaveEdit={() => saveProfile("categories")}
       displayEditActionButton={isEditingSection("categories")}
     >

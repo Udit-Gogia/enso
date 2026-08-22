@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
-import { isLoggedIn, hasSetupToken } from "@/lib/auth";
+import { hasSetupToken } from "@/lib/auth";
+import { useAuthValidation } from "@/hooks/useAuthValidation";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -7,8 +8,11 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, require }: ProtectedRouteProps) {
-  const loggedIn = isLoggedIn();
+  const { isValid: loggedIn, isValidating } = useAuthValidation();
+
   const setupPending = hasSetupToken();
+
+  if (isValidating) return <></>;
 
   if (require === "auth" && !loggedIn) {
     return <Navigate to="/login" replace />;

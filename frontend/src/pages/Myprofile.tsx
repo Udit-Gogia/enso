@@ -1,5 +1,6 @@
 import { MagneticDots } from "@/components/common/MagneticDots";
 import useGetProfile from "@/features/MyProfile/hooks/useGetProfile";
+import CustomerProfilePage from "@/features/MyProfile/pages/CustomerProfilePage";
 import { VendorProfilePage } from "@/features/MyProfile/pages/VendorProfilePage";
 
 export default function Myprofile() {
@@ -26,6 +27,10 @@ export default function Myprofile() {
       <div className="relative z-20 ">
         {profile.role === "VENDOR" && (
           <VendorProfilePage savedProfile={profile} />
+        )}
+
+        {profile.role === "CUSTOMER" && (
+          <CustomerProfilePage savedProfile={profile} />
         )}
       </div>
     </section>

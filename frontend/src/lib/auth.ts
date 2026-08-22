@@ -4,7 +4,7 @@ export function isFirstTimeUser(): boolean {
   return !!getAccessToken() && !!getSetupToken();
 }
 
-export function isLoggedIn(): boolean {
+export function hasAccessToken(): boolean {
   return !!getAccessToken();
 }
 

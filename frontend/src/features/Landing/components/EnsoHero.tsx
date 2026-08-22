@@ -6,7 +6,7 @@ import Grainient from "@/components/Grainient";
 import EnsoNavbar from "./EnsoNavbar";
 import { Reveal } from "@/components/ui/Reveal";
 import BlurOutUp from "@/components/smoothui/blur-out-up";
-import { isLoggedIn } from "@/lib/auth";
+import { hasAccessToken } from "@/lib/auth";
 import { useNavigate } from "react-router-dom";
 
 const container: Variants = {
@@ -32,7 +32,7 @@ export function EnsoHero() {
   // const setupPending = hasSetupToken();
   // const loggedIn = isLoggedIn();
   const navigate = useNavigate();
-  const loggedIn = isLoggedIn();
+  const loggedIn = hasAccessToken();
 
   return (
     <section className="h-screen w-full relative overflow-x-clip ">

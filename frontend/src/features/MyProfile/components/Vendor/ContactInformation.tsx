@@ -4,20 +4,32 @@ import { SmoothInput } from "@/components/ui/SmoothInput";
 import { Mail } from "lucide-react";
 import { Select } from "@/components/ui/Select";
 import { CITIES } from "@/constants/cities";
-import { VendorProfileMetricProps } from "../../pages/VendorProfilePage";
+import { BaseProfile, UserRole } from "../../constants/types";
 
-type ContactInformationProps = VendorProfileMetricProps & {
+type ContactInformationProps<T extends BaseProfile> = {
+  role: UserRole;
+  props: {
+    profile: T;
+    enableEditing: (section: "contact") => void;
+    saveProfile: (section: "contact") => void;
+    isEditingSection: (section: "contact") => boolean;
+    updateProfile: (profile: T) => void;
+  };
   cancelContactEdit: () => void;
 };
 
-export default function ContactInformation({
-  profile,
-  enableEditing,
+export default function ContactInformation<T extends BaseProfile>({
+  props,
   cancelContactEdit,
-  saveProfile,
-  isEditingSection,
-  updateProfile,
-}: ContactInformationProps) {
+}: ContactInformationProps<T>) {
+  const {
+    profile,
+    enableEditing,
+    saveProfile,
+    isEditingSection,
+    updateProfile,
+  } = props;
+
   return (
     <SectionCard
       icon={<Mail size={16} className="text-amber " />}
