@@ -18,4 +18,7 @@ public class ProfileUpdateRequest {
     private JsonNullable<String> openTime = JsonNullable.undefined();
     private JsonNullable<String> closeTime = JsonNullable.undefined();
     private JsonNullable<List<String>> categoryCodes = JsonNullable.undefined();
+
+    private JsonNullable<List<String>> offeringIds = JsonNullable.undefined();
+
 }

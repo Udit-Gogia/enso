@@ -5,12 +5,14 @@ import com.enso.backend.dto.AuthResponse;
 import com.enso.backend.dto.CustomerProfileResponse;
 import com.enso.backend.dto.ProfileSetupRequest;
 import com.enso.backend.dto.ProfileUpdateRequest;
+import com.enso.backend.dto.ServiceOfferingResponse;
 import com.enso.backend.dto.VendorProfileResponse;
 import com.enso.backend.model.*;
 import com.enso.backend.repository.AdminInviteRepository;
 import com.enso.backend.repository.AdminProfileRepository;
 import com.enso.backend.repository.CustomerProfileRepository;
 import com.enso.backend.repository.ServiceCategoryRepository;
+import com.enso.backend.repository.ServiceOfferingRepository;
 import com.enso.backend.repository.UserRepository;
 import com.enso.backend.repository.VendorProfileRepository;
 import com.enso.backend.security.JwtUtil;
@@ -32,6 +34,7 @@ public class ProfileService {
     private final VendorProfileRepository vendorProfileRepository;
     private final AdminProfileRepository adminProfileRepository;
     private final AdminInviteRepository adminInviteRepository;
+    private final ServiceOfferingRepository serviceOfferingRepository;
     private final ServiceCategoryRepository serviceCategoryRepository;
     private final JwtUtil jwtUtil;
 
@@ -72,6 +75,7 @@ public class ProfileService {
                                 .map(optional -> optional.get())
                                 .collect(Collectors.toList())
                                 : List.of())
+
                         .profilePhotoUrl(request.getProfilePhotoUrl())
                         .build();
                 vendorProfileRepository.save(profile);
@@ -148,6 +152,13 @@ public class ProfileService {
                         .profilePhotoUrl(profile.getProfilePhotoUrl())
                         .createdAt(user.getCreatedAt())
                         .bio(profile.getBio())
+                        .offerings(profile.getOfferings() != null
+                            ? profile.getOfferings().stream()
+                                    .map(o -> new ServiceOfferingResponse(
+                                            o.getId(), o.getCode(), o.getDisplayName(),
+                                            o.getCategory().getCode(), o.getCategory().getDisplayName()))
+                                    .toList()
+                            : List.of())
                         .businessName(profile.getBusinessName())
                         .experience(profile.getYearsOfExperience())
                         .openTime(profile.getOpenTime())
@@ -221,6 +232,19 @@ public class ProfileService {
                             .map(serviceCategoryRepository::findByCode)
                             .filter(optional -> optional != null && optional.isPresent())
                             .map(optional -> optional.get())
+                            .collect(Collectors.toList()));
+                }
+                if (request.getOfferingIds().isPresent()) {
+                    profile.setOfferings(request.getOfferingIds().get().stream()
+                            .map(idStr -> {
+                                try {
+                                    return serviceOfferingRepository.findById(java.util.UUID.fromString(idStr));
+                                } catch (IllegalArgumentException e) {
+                                    return java.util.Optional.<ServiceOffering>empty();
+                                }
+                            })
+                            .filter(java.util.Optional::isPresent)
+                            .map(java.util.Optional::get)
                             .collect(Collectors.toList()));
                 }
                 if (request.getProfilePhotoUrl().isPresent())

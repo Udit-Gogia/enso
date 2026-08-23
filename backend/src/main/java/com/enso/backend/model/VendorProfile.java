@@ -36,6 +36,10 @@ public class VendorProfile  {
     @JoinTable(name = "vendor_profile_categories", joinColumns = @JoinColumn(name = "vendor_profile_id"), inverseJoinColumns = @JoinColumn(name = "service_category_id"))
     private List<ServiceCategory> categories;
 
+    @ManyToMany
+@JoinTable(name = "vendor_profile_offerings", joinColumns = @JoinColumn(name = "vendor_profile_id"), inverseJoinColumns = @JoinColumn(name = "service_offering_id"))
+private List<ServiceOffering> offerings;
+
     private String profilePhotoUrl;
 
     @Builder.Default

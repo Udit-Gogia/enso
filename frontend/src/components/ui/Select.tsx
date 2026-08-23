@@ -21,6 +21,7 @@ interface SelectProps {
   placeholder?: string;
   persona: Persona;
   containerClassName?: string;
+  parentClassName?: string;
   dropdownClassName?: string;
   inputClassName?: string;
 }
@@ -32,6 +33,7 @@ export function Select({
   placeholder = "Search or select...",
   persona,
   containerClassName,
+  parentClassName,
   dropdownClassName,
   inputClassName,
 }: SelectProps) {
@@ -66,7 +68,10 @@ export function Select({
   }
 
   return (
-    <div ref={containerRef} className="relative flex flex-col gap-2">
+    <div
+      ref={containerRef}
+      className={cn("relative flex flex-col gap-2", parentClassName)}
+    >
       <div className="relative">
         {/* Trigger */}
         <div

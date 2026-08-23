@@ -19,5 +19,6 @@ public class VendorProfileResponse extends ProfileResponse {
     private LocalTime openTime;
     private LocalTime closeTime;
     private List<String> categories;
+    private List<ServiceOfferingResponse> offerings;
     private boolean isVerified;
 }

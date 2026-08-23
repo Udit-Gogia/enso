@@ -7,6 +7,7 @@ import StoreTimings from "../components/Vendor/StoreTimings";
 import ProfileCompletion from "../components/Vendor/ProfileCompletion";
 import ProfileOverview from "../components/common/ProfileOverview";
 import ProfilePageLayout from "../components/common/ProfilePageLayout";
+import Offerings from "../components/Vendor/Offerings";
 
 export type VendorProfileMetricProps = {
   profile: VendorProfile;
@@ -28,6 +29,7 @@ export function VendorProfilePage({
     cancelBusinessEdit,
     cancelContactEdit,
     cancelServiceCategoryEdit,
+    cancelOfferingsEdit,
     enableEditing,
     isEditingSection,
     updateProfile,
@@ -75,6 +77,15 @@ export function VendorProfilePage({
             isEditingSection={isEditingSection}
             profile={profile}
             updateProfile={updateProfile}
+            saveProfile={saveProfile}
+            serviceCategories={serviceCategories}
+          />
+
+          <Offerings
+            profile={profile}
+            updateProfile={updateProfile}
+            enableEditing={enableEditing}
+            isEditingSection={isEditingSection}
             saveProfile={saveProfile}
             serviceCategories={serviceCategories}
           />

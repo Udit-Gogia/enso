@@ -21,7 +21,7 @@ export default function useVendorProfile(savedProfile: VendorProfile) {
         location: profile.location,
         profilePhotoUrl: profile.profilePhotoUrl,
         preferredLocation: null,
-
+        offeringIds: profile.offerings.map((o) => o.id),
         bio: profile.bio,
         businessName: profile.businessName,
         yearsOfExperience: profile.experience,
@@ -63,6 +63,14 @@ export default function useVendorProfile(savedProfile: VendorProfile) {
     stopEditing("categories");
   };
 
+  const cancelOfferingsEdit = () => {
+    updateProfile({
+      ...profile,
+      offerings: savedProfile.offerings,
+    });
+    stopEditing("offerings");
+  };
+
   return {
     profile,
     serviceCategories,
@@ -72,6 +80,7 @@ export default function useVendorProfile(savedProfile: VendorProfile) {
     cancelBusinessEdit,
     cancelContactEdit,
     cancelServiceCategoryEdit,
+    cancelOfferingsEdit,
 
     enableEditing,
     isEditingSection,

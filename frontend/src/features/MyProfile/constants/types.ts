@@ -10,6 +10,14 @@ export interface BaseProfile {
   profilePhotoUrl: string | null;
 }
 
+export interface ServiceOfferingRef {
+  id: string;
+  code: string;
+  name: string;
+  categoryCode: string;
+  categoryName: string;
+}
+
 export interface VendorProfile extends BaseProfile {
   role: "VENDOR";
   bio: string | null;
@@ -18,6 +26,7 @@ export interface VendorProfile extends BaseProfile {
   closeTime: string; // "21:00"
   businessName: string;
   categories: string[];
+  offerings: ServiceOfferingRef[];
   isVerified: boolean;
 }
 
@@ -35,6 +44,7 @@ export type VendorEditableSection =
   | "business"
   | "contact"
   | "categories"
+  | "offerings"
   | "timings";
 
 export type CustomerEditableSection = "contact";

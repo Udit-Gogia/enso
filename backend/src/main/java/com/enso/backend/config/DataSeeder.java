@@ -1,12 +1,22 @@
 package com.enso.backend.config;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.enso.backend.model.ServiceCategory;
+import com.enso.backend.model.ServiceOffering;
 import com.enso.backend.repository.ServiceCategoryRepository;
+import com.enso.backend.repository.ServiceOfferingRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class DataSeeder implements CommandLineRunner {
 
     private final ServiceCategoryRepository serviceCategoryRepository;
+    private final ServiceOfferingRepository serviceOfferingRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -61,5 +72,45 @@ public class DataSeeder implements CommandLineRunner {
             serviceCategoryRepository.saveAll(categories);
             System.out.println("Seeded " + categories.size() + " service categories.");
         }
+    
+    
+         // Service offerings — loaded from bundled CSV, not hardcoded
+        if (serviceOfferingRepository.count() == 0) {
+            Map<String, ServiceCategory> categoryByCode = new HashMap<>();
+            for (ServiceCategory c : serviceCategoryRepository.findAll()) {
+                categoryByCode.put(c.getCode(), c);
+            }
+
+            List<ServiceOffering> offerings = new ArrayList<>();
+            try (InputStream is = new ClassPathResource("data/service_offerings_enhanced.csv").getInputStream();
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+
+                String line = reader.readLine(); 
+                while ((line = reader.readLine()) != null) {
+                    if (line.isBlank()) continue;
+                    String[] parts = line.split(",", 3);
+                    String categoryCode = parts[0];
+                    String serviceCode = parts[1];
+                    String displayName = parts[2];
+
+                    ServiceCategory category = categoryByCode.get(categoryCode);
+                    if (category == null) {
+                        System.out.println("Skipping unknown category code in CSV: " + categoryCode);
+                        continue;
+                    }
+
+                    offerings.add(ServiceOffering.builder()
+                            .category(category)
+                            .code(serviceCode)
+                            .displayName(displayName)
+                            .build());
+                }
+            }
+
+            serviceOfferingRepository.saveAll(offerings);
+            System.out.println("Seeded " + offerings.size() + " service offerings.");
+        
+    }
+    
     }
 }

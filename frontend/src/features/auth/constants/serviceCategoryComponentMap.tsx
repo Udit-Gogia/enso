@@ -46,23 +46,27 @@ export interface ServiceCategoryMeta {
   colorClass: string;
 }
 
-/**
- * Keyed by ServiceCategory.code. Colors are pulled from the project palette only.
- * NOTE: the palette has ~8 usable hues, so with 27 categories many colors repeat.
- * Assignment is by closest semantic fit, not uniqueness.
- */
+export const CATEGORY_HOVER_CLASSES: Record<string, string> = {
+  "text-amber": "hover:bg-amber/10 hover:border-amber/40",
+  "text-brand-blue": "hover:bg-brand-blue/10 hover:border-brand-blue/40",
+  "text-danger": "hover:bg-danger/10 hover:border-danger/40",
+  "text-success": "hover:bg-success/10 hover:border-success/40",
+  "text-primary": "hover:bg-primary/10 hover:border-primary/40",
+  "text-ink": "hover:bg-ink/10 hover:border-ink/40",
+};
+
 export const SERVICE_CATEGORY_META: Record<string, ServiceCategoryMeta> = {
   ELECTRICIAN: {
     code: "ELECTRICIAN",
     name: "Electrician",
     icon: Zap,
-    colorClass: "text-accent-amber",
+    colorClass: "text-amber",
   }, // spark / power
   PLUMBER: {
     code: "PLUMBER",
     name: "Plumber",
     icon: Droplets,
-    colorClass: "text-google-blue",
+    colorClass: "text-brand-blue",
   }, // water
   CARPENTER: {
     code: "CARPENTER",
@@ -74,7 +78,7 @@ export const SERVICE_CATEGORY_META: Record<string, ServiceCategoryMeta> = {
     code: "PAINTER",
     name: "Painter",
     icon: Paintbrush,
-    colorClass: "text-google-red",
+    colorClass: "text-danger",
   }, // color / paint
   CLEANING: {
     code: "CLEANING",
@@ -86,19 +90,19 @@ export const SERVICE_CATEGORY_META: Record<string, ServiceCategoryMeta> = {
     code: "PEST_CONTROL",
     name: "Pest Control",
     icon: Bug,
-    colorClass: "text-accent-green",
+    colorClass: "text-success",
   }, // outdoors
   AC_REPAIR: {
     code: "AC_REPAIR",
     name: "AC Repair",
     icon: AirVent,
-    colorClass: "text-google-blue",
+    colorClass: "text-brand-blue",
   }, // cool air
   APPLIANCE_REPAIR: {
     code: "APPLIANCE_REPAIR",
     name: "Appliance Repair",
     icon: Wrench,
-    colorClass: "text-muted",
+    colorClass: "text-success",
   }, // tool (neutral)
   INTERIOR_DESIGN: {
     code: "INTERIOR_DESIGN",
@@ -110,19 +114,19 @@ export const SERVICE_CATEGORY_META: Record<string, ServiceCategoryMeta> = {
     code: "SALON_BEAUTY",
     name: "Salon & Beauty",
     icon: Scissors,
-    colorClass: "text-google-red",
+    colorClass: "text-danger",
   }, // beauty
   FITNESS_TRAINER: {
     code: "FITNESS_TRAINER",
     name: "Fitness Trainer",
     icon: Dumbbell,
-    colorClass: "text-accent-amber",
+    colorClass: "text-amber",
   }, // energy
   COOK: {
     code: "COOK",
     name: "Cook",
     icon: ChefHat,
-    colorClass: "text-accent-amber",
+    colorClass: "text-amber",
   }, // kitchen
   DRIVER: {
     code: "DRIVER",
@@ -134,25 +138,25 @@ export const SERVICE_CATEGORY_META: Record<string, ServiceCategoryMeta> = {
     code: "TUTOR",
     name: "Tutor",
     icon: BookOpen,
-    colorClass: "text-google-blue",
+    colorClass: "text-brand-blue",
   }, // education
   SPORTS_TRAINER: {
     code: "SPORTS_TRAINER",
     name: "Sports Trainer",
     icon: Trophy,
-    colorClass: "text-google-yellow",
+    colorClass: "text-amber",
   }, // achievement / gold
   HEALTHCARE: {
     code: "HEALTHCARE",
     name: "Healthcare",
     icon: Stethoscope,
-    colorClass: "text-accent-green",
+    colorClass: "text-success",
   }, // health
   CARETAKER: {
     code: "CARETAKER",
     name: "Caretaker",
     icon: HeartHandshake,
-    colorClass: "text-google-red",
+    colorClass: "text-danger",
   }, // care
   SECURITY: {
     code: "SECURITY",
@@ -164,7 +168,7 @@ export const SERVICE_CATEGORY_META: Record<string, ServiceCategoryMeta> = {
     code: "PACKERS_MOVERS",
     name: "Packers & Movers",
     icon: Truck,
-    colorClass: "text-google-yellow",
+    colorClass: "text-amber",
   }, // logistics
   PHOTOGRAPHER: {
     code: "PHOTOGRAPHER",
@@ -176,7 +180,7 @@ export const SERVICE_CATEGORY_META: Record<string, ServiceCategoryMeta> = {
     code: "CATERING",
     name: "Catering",
     icon: Utensils,
-    colorClass: "text-google-red",
+    colorClass: "text-danger",
   }, // food / events
   IT_SUPPORT: {
     code: "IT_SUPPORT",
@@ -188,25 +192,25 @@ export const SERVICE_CATEGORY_META: Record<string, ServiceCategoryMeta> = {
     code: "SOFTWARE_SOLUTIONS",
     name: "Software Solutions",
     icon: Code,
-    colorClass: "text-google-green",
+    colorClass: "text-success",
   }, // code
   HARDWARE_SHOP: {
     code: "HARDWARE_SHOP",
     name: "Hardware Shop",
     icon: Store,
-    colorClass: "text-accent-amber",
+    colorClass: "text-amber",
   }, // retail
   GROCERY: {
     code: "GROCERY",
     name: "Grocery",
     icon: ShoppingBasket,
-    colorClass: "text-google-green",
+    colorClass: "text-success",
   }, // produce
   MEDICAL_SUPPLIES: {
     code: "MEDICAL_SUPPLIES",
     name: "Medical Supplies",
     icon: Pill,
-    colorClass: "text-google-red",
+    colorClass: "text-danger",
   }, // pharma
   HARDWARE: {
     code: "HARDWARE",

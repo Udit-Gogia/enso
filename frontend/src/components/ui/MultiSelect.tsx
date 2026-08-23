@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Check, ChevronDown, X } from "lucide-react";
 import { Persona } from "@/features/auth/constants/types";
 import { cn } from "@/lib/utils";
@@ -42,13 +43,20 @@ export function MultiSelect({
   const [open, setOpen] = useState(autoFocus);
   const [search, setSearch] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [dropdownRect, setDropdownRect] = useState<{
+    top: number;
+    left: number;
+    width: number;
+  } | null>(null);
 
-  // Close on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
+      const target = e.target as Node;
       if (
         containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
+        !containerRef.current.contains(target) &&
+        !(dropdownRef.current && dropdownRef.current.contains(target))
       ) {
         setOpen(false);
         setSearch("");
@@ -57,6 +65,17 @@ export function MultiSelect({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (open && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setDropdownRect({
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+      });
+    }
+  }, [open]);
 
   const filtered = options.filter((opt) =>
     opt.name.toLowerCase().includes(search.toLowerCase()),
@@ -79,13 +98,12 @@ export function MultiSelect({
   return (
     <div ref={containerRef} className="relative flex flex-col gap-2">
       <div className="relative">
-        {/* Trigger */}
         <div
           className={cn(
             "flex items-center justify-between w-full px-4 py-3 rounded-xl border border-border-input bg-surface text-sm cursor-pointer focus-within:ring-2 transition-all",
             containerClassName,
           )}
-          style={{ focusWithinRingColor: accent } as any}
+          style={{ "--tw-ring-color": accent } as any}
           onClick={() => setOpen((prev) => !prev)}
         >
           <input
@@ -112,50 +130,54 @@ export function MultiSelect({
           />
         </div>
 
-        {/* Dropdown */}
-        {open && (
-          <div
-            className="absolute top-[calc(100%+4px)] left-0 right-0 z-50 
-                        bg-white border border-border-soft rounded-xl shadow-card 
-                        max-h-[220px] overflow-y-auto"
-          >
-            {filtered.length === 0 ? (
-              <p className="px-4 py-3 text-sm text-ink-muted">
-                No services found.
-              </p>
-            ) : (
-              filtered.map((opt) => {
-                const isSelected = value.includes(opt.code);
-                return (
-                  <div
-                    key={opt.code}
-                    onClick={() => toggle(opt.code)}
-                    className="flex items-center justify-between px-3 py-2.5 
-                             text-sm cursor-pointer hover:bg-surface-page transition-all hover:pl-4 "
-                    style={{
-                      color: isSelected ? accent : "#16161D",
-                      fontWeight: isSelected ? 500 : 400,
-                    }}
-                  >
-                    <span>{opt.name}</span>
-                    {isSelected && (
-                      <Check size={14} style={{ color: accent }} />
-                    )}
-                  </div>
-                );
-              })
-            )}
-          </div>
-        )}
+        {open &&
+          dropdownRect &&
+          createPortal(
+            <div
+              ref={dropdownRef}
+              style={{
+                position: "fixed",
+                top: dropdownRect.top,
+                left: dropdownRect.left,
+                width: dropdownRect.width,
+              }}
+              className="thin-scrollbar z-[60] bg-white border border-border-soft rounded-xl shadow-card max-h-[220px] overflow-y-auto"
+            >
+              {filtered.length === 0 ? (
+                <p className="px-4 py-3 text-sm text-ink-muted">
+                  No services found.
+                </p>
+              ) : (
+                filtered.map((opt) => {
+                  const isSelected = value.includes(opt.code);
+                  return (
+                    <div
+                      key={opt.code}
+                      onClick={() => toggle(opt.code)}
+                      className="flex items-center justify-between px-3 py-2.5 text-sm cursor-pointer hover:bg-surface-page transition-all hover:pl-4"
+                      style={{
+                        color: isSelected ? accent : "#16161D",
+                        fontWeight: isSelected ? 500 : 400,
+                      }}
+                    >
+                      <span>{opt.name}</span>
+                      {isSelected && (
+                        <Check size={14} style={{ color: accent }} />
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>,
+            document.body,
+          )}
       </div>
-      {/* Selected chips */}
       {displayChips && selectedOptions.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mt-1">
           {selectedOptions.map((opt) => (
             <span
               key={opt.code}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full 
-                         text-xs font-medium border"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border"
               style={{
                 backgroundColor: accent + "12",
                 color: accent,
