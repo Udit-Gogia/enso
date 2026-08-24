@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Persona } from "./ProfilePanel";
 import { Button } from "@/components/ui/button";
 import { BriefcaseBusinessIcon, Shield, User } from "lucide-react";
+import { Persona } from "../constants/types";
 
 const PERSONA_META: Record<
   Persona,

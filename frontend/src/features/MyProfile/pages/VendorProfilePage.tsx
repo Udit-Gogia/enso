@@ -29,7 +29,6 @@ export function VendorProfilePage({
     cancelBusinessEdit,
     cancelContactEdit,
     cancelServiceCategoryEdit,
-    cancelOfferingsEdit,
     enableEditing,
     isEditingSection,
     updateProfile,

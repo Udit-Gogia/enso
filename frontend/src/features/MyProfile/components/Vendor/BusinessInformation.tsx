@@ -4,7 +4,6 @@ import { InfoRow } from "../InfoRow";
 import { SmoothInput } from "@/components/ui/SmoothInput";
 import { formatDate } from "@/helpers/timeHelpers";
 import { VendorProfileMetricProps } from "../../pages/VendorProfilePage";
-import { VendorEditableSection } from "../../constants/types";
 
 type BusinessInformationProps = VendorProfileMetricProps & {
   cancelBusinessEdit: () => void;

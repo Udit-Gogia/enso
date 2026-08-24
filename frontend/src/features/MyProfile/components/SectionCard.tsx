@@ -1,12 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Check,
-  CheckCheck,
-  CheckCircle,
-  CheckIcon,
-  Pencil,
-  X,
-} from "lucide-react";
+import { Check, Pencil, X } from "lucide-react";
 
 export function SectionCard({
   icon,
