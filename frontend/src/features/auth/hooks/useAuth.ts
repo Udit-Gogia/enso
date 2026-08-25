@@ -2,9 +2,11 @@ import api from "@/lib/axios";
 import { setAccessToken, setSetupToken } from "@/lib/token";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 export default function useAuth() {
   const navigate = useNavigate();
+  const { revalidate } = useAuthContext();
 
   function navigateToLogin() {
     navigate("/login");
@@ -28,6 +30,7 @@ export default function useAuth() {
       }
 
       setAccessToken(token);
+      await revalidate();
       toast.success("Welcome back!");
       navigate("/dashboard");
     } catch (error: any) {

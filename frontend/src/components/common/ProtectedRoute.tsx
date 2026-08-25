@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { hasSetupToken } from "@/lib/auth";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, require }: ProtectedRouteProps) {
-  const { isValid: loggedIn, isValidating } = useAuth();
+  const { isValid: loggedIn, isValidating } = useAuthContext();
 
   const setupPending = hasSetupToken();
 
