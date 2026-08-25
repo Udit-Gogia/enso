@@ -1,8 +1,9 @@
 import EnsoTitle from "@/components/common/EnsoTitle";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/Reveal";
+import { useAuth } from "@/contexts/AuthContext";
 
-import { hasAccessToken, hasSetupToken, logout } from "@/lib/auth";
+import { hasSetupToken, logout } from "@/lib/auth";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
@@ -10,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function EnsoNavbar() {
   const navigate = useNavigate();
-  const loggedIn = hasAccessToken();
+  const { isValid: loggedIn } = useAuth();
   const setupPending = hasSetupToken();
 
   const [hovered, setHovered] = useState<string>("signup");

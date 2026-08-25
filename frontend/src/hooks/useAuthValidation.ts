@@ -20,23 +20,16 @@ export function useAuthValidation() {
       try {
         const token = getAccessToken();
 
-        const response = await api.get("/api/auth/isTokenValid", {
+        await api.get("/api/auth/isTokenValid", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        console.log("response");
-
-        if (!response) {
-          clearAllTokens();
-          setIsValid(false);
-          return;
-        }
-
         setIsValid(true);
       } catch (error) {
         console.error("Token validation failed:", error);
+        clearAllTokens();
         setIsValid(false);
       } finally {
         setIsValidating(false);
