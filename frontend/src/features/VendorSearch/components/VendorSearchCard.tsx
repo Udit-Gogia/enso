@@ -53,8 +53,8 @@ export default function VendorSearchCard({ vendor }: VendorSearchCardProps) {
       <div className="rounded-2xl  flex flex-col h-full">
         {/* Header: fixed-size avatar + role badge + name */}
         <div className="flex items-start gap-4">
-          <div className="w-14 h-14 shrink-0 rounded-full flex items-center justify-center bg-primary/10 border border-primary/20">
-            <Briefcase className="text-primary" size={24} />
+          <div className="w-14 h-14 shrink-0 rounded-full flex items-center justify-center bg-brand-blue/10 border border-brand-blue/20">
+            <Briefcase className="text-brand-blue-deep" size={24} />
           </div>
 
           <div className="flex flex-col gap-1 min-w-0 flex-1">

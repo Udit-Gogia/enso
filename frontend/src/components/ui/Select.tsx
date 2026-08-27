@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { Persona } from "@/features/auth/constants/types";
 import { cn } from "@/lib/utils";
+import type { LucideIcon } from "lucide-react";
 
 const PERSONA_ACCENT: Record<Persona, string> = {
   customer: "#7e7de8",
@@ -12,6 +13,8 @@ const PERSONA_ACCENT: Record<Persona, string> = {
 interface Option {
   code: string;
   name: string;
+  icon?: LucideIcon;
+  iconColorClass?: string;
 }
 
 interface SelectProps {
@@ -42,7 +45,6 @@ export function Select({
   const [search, setSearch] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Close on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -67,6 +69,9 @@ export function Select({
     setSearch("");
   }
 
+  const selectedOption = options.find((opt) => opt.name === value);
+  const SelectedIcon = selectedOption?.icon;
+
   return (
     <div
       ref={containerRef}
@@ -76,28 +81,36 @@ export function Select({
         {/* Trigger */}
         <div
           className={cn(
-            "flex items-center justify-between w-full px-4 py-3 rounded-xl border border-border-input bg-surface text-sm cursor-pointer focus-within:ring-2 transition-all ",
+            "flex items-center justify-between w-full px-4 py-3 rounded-xl border border-border-input bg-surface text-sm cursor-pointer focus-within:ring-2 transition-all",
             containerClassName,
           )}
           style={{ "--tw-ring-color": accent } as any}
           onClick={() => setOpen((prev) => !prev)}
         >
-          <input
-            className={cn(
-              "flex-1 bg-transparent outline-none text-ink placeholder:text-ink-placeholder ",
-              inputClassName,
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            {!open && SelectedIcon && (
+              <SelectedIcon
+                size={16}
+                className={cn("shrink-0", selectedOption?.iconColorClass)}
+              />
             )}
-            placeholder={open ? "Search services..." : placeholder}
-            value={search || value}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setOpen(true);
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(true);
-            }}
-          />
+            <input
+              className={cn(
+                "flex-1 bg-transparent outline-none text-ink placeholder:text-ink-placeholder min-w-0",
+                inputClassName,
+              )}
+              placeholder={open ? "Search services..." : placeholder}
+              value={search || value}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setOpen(true);
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(true);
+              }}
+            />
+          </div>
           <ChevronDown
             size={16}
             className="text-ink-muted flex-shrink-0 transition-transform duration-200"
@@ -118,20 +131,32 @@ export function Select({
             ) : (
               filtered.map((opt) => {
                 const isSelected = value === opt.name;
+                const Icon = opt.icon;
                 return (
                   <div
                     key={opt.code}
                     onClick={() => select(opt.name)}
-                    className={`flex items-center justify-between px-3 py-2.5 
-                             text-sm cursor-pointer hover:bg-surface-page transition-all hover:pl-4 `}
+                    className="flex items-center justify-between px-3 py-2.5 text-sm cursor-pointer hover:bg-surface-page transition-all hover:pl-4"
                     style={{
                       color: isSelected ? accent : "#16161D",
                       backgroundColor: isSelected ? accent + "15" : "",
                     }}
                   >
-                    <span>{opt.name}</span>
+                    <span className="flex items-center gap-2 min-w-0">
+                      {Icon && (
+                        <Icon
+                          size={14}
+                          className={cn("shrink-0", opt.iconColorClass)}
+                        />
+                      )}
+                      <span className="truncate">{opt.name}</span>
+                    </span>
                     {isSelected && (
-                      <Check size={14} style={{ color: accent }} />
+                      <Check
+                        size={14}
+                        className="shrink-0"
+                        style={{ color: accent }}
+                      />
                     )}
                   </div>
                 );
@@ -140,32 +165,6 @@ export function Select({
           </div>
         )}
       </div>
-      {/* Selected chips */}
-      {/* {selectedOptions.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mt-1">
-          {selectedOptions.map((opt) => (
-            <span
-              key={opt.code}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full 
-                         text-xs font-medium border"
-              style={{
-                backgroundColor: accent + "12",
-                color: accent,
-                borderColor: accent + "30",
-              }}
-            >
-              {opt.name}
-              <button
-                type="button"
-                onClick={() => remove(opt.code)}
-                className="hover:opacity-70 transition-opacity"
-              >
-                <X size={11} />
-              </button>
-            </span>
-          ))}
-        </div>
-      )} */}
     </div>
   );
 }

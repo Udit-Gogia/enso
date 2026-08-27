@@ -33,13 +33,21 @@ import {
 //   );
 // }
 
+const roleColors: Record<"blue" | "green" | "red" | "primary", String> = {
+  red: "text-destructive bg-destructive/10",
+  blue: "text-brand-blue-deep bg-brand-blue/10",
+  green: "text-success bg-success/10",
+  primary: "text-primary bg-primary/10",
+};
+
 export function DisplayTags({
   tags,
   noTagMessage,
   previewCount,
+  theme,
 }: {
   tags: string[];
-  theme?: "vendor" | "customer";
+  theme?: "blue" | "green" | "red" | "primary";
   noTagMessage?: string;
   previewCount?: number;
 }) {
@@ -53,7 +61,7 @@ export function DisplayTags({
           {visibleTags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-brand-blue/10 px-2.5 py-1 text-xs font-medium text-brand-blue-deep"
+              className={`rounded-full bg-brand-blue/10 px-2.5 py-1 text-xs font-medium text-brand-blue-deep ${theme ? roleColors[theme] : ""}`}
             >
               {toSentenceCase(tag.replace("_", " "))}
             </span>
@@ -61,7 +69,9 @@ export function DisplayTags({
           {hiddenTags.length > 0 && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="rounded-full bg-brand-blue/10 px-2.5 py-1 text-xs font-medium text-brand-blue-deep cursor-default">
+                <span
+                  className={`rounded-full bg-brand-blue/10 px-2.5 py-1 text-xs font-medium text-brand-blue-deep cursor-default ${theme ? roleColors[theme] : ""}`}
+                >
                   +{hiddenTags.length} more
                 </span>
               </TooltipTrigger>

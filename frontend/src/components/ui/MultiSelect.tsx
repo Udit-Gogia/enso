@@ -112,7 +112,13 @@ export function MultiSelect({
               inputClassName,
             )}
             placeholder={open ? "Search services..." : placeholder}
-            value={search}
+            value={
+              open
+                ? search
+                : value.length > 0
+                  ? `${value.length} selected`
+                  : search
+            }
             autoFocus={autoFocus}
             onChange={(e) => {
               setSearch(e.target.value);

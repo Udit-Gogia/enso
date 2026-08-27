@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { setAccessToken, setSetupToken } from "@/lib/token";
+import { setAccessToken, setSetupToken, setRole } from "@/lib/token";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuthContext } from "@/contexts/AuthContext";
@@ -30,6 +30,7 @@ export default function useAuth() {
       }
 
       setAccessToken(token);
+      setRole(role);
       await revalidate();
       toast.success("Welcome back!");
       navigate("/dashboard");

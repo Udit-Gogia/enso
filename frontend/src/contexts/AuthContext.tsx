@@ -6,12 +6,13 @@ import {
   ReactNode,
 } from "react";
 import { hasAccessToken } from "@/lib/auth";
-import { clearAllTokens, getAccessToken } from "@/lib/token";
+import { clearAllTokens, getAccessToken, getRole } from "@/lib/token";
 import api from "@/lib/axios";
 
 interface AuthContextValue {
   isValid: boolean;
   isValidating: boolean;
+  role: string | null;
   revalidate: () => void;
 }
 
@@ -20,6 +21,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isValidating, setIsValidating] = useState(true);
   const [isValid, setIsValid] = useState(false);
+  const [role, setRoleState] = useState<string | null>(null);
 
   async function validateToken() {
     setIsValidating(true);
@@ -27,6 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (!tokenExists) {
       setIsValid(false);
+      setRoleState(null);
       setIsValidating(false);
       return;
     }
@@ -37,10 +40,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         headers: { Authorization: `Bearer ${token}` },
       });
       setIsValid(true);
+      setRoleState(getRole());
     } catch (error) {
       console.error("Token validation failed:", error);
       clearAllTokens();
       setIsValid(false);
+      setRoleState(null);
     } finally {
       setIsValidating(false);
     }
@@ -52,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ isValid, isValidating, revalidate: validateToken }}
+      value={{ isValid, isValidating, role, revalidate: validateToken }}
     >
       {children}
     </AuthContext.Provider>

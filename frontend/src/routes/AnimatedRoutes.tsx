@@ -12,6 +12,7 @@ import Myprofile from "@/pages/Myprofile";
 import PageLayout from "@/components/common/pageLayout";
 import PublicLayout from "@/components/common/publicLayout";
 import VendorSearchPage from "@/features/VendorSearch/pages/VendorSearchPage";
+import BookingRequestPage from "@/features/BookingRequest/pages/BookingRequestPage";
 
 export default function AnimatedRoutes() {
   return (
@@ -58,6 +59,14 @@ export default function AnimatedRoutes() {
           element={
             <ProtectedRoute require="auth">
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.BOOKING_REQUEST}
+          element={
+            <ProtectedRoute require="auth">
+              <BookingRequestPage />
             </ProtectedRoute>
           }
         />

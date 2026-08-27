@@ -11,13 +11,16 @@ import { Button } from "@base-ui/react";
 import { LogOutIcon, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { logout } from "@/lib/auth";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { Persona } from "@/features/auth/constants/types";
 
 const ENSO_EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function Sidebar() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  const { role } = useAuthContext();
+  console.log({ role });
   const onHoverChange = (option: string | null) => {
     setHovered(option);
   };
@@ -129,16 +132,19 @@ export default function Sidebar() {
           ${isCollapsed ? "px-2" : "px-3"}
         `}
       >
-        {DASHBOARD_FIELDS.map((field: DASHBOARD_FIELD) => (
-          <SidebarOption
-            key={field.id}
-            field={field}
-            hovered={hovered}
-            onHoverChange={onHoverChange}
-            // isSelected={location.pathname === ROUTES[field.redirectPath]}
-            collapsed={isCollapsed}
-          />
-        ))}
+        {role &&
+          DASHBOARD_FIELDS[role.toLowerCase() as Persona].map(
+            (field: DASHBOARD_FIELD) => (
+              <SidebarOption
+                key={field.id}
+                field={field}
+                hovered={hovered}
+                onHoverChange={onHoverChange}
+                // isSelected={location.pathname === ROUTES[field.redirectPath]}
+                collapsed={isCollapsed}
+              />
+            ),
+          )}
       </nav>
 
       {/* ============================================================

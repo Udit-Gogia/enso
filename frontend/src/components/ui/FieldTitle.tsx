@@ -1,21 +1,24 @@
+import { cn } from "@/lib/utils";
 import { FieldLabel } from "./field";
 
 const FieldTitle = ({
   label,
   htmlFor,
   isRequired,
+  className,
 }: {
   label: string;
   htmlFor: string;
+  className?: string;
   isRequired?: boolean;
 }) => {
   return (
     <FieldLabel
-      className="text-sm font-medium flex gap-1 items-center"
+      className={cn("text-sm font-medium flex gap-1 items-center", className)}
       htmlFor={htmlFor}
     >
       {label}
-      {isRequired && <span className="text-destructive opacity-70">*</span>}
+      {isRequired && <span className="text-destructive">*</span>}
     </FieldLabel>
   );
 };

@@ -57,7 +57,7 @@ export default function ProfileOverview({
         {/* Profile Details */}
         <div className="flex flex-col gap-2 my-2">
           <span
-            className={`w-fit px-2 py-1 rounded-2xl text-xs  font-medium border border-rose-200 ${colors}`}
+            className={`w-fit px-2 py-1 rounded-2xl text-xs  font-medium border  ${colors}`}
           >
             {toSentenceCase(role)}
           </span>
