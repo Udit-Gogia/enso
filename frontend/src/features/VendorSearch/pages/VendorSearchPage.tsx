@@ -8,6 +8,7 @@ import { MagneticDots } from "@/components/common/MagneticDots";
 import { CITIES } from "@/constants/cities";
 import VendorSearchCard from "../components/VendorSearchCard";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/Reveal";
 
 export default function VendorSearchPage() {
   const [keyword, setKeyword] = useState("");
@@ -74,97 +75,99 @@ export default function VendorSearchPage() {
   // );
 
   return (
-    <section className="bg-surface p-4 rounded-xl  w-full relative h-full">
-      <MagneticDots
-        palette="Google"
-        intensity={1}
-        className="absolute inset-0 h-full w-full"
-      />
+    <Reveal>
+      <section className="bg-surface p-4 rounded-xl  w-full relative h-full">
+        <MagneticDots
+          palette="Google"
+          intensity={1}
+          className="absolute inset-0 h-full w-full"
+        />
 
-      <div className="relative z-20 h-full pointer-events-auto">
-        <div className="max-w-5xl mx-auto p-8 pt-0 space-y-6 font-sans overflow-x-hidden h-full">
-          <div className="relative">
-            <div
-              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-fit"
-              style={{
-                height: "100%",
-                background:
-                  "radial-gradient(ellipse 720px 300px at 50% 48%, rgba(255,255,255,.9), rgba(255,255,255,0) 68%)",
-              }}
-            />
-            <div className="relative z-20 h-full">
-              <h1 className="text-2xl font-bold text-ink-900">
-                Search Vendors
-              </h1>
-              <p className="text-ink-muted text-sm ">Search vendors</p>
-            </div>
-          </div>
-          <div className="relative z-30">
-            <div
-              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-fit"
-              style={{
-                height: "100%",
-                background:
-                  "radial-gradient(ellipse 720px 300px at 50% 48%, rgba(255,255,255,.9), rgba(255,255,255,0) 68%)",
-              }}
-            />
-            <div className="relative z-20 ">
-              <div className="flex flex-col md:flex-row gap-3 items-stretch mb-6">
-                <Input
-                  type="text"
-                  placeholder="Enter keyword / business name"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  className="flex-1 placeholder:font-normal "
-                />
-                <Select
-                  options={categories.map((c) => ({
-                    code: c.code,
-                    name: c.name,
-                  }))}
-                  value={categoryCode}
-                  onChange={setCategoryCode}
-                  placeholder="Select category"
-                  persona="customer"
-                  containerClassName="flex-1 py-2.5 "
-                />
-                <Select
-                  options={CITIES}
-                  value={location}
-                  onChange={(city) => setLocation(city)}
-                  placeholder="Select Location"
-                  persona="customer"
-                  containerClassName="flex-1 py-2.5"
-                />
-
-                <Button
-                  onClick={handleSearch}
-                  className="flex items-center gap-2 px-6 py-1 rounded-xl text-sm font-semibold
-                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl "
-                  style={{ backgroundColor: "#16161D" }}
-                >
-                  <SearchIcon size={16} />
-                  Search
-                </Button>
+        <div className="relative z-20 h-full pointer-events-auto">
+          <div className="max-w-5xl mx-auto p-8 pt-0 space-y-6 font-sans overflow-x-hidden h-full">
+            <div className="relative">
+              <div
+                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-fit"
+                style={{
+                  height: "100%",
+                  background:
+                    "radial-gradient(ellipse 720px 300px at 50% 48%, rgba(255,255,255,.9), rgba(255,255,255,0) 68%)",
+                }}
+              />
+              <div className="relative z-20 h-full">
+                <h1 className="text-2xl font-bold text-ink-900">
+                  Search Vendors
+                </h1>
+                <p className="text-ink-muted text-sm ">Search vendors</p>
               </div>
             </div>
-          </div>
+            <div className="relative z-30">
+              <div
+                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-fit"
+                style={{
+                  height: "100%",
+                  background:
+                    "radial-gradient(ellipse 720px 300px at 50% 48%, rgba(255,255,255,.9), rgba(255,255,255,0) 68%)",
+                }}
+              />
+              <div className="relative z-20 ">
+                <div className="flex flex-col md:flex-row gap-3 items-stretch mb-6">
+                  <Input
+                    type="text"
+                    placeholder="Enter keyword / business name"
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
+                    className="flex-1 placeholder:font-normal "
+                  />
+                  <Select
+                    options={categories.map((c) => ({
+                      code: c.code,
+                      name: c.name,
+                    }))}
+                    value={categoryCode}
+                    onChange={setCategoryCode}
+                    placeholder="Select category"
+                    persona="customer"
+                    containerClassName="flex-1 py-2.5 "
+                  />
+                  <Select
+                    options={CITIES}
+                    value={location}
+                    onChange={(city) => setLocation(city)}
+                    placeholder="Select Location"
+                    persona="customer"
+                    containerClassName="flex-1 py-2.5"
+                  />
 
-          {loading && <p className="text-ink-muted">Searching...</p>}
+                  <Button
+                    onClick={handleSearch}
+                    className="flex items-center gap-2 px-6 py-1 rounded-xl text-sm font-semibold
+                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl "
+                    style={{ backgroundColor: "#16161D" }}
+                  >
+                    <SearchIcon size={16} />
+                    Search
+                  </Button>
+                </div>
+              </div>
+            </div>
 
-          {!loading && hasSearched && results.length === 0 && (
-            <p className="text-ink-muted">
-              No vendors matched. Try widening your filters.
-            </p>
-          )}
+            {loading && <p className="text-ink-muted">Searching...</p>}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-            {results.map((vendor) => (
-              <VendorSearchCard key={vendor.vendorId} vendor={vendor} />
-            ))}
+            {!loading && hasSearched && results.length === 0 && (
+              <p className="text-ink-muted">
+                No vendors matched. Try widening your filters.
+              </p>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+              {results.map((vendor) => (
+                <VendorSearchCard key={vendor.vendorId} vendor={vendor} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </Reveal>
   );
 }

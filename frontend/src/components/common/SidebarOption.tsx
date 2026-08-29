@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { DASHBOARD_FIELD } from "@/constants/sidebarConstants";
 import ROUTES from "@/routes/Routes";
@@ -9,21 +9,20 @@ export default function SidebarOption({
   collapsed,
   onHoverChange,
   hovered,
+  isSelected,
 }: {
   field: DASHBOARD_FIELD;
   collapsed: boolean;
   onHoverChange: (option: string | null) => void;
   hovered: string | null;
+  isSelected: boolean;
 }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
 
   const Icon = field.icon;
 
   const isHovered = hovered === field.id;
-
-  const isSelected = location.pathname === ROUTES[field.redirectPath];
 
   const handleClick = () => {
     navigate(ROUTES[field.redirectPath]);

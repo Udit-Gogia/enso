@@ -1,5 +1,3 @@
-"use client";
-
 import { useDialKit } from "dialkit";
 import {
   motion,
@@ -7,6 +5,7 @@ import {
   useReducedMotion,
   useSpring,
 } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 import React, {
   type ComponentPropsWithoutRef,
   useEffect,
@@ -29,10 +28,11 @@ const INPUT_TYPE_OPTIONS = [
 const inputWrapperClassName = cn();
 
 const inputClassName =
-  "w-full bg-transparent outline-none placeholder:text-foreground/40";
+  "w-full bg-transparent outline-none placeholder:text-ink-placeholder placeholder:font-normal ";
 
 type InputFieldProps = ComponentPropsWithoutRef<"input"> & {
   wrapperClassName?: string;
+  icon?: LucideIcon;
 };
 type SmoothInputType =
   | "text"
@@ -138,6 +138,7 @@ const SmoothInput = ({
   wrapperClassName,
   value,
   defaultValue,
+  icon: Icon,
   onChange,
   onBlur,
   type,
@@ -426,7 +427,7 @@ const SmoothInput = ({
       resizeObserver.disconnect();
     };
   }, []);
-
+  console.log("placeholder and icon", placeholder, Icon);
   return (
     <div className={cn(inputWrapperClassName, wrapperClassName)}>
       <div
@@ -447,13 +448,17 @@ const SmoothInput = ({
           className={cn(
             inputClassName,
             "col-start-1 col-end-2 row-start-1 row-end-2 text-inherit font-semibold",
+            "focus-visible:outline-none",
+            "focus-visible:ring-2",
+            "focus-visible:ring-primary/20",
+            "focus-visible:border-primary",
             className,
+            Icon && "pl-8",
           )}
           style={style}
           value={inputValue}
           onChange={(e) => {
             if (activeType === "number") {
-              console.log("input and param", e.target.value, allowDecimal);
               e.target.value = sanitizeNumberInput(
                 e.target.value,
                 allowDecimal,
@@ -462,7 +467,11 @@ const SmoothInput = ({
             }
 
             const nextValue = e.target.value;
-            if (!isControlled) setInternalValue(nextValue);
+
+            if (!isControlled) {
+              setInternalValue(nextValue);
+            }
+
             onChange?.(e);
 
             if (supportsCustomCaret) {
@@ -475,15 +484,28 @@ const SmoothInput = ({
             onBlur?.(e);
           }}
         />
+
+        {Icon && (
+          <Icon
+            aria-hidden="true"
+            size={16}
+            className="pointer-events-none absolute left-3 top-[52%] -translate-y-[calc(50%-3px)] text-ink-placeholder"
+          />
+        )}
+
         <span
           ref={measureRef}
           aria-hidden
           className="pointer-events-none invisible absolute top-0 left-0 whitespace-pre"
         />
+
         {supportsCustomCaret && (
           <motion.div
             className="bg-primary-deep pointer-events-none col-start-1 col-end-2 row-start-1 row-end-2 h-[0.9em] w-0.5 self-center"
-            style={{ x: springCaretX, opacity: caretOpacity }}
+            style={{
+              x: springCaretX,
+              opacity: caretOpacity,
+            }}
           />
         )}
       </div>

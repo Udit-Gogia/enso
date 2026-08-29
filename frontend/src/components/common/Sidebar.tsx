@@ -7,12 +7,14 @@ import {
 } from "@/constants/sidebarConstants";
 import { useState } from "react";
 
-import { Button } from "@base-ui/react";
+import { Button } from "@/components/ui/button";
 import { LogOutIcon, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 import { logout } from "@/lib/auth";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { Persona } from "@/features/auth/constants/types";
+import ROUTES from "@/routes/Routes";
 
 const ENSO_EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -20,7 +22,8 @@ export default function Sidebar() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { role } = useAuthContext();
-  console.log({ role });
+  const location = useLocation();
+
   const onHoverChange = (option: string | null) => {
     setHovered(option);
   };
@@ -31,27 +34,9 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`
-        relative
-        flex
-        h-full
-        shrink-0
-        flex-col
-        overflow-hidden
-        rounded-2xl
-        border
-        border-border
-        bg-surface
-        shadow-card
-        transition-[width]
-        duration-500
-        ease-[cubic-bezier(0.16,1,0.3,1)]
-        ${isCollapsed ? "w-[76px]" : "w-[280px]"}
-      `}
+      className={` relative flex h-full shrink-0 flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card transition-[width] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isCollapsed ? "w-[76px]" : "w-[280px]"}`}
     >
-      {/* ============================================================
-          HEADER
-      ============================================================ */}
+      {/* HEADER */}
       <div className="relative h-20 shrink-0">
         {/* Enso Logo */}
         <motion.div
@@ -62,44 +47,21 @@ export default function Sidebar() {
             x: isCollapsed ? -6 : 0,
           }}
           transition={{
-            duration: 1,
+            duration: 0.4,
             ease: ENSO_EASE,
           }}
-          className={`
-            absolute
-            left-5
-            mt-5
-            -translate-y-1/2
-            whitespace-nowrap
-            ${isCollapsed ? "pointer-events-none" : "pointer-events-auto"}
-          `}
+          className={`absolute left-5 mt-5 -translate-y-1/2 whitespace-nowrap ${isCollapsed ? "pointer-events-none" : "pointer-events-auto"}`}
         >
           <EnsoTitle />
         </motion.div>
 
         {/* Sidebar Toggle */}
         <Button
+          variant="ghost"
           onClick={toggleSidebar}
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={`
-            group
-            absolute
-            top-1/2
-            flex
-            h-9
-            w-9
-            -translate-y-1/2
-            items-center
-            justify-center
-            rounded-lg
-            text-ink-muted
-            transition-all
-            duration-200
-            hover:bg-surface-page
-            hover:text-ink-secondary
-            active:scale-95
-            ${isCollapsed ? "left-1/2 -translate-x-1/2" : "right-4"}
-          `}
+          className={`group absolute top-1/2 h-9 w-9 -translate-y-1/2 rounded-lg px-0 py-0 text-ink-muted hover:bg-surface-page hover:text-ink-secondary active:scale-95 focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-0
+            ${isCollapsed ? "left-1/2 -translate-x-1/2" : "right-4"}`}
         >
           <motion.div
             initial={false}
@@ -120,9 +82,7 @@ export default function Sidebar() {
         </Button>
       </div>
 
-      {/* ============================================================
-          NAVIGATION
-      ============================================================ */}
+      {/* NAVIGATION */}
       <nav
         className={`
           flex
@@ -133,23 +93,21 @@ export default function Sidebar() {
         `}
       >
         {role &&
-          DASHBOARD_FIELDS[role.toLowerCase() as Persona].map(
+          (DASHBOARD_FIELDS[role.toLowerCase() as Persona] ?? []).map(
             (field: DASHBOARD_FIELD) => (
               <SidebarOption
                 key={field.id}
                 field={field}
                 hovered={hovered}
                 onHoverChange={onHoverChange}
-                // isSelected={location.pathname === ROUTES[field.redirectPath]}
+                isSelected={location.pathname === ROUTES[field.redirectPath]}
                 collapsed={isCollapsed}
               />
             ),
           )}
       </nav>
 
-      {/* ============================================================
-          LOGOUT
-      ============================================================ */}
+      {/* LOGOUT */}
       <div
         className={`
           shrink-0
@@ -158,25 +116,11 @@ export default function Sidebar() {
         `}
       >
         <Button
+          variant="ghost"
           onClick={logout}
           aria-label="Logout"
           title={isCollapsed ? "Logout" : undefined}
-          className={`
-            group
-            relative
-            flex
-            h-11
-            w-full
-            items-center
-            rounded-lg
-            text-ink-body
-            transition-all
-            duration-200
-            hover:bg-surface-page
-            hover:text-ink
-            active:scale-[0.98]
-            ${isCollapsed ? "justify-center" : "justify-start"}
-          `}
+          className={` group relative h-11 w-full px-0 py-0 font-normal text-ink-body hover:bg-surface-page hover:text-ink active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-0 ${isCollapsed ? "justify-center" : "justify-start"}`}
         >
           {/* Icon */}
           <motion.div

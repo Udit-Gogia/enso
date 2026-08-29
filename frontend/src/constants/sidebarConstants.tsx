@@ -41,7 +41,7 @@ export const DASHBOARD_FIELDS: Record<Persona, DASHBOARD_FIELD[]> = {
     },
     {
       id: "booking-request",
-      label: "Request Booking",
+      label: "New Request",
       icon: CalendarPlus,
       redirectPath: "BOOKING_REQUEST",
     },
@@ -74,16 +74,9 @@ export const DASHBOARD_FIELDS: Record<Persona, DASHBOARD_FIELD[]> = {
     },
     {
       id: "booking-request",
-      label: "Request Booking",
+      label: "New Request",
       icon: CalendarPlus,
       redirectPath: "BOOKING_REQUEST",
-    },
-
-    {
-      id: "analytics",
-      label: "Analytics",
-      icon: PieChart,
-      redirectPath: "ANALYTICS",
     },
   ],
   vendor: [

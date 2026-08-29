@@ -3,7 +3,22 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { ScrollText, Send, ShieldCheck, Users } from "lucide-react";
+import {
+  Building2,
+  Calendar,
+  Clock,
+  House,
+  IndianRupee,
+  Info,
+  LandPlot,
+  Map,
+  MapPinHouse,
+  ScrollText,
+  Send,
+  ShieldCheck,
+  Siren,
+  Users,
+} from "lucide-react";
 
 import useVendorSearch, {
   VendorSearchResult,
@@ -22,12 +37,48 @@ import { MultiSelect } from "@/components/ui/MultiSelect";
 import FieldTitle from "@/components/ui/FieldTitle";
 import { CategorySelect } from "@/components/common/CategorySelect";
 import VendorPickerCard from "../components/VendorPickerCard";
+import {
+  getCurrentTimeHHMM,
+  getNextHourHHMM,
+  getTodayISO,
+} from "@/helpers/timeHelpers";
+import { Reveal } from "@/components/ui/Reveal";
+import { cn } from "@/lib/utils";
 
-// const URGENCY_OPTIONS = [
-//   { code: "FLEXIBLE", name: "Flexible - no rush" },
-//   { code: "WITHIN_A_FEW_DAYS", name: "Within a few days" },
-//   { code: "URGENT", name: "Urgent - as soon as possible" },
-// ];
+const STEP_BADGE_CLASS = "text-sm font-semibold";
+
+const URGENCY_OPTIONS = [
+  {
+    code: "FLEXIBLE",
+    name: "Flexible",
+    Icon: Calendar,
+    description: "I'm flexible with the timing",
+    activeTheme: "border-success bg-success/5",
+    containerClassName: "hover:border-success",
+    iconBg: "bg-success/10",
+    iconColor: "text-success",
+  },
+  {
+    code: "WITHIN_A_FEW_DAYS",
+    name: "Soon",
+    Icon: Clock,
+    description: "Within the next few days",
+    activeTheme: "border-amber bg-amber/5",
+    containerClassName: "hover:border-amber",
+    iconBg: "bg-amber/10",
+    iconColor: "text-amber",
+  },
+  {
+    code: "URGENT",
+    name: "Urgent",
+    Icon: Siren,
+    description: "As soon as possible",
+    activeTheme: "border-danger bg-danger/5",
+    containerClassName: "hover:border-danger",
+    iconBg: "bg-danger/10",
+    iconColor: "text-danger",
+  },
+];
 
 export default function BookingRequestPage() {
   // const { categories } = useActiveCategories();
@@ -62,8 +113,14 @@ export default function BookingRequestPage() {
     ? (offeringsByCategory[categoryCode] ?? [])
     : [];
 
-  const [preferredDate, setPreferredDate] = useState("");
-  const [preferredTime, setPreferredTime] = useState("");
+  const [preferredDate, setPreferredDate] = useState(() => {
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, "0");
+    const d = String(today.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  });
+  const [preferredTime, setPreferredTime] = useState(getNextHourHHMM);
 
   const [estimatedBudget, setEstimatedBudget] = useState("");
 
@@ -154,286 +211,271 @@ export default function BookingRequestPage() {
   }
 
   return (
-    <section className="bg-surface p-4 rounded-xl h-fit w-full relative">
-      <MagneticDots
-        palette="Google"
-        intensity={1}
-        className="absolute inset-0 h-full w-full"
-      />
+    <Reveal>
+      <section className="bg-surface p-4 rounded-xl h-fit w-full relative">
+        <MagneticDots
+          palette="Google"
+          intensity={1}
+          className="absolute inset-0 h-full w-full"
+        />
 
-      <section className="relative z-20">
-        <section className="max-w-4xl max-auto rounded-xl h-full w-full p-8 pt-0 space-y-6 font-sans overflow-x-hidden overflow-y-auto">
-          <div className="relative">
-            <div
-              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-              style={{
-                width: "100%",
-                height: "100%",
-                background:
-                  "radial-gradient(ellipse 720px 300px at 50% 48%, rgba(255,255,255,.9), rgba(255,255,255,0) 68%)",
-              }}
-            />
-            <div className="relative z-20">
-              <h1 className="text-2xl font-bold text-ink-900">
-                Request a Booking
-              </h1>
-              <p className="text-sm text-ink-muted">
-                Tell us what you need and we'll help you connect with the right
-                vendor.
-              </p>
+        <section className="relative z-20">
+          <section className="max-w-5xl mx-auto rounded-xl h-full w-full p-8 pt-0 space-y-6 font-sans overflow-x-hidden overflow-y-auto">
+            <div className="relative">
+              <div
+                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  background:
+                    "radial-gradient(ellipse 720px 300px at 50% 48%, rgba(255,255,255,.9), rgba(255,255,255,0) 68%)",
+                }}
+              />
+              <div className="relative z-20">
+                <h1 className="text-2xl font-bold text-ink">New Request</h1>
+                <p className="text-sm text-ink-muted">
+                  Tell us what you need and we'll help you connect with the
+                  right vendor.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="flex flex-col gap-8">
-            {/* 1. Service Details */}
-            <SectionCard
-              title="Service Details"
-              iconBg="bg-success/20"
-              icon={<span className="text-sm font-semibold">1</span>}
-              className="border border-surface-page shadow-md bg-white w-full"
-            >
-              <div className="flex flex-col gap-1">
-                {/* <h2 className="text-sm font-semibold text-ink mb-3">
-                  1. Service Details
-                </h2> */}
-                <div className="grid grid-cols-2 gap-3 mb-3 items-end">
-                  <div>
+            <div className="flex flex-col gap-8">
+              {/* 1. Service Details */}
+              <SectionCard
+                title="Request Details"
+                desc="Tell us what service you need."
+                iconBg="bg-success/20"
+                icon={<span className={STEP_BADGE_CLASS}>1</span>}
+                className="border border-surface-page shadow-md bg-white w-full"
+              >
+                <div className="flex flex-col gap-4 mt-2">
+                  <div className="grid grid-cols-2 gap-4 items-end">
+                    <div>
+                      <FieldTitle
+                        label="Category"
+                        htmlFor="category"
+                        className="ml-1"
+                        isRequired
+                      />
+                      <CategorySelect
+                        value={categoryCode}
+                        onChange={(code) => {
+                          setCategoryCode(code);
+                          setSelectedVendor(null);
+                        }}
+                        placeholder="Select a category"
+                        parentClassName="mt-1.5"
+                        containerClassName="py-2 px-3"
+                        persona="customer"
+                      />
+                    </div>
+                    <div>
+                      <FieldTitle
+                        label="Offerings"
+                        htmlFor="service"
+                        className="ml-1"
+                      />
+                      <MultiSelect
+                        options={categoryOfferings.map((o) => ({
+                          code: o.id,
+                          name: o.name,
+                        }))}
+                        value={serviceOfferingIds}
+                        onChange={setServiceOfferingIds}
+                        placeholder="Select one or more offerings"
+                        persona="customer"
+                        containerClassName="py-2 px-3 mt-1.5"
+                        displayChips={false}
+                      />
+                    </div>
+                  </div>
+
+                  <section>
                     <FieldTitle
-                      label="Category"
-                      htmlFor="category"
+                      label="Request Title"
+                      htmlFor="title"
                       className="ml-1"
                       isRequired
                     />
-                    <CategorySelect
-                      value={categoryCode}
-                      onChange={(code) => {
-                        setCategoryCode(code);
-                        setSelectedVendor(null);
-                      }}
-                      placeholder="Select a category"
-                      parentClassName="mt-1.5"
-                      containerClassName="py-2 px-3"
-                      persona="customer"
+                    <Input
+                      id="title"
+                      placeholder="e.g. Electrical wiring for my flat, or bulk cement bags"
+                      value={title}
+                      icon={Info}
+                      type="text"
+                      maxLength={100}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="mt-1.5"
                     />
-                  </div>
-                  <div>
+                  </section>
+
+                  <section>
                     <FieldTitle
-                      label="Service"
-                      htmlFor="service"
+                      label="Describe Your Requirement"
+                      htmlFor="description"
                       className="ml-1"
+                      isRequired
                     />
-                    <MultiSelect
-                      options={categoryOfferings.map((o) => ({
-                        code: o.id,
-                        name: o.name,
-                      }))}
-                      value={serviceOfferingIds}
-                      onChange={setServiceOfferingIds}
-                      placeholder="Select one or more services"
-                      persona="customer"
-                      containerClassName="py-2 px-3 mt-1.5"
-                      displayChips={false}
+                    <Textarea
+                      id="description"
+                      className="mt-1.5"
+                      placeholder="Describe what you need..."
+                      value={customRequirement}
+                      onChange={(e) => setCustomRequirement(e.target.value)}
+                      maxLength={1000}
+                      rows={4}
                     />
+                    <p className="text-xs text-ink-muted text-right mt-1">
+                      {customRequirement.length}/1000
+                    </p>
+                    {autoGeneratedSummary && (
+                      <div className="mt-2 px-3 pt-2 pb-3 rounded-lg bg-primary/5 border-ink-placeholder/50 text-xs text-ink-muted border-2 border-dotted">
+                        <section className="flex gap-2 items-center">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary-deep/5">
+                            <ScrollText className="text-primary" size={16} />
+                          </div>
+                          <span className="font-medium text-sm text-ink">
+                            Selected offerings
+                          </span>
+                        </section>
+                        <p className="pl-10">
+                          <span className="font-semibold">Requested: </span>
+                          {autoGeneratedSummary}
+                        </p>
+                      </div>
+                    )}
+                  </section>
+                </div>
+              </SectionCard>
+
+              {/* 2. Choose Vendor */}
+              <SectionCard
+                title="Choose a Vendor (Optional)"
+                iconBg="bg-success/20"
+                desc="Send it to one vendor, or open it up to multiple matches."
+                icon={<span className={STEP_BADGE_CLASS}>2</span>}
+                className="border border-surface-page shadow-md bg-white w-full"
+              >
+                <div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button
+                      type="button"
+                      onClick={handleSelectSpecific}
+                      className={cn(
+                        "text-left flex items-center gap-3 p-4 rounded-xl border transition-all",
+                        bookingMode === "specific"
+                          ? "border-success bg-success/5"
+                          : "border-border hover:border-success",
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0",
+                          bookingMode === "specific"
+                            ? "border-success bg-success"
+                            : "border-border-input",
+                        )}
+                      >
+                        {bookingMode === "specific" && (
+                          <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                        )}
+                      </div>
+                      <div className="w-9 h-9 rounded-lg bg-success/10 flex items-center justify-center shrink-0">
+                        <Send size={16} className="text-success" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 flex-wrap">
+                          <h4 className="font-medium text-ink text-sm">
+                            Send to a specific vendor
+                          </h4>
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-success/10 text-success">
+                            Recommended
+                          </span>
+                        </div>
+                        <p className="text-xs text-ink-muted mt-0.5">
+                          Your request will go directly to the selected vendor.
+                        </p>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleSelectBroadcast}
+                      className={cn(
+                        "text-left flex items-center gap-3 p-4 rounded-xl border transition-all",
+                        bookingMode === "broadcast"
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary",
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0",
+                          bookingMode === "broadcast"
+                            ? "border-primary"
+                            : "border-border-input",
+                        )}
+                      >
+                        {bookingMode === "broadcast" && (
+                          <div className="w-2.5 h-2.5 rounded-full bg-primary" />
+                        )}
+                      </div>
+                      <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <Users size={16} className="text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-medium text-ink text-sm">
+                          Let matching vendors respond
+                        </h4>
+                        <p className="text-xs text-ink-muted mt-0.5">
+                          Your request will be shared with multiple relevant
+                          vendors.
+                        </p>
+                      </div>
+                    </button>
                   </div>
 
-                  {/* <Select
-                    options={URGENCY_OPTIONS}
-                    value={
-                      URGENCY_OPTIONS.find((u) => u.code === urgency)?.name ??
-                      ""
-                    }
-                    onChange={(name) => {
-                      const match = URGENCY_OPTIONS.find(
-                        (u) => u.name === name,
-                      );
-                      setUrgency(match?.code ?? "");
-                    }}
-                    placeholder="Select urgency"
-                    persona="customer"
-                  /> */}
-                </div>
-
-                <section>
-                  <FieldTitle
-                    label="Request Title"
-                    htmlFor="title"
-                    className="ml-1"
-                    isRequired
-                  />
-                  <Input
-                    id="title"
-                    placeholder="E.g. Need electrical wiring for my 2BHK flat"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="mb-3 mt-1.5"
-                  />
-                </section>
-
-                <section>
-                  <FieldTitle
-                    label="Describe Your Requirement"
-                    htmlFor="description"
-                    className="ml-1"
-                    isRequired
-                  />
-                  <Textarea
-                    id="description"
-                    className="mt-1.5"
-                    placeholder="Describe what you need done..."
-                    value={customRequirement}
-                    onChange={(e) => setCustomRequirement(e.target.value)}
-                    maxLength={1000}
-                    rows={4}
-                  />
-                  <p className="text-xs text-ink-muted text-right mt-1">
-                    {customRequirement.length}/1000
-                  </p>
-                  {autoGeneratedSummary && (
-                    <div className="mt-2 px-3 py-2 pb-3 rounded-lg bg-brand-blue/5  border-ink-placeholder/50 text-xs text-ink-muted border-2 border-dotted">
-                      <section className="flex gap-2 items-center">
-                        <div
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center bg-brand-blue-deep/5`}
-                        >
-                          <ScrollText className="text-brand-blue" size={16} />
-                        </div>
-                        <span className="font-medium text-sm text-ink">
-                          Selected services
-                        </span>{" "}
-                      </section>
-                      <p className="pl-10">
-                        <span className="font-semibold">
-                          Services requested:{" "}
-                        </span>
-                        {autoGeneratedSummary}
-                      </p>
+                  {bookingMode === "specific" && selectedVendor && (
+                    <div className="flex flex-col gap-2 mt-4">
+                      <VendorPickerCard
+                        vendor={selectedVendor}
+                        selectable={false}
+                        onChangeVendor={openVendorPicker}
+                        onRemoveVendor={() => setSelectedVendor(null)}
+                      />
+                      <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary/5 text-xs text-ink-muted">
+                        <ShieldCheck
+                          size={14}
+                          className="text-primary-deep shrink-0"
+                        />
+                        You can change the vendor or choose matching vendors at
+                        any time before submitting your request.
+                      </div>
                     </div>
                   )}
-                </section>
-              </div>
-            </SectionCard>
 
-            <SectionCard
-              title="Choose a Vendor (Optional)"
-              iconBg="bg-success/20"
-              desc="Pick a specific vendor to send this request directly to them,
-                  or skip to let matching vendors respond."
-              icon={<span className="text-sm font-semibold">2</span>}
-              className="border border-surface-page shadow-md bg-white w-full"
-            >
-              <div>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={handleSelectSpecific}
-                    className={`text-left flex items-center gap-3 p-4 rounded-md border transition-all ${
-                      bookingMode === "specific"
-                        ? "border-success bg-success/5"
-                        : "border-border hover:border-primary/30"
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                        bookingMode === "specific"
-                          ? "border-success bg-success"
-                          : "border-border-input"
-                      }`}
+                  {bookingMode === "specific" && !selectedVendor && (
+                    <button
+                      type="button"
+                      onClick={openVendorPicker}
+                      className="text-xs font-medium text-primary hover:underline mt-3"
                     >
-                      {bookingMode === "specific" && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-white" />
-                      )}
-                    </div>
-                    <div className="w-9 h-9 rounded-lg bg-success/10 flex items-center justify-center shrink-0">
-                      <Send size={16} className="text-success" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 flex-wrap">
-                        <h4 className="font-medium text-ink text-sm">
-                          Send to a specific vendor
-                        </h4>
-                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-success/10 text-success">
-                          Recommended
-                        </span>
-                      </div>
-                      <p className="text-xs text-ink-muted mt-0.5">
-                        Your request will go directly to the selected vendor.
-                      </p>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleSelectBroadcast}
-                    className={`text-left flex items-center gap-3 p-4 rounded-md border transition-all ${
-                      bookingMode === "broadcast"
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/30"
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                        bookingMode === "broadcast"
-                          ? "border-primary"
-                          : "border-border-input"
-                      }`}
-                    >
-                      {bookingMode === "broadcast" && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                      )}
-                    </div>
-                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <Users size={16} className="text-primary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-ink text-sm">
-                        Let matching vendors respond
-                      </h4>
-                      <p className="text-xs text-ink-muted mt-0.5">
-                        Your request will be shared with multiple relevant
-                        vendors.
-                      </p>
-                    </div>
-                  </button>
+                      Choose a vendor →
+                    </button>
+                  )}
                 </div>
+              </SectionCard>
 
-                {bookingMode === "specific" && selectedVendor && (
-                  <div className="flex flex-col gap-2 mt-4">
-                    <VendorPickerCard
-                      vendor={selectedVendor}
-                      selectable={false}
-                      onChangeVendor={openVendorPicker}
-                      onRemoveVendor={() => setSelectedVendor(null)}
-                    />
-                    <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary/5 text-xs text-ink-muted">
-                      <ShieldCheck
-                        size={14}
-                        className="text-primary-deep shrink-0"
-                      />
-                      You can change the vendor or choose matching vendors at
-                      any time before submitting your request.
-                    </div>
-                  </div>
-                )}
-
-                {bookingMode === "specific" && !selectedVendor && (
-                  <button
-                    type="button"
-                    onClick={openVendorPicker}
-                    className="text-xs font-medium text-primary hover:underline mt-3"
-                  >
-                    Choose a vendor →
-                  </button>
-                )}
-              </div>
-            </SectionCard>
-
-            <SectionCard
-              title="Location"
-              iconBg="bg-success/20"
-              icon={<span className="text-sm font-semibold">3</span>}
-              className="border border-surface-page shadow-md bg-white w-full"
-            >
-              <div className="flex flex-col gap-1">
-                <div className="grid grid-cols-1 gap-4 mb-3">
+              {/* 3. Location */}
+              <SectionCard
+                title="Location"
+                desc="Where should this be delivered or carried out?"
+                iconBg="bg-success/20"
+                icon={<span className={STEP_BADGE_CLASS}>3</span>}
+                className="border border-surface-page shadow-md bg-white w-full"
+              >
+                <div className="flex flex-col gap-4 mt-2">
                   <section>
                     <FieldTitle
                       label="Address"
@@ -443,151 +485,239 @@ export default function BookingRequestPage() {
                     />
                     <Input
                       placeholder="House / Flat No., Building, Street "
-                      className="px-3 py-2 mt-1.5 "
+                      className="mt-1.5"
                       value={address}
                       id="house"
+                      type="text"
+                      icon={House}
                       onChange={(e) => setAddress(e.target.value)}
                     />
                   </section>
+                  <div className="grid grid-cols-2 gap-4">
+                    <section>
+                      <FieldTitle
+                        label="Locality / Area"
+                        htmlFor="locality"
+                        className="ml-1"
+                        isRequired
+                      />
+                      <Input
+                        id="locality"
+                        className="mt-1.5"
+                        placeholder="Kharadi"
+                        value={locality}
+                        icon={LandPlot}
+                        type="text"
+                        onChange={(e) => setLocality(e.target.value)}
+                      />
+                    </section>
+                    <section>
+                      <FieldTitle
+                        label="City"
+                        htmlFor="city"
+                        className="ml-1"
+                        isRequired
+                      />
+                      <Input
+                        id="city"
+                        className="mt-1.5"
+                        placeholder="Pune"
+                        type="text"
+                        icon={Building2}
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                      />
+                    </section>
+                    <section>
+                      <FieldTitle
+                        label="State"
+                        htmlFor="state"
+                        className="ml-1"
+                        isRequired
+                      />
+                      <Input
+                        id="state"
+                        className="mt-1.5"
+                        placeholder="Maharashtra"
+                        value={state}
+                        type="text"
+                        icon={Map}
+                        onChange={(e) => setState(e.target.value)}
+                      />
+                    </section>
+                    <section>
+                      <FieldTitle
+                        label="Pincode"
+                        htmlFor="pincode"
+                        className="ml-1"
+                        isRequired
+                      />
+                      <Input
+                        id="pincode"
+                        className="mt-1.5"
+                        placeholder="Pincode"
+                        value={pincode}
+                        type="number"
+                        maxLength={6}
+                        icon={MapPinHouse}
+                        onChange={(e) => setPincode(e.target.value)}
+                      />
+                    </section>
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <section>
-                    <FieldTitle
-                      label="Locality / Area"
-                      htmlFor="locality"
-                      className="ml-1"
-                      isRequired
-                    />
-                    <Input
-                      id="locality"
-                      className="mt-1.5"
-                      placeholder="E.g. Hinjewadi"
-                      value={locality}
-                      onChange={(e) => setLocality(e.target.value)}
-                    />
-                  </section>
-                  <section>
-                    <FieldTitle
-                      label="City"
-                      htmlFor="city"
-                      className="ml-1"
-                      isRequired
-                    />
-                    <Input
-                      id="city"
-                      className="mt-1.5"
-                      placeholder="E.g. Pune"
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                    />
-                  </section>
-                  <section>
-                    <FieldTitle
-                      label="State"
-                      htmlFor="state"
-                      className="ml-1"
-                      isRequired
-                    />
-                    <Input
-                      id="state"
-                      className="mt-1.5"
-                      placeholder="E.g. Maharashtra"
-                      value={state}
-                      onChange={(e) => setState(e.target.value)}
-                    />
-                  </section>
-                  <section>
-                    <FieldTitle
-                      label="Pincode"
-                      htmlFor="pincode"
-                      className="ml-1"
-                      isRequired
-                    />
-                    <Input
-                      id="pincode"
-                      className="mt-1.5"
-                      placeholder="E.g. 411057"
-                      value={pincode}
-                      onChange={(e) => setPincode(e.target.value)}
-                    />
-                  </section>
-                </div>
-              </div>
-            </SectionCard>
+              </SectionCard>
 
-            {/* 4. Preferred Schedule */}
-            <SectionCard
-              title="Preferred Schedule"
-              iconBg="bg-success/20"
-              icon={<span className="text-sm">4</span>}
-              className="border border-surface-page shadow-md bg-white w-full"
-            >
-              <div>
-                <div className="grid grid-cols-2 gap-3">
-                  <input
-                    type="date"
-                    value={preferredDate}
-                    onChange={(e) => setPreferredDate(e.target.value)}
-                    className="px-3 py-2 rounded-lg border border-border-input text-sm"
-                  />
-                  <input
-                    type="time"
-                    value={preferredTime}
-                    onChange={(e) => setPreferredTime(e.target.value)}
-                    className="px-3 py-2 rounded-lg border border-border-input text-sm"
-                  />
-                </div>
-                <p className="text-xs text-ink-muted mt-2">
-                  Vendors will contact you to confirm the exact time.
-                </p>
-              </div>
-            </SectionCard>
-
-            {/* 5. Budget (Optional) */}
-            <SectionCard
-              title="Budget (Optional)"
-              iconBg="bg-success/20"
-              icon={<span className="text-sn">5</span>}
-              className="border border-surface-page shadow-md bg-white w-full"
-            >
-              <div>
-                <Input
-                  placeholder="E.g. ₹1500 - ₹3000"
-                  value={estimatedBudget}
-                  onChange={(e) => setEstimatedBudget(e.target.value)}
-                />
-              </div>
-            </SectionCard>
-
-            <div className="flex justify-end gap-3">
-              <Button
-                onClick={handleSubmit}
-                disabled={submitting}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
-                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl"
-                style={{ backgroundColor: "#16161D" }}
+              {/* 4. Preferred Schedule */}
+              <SectionCard
+                title="Preferred Schedule"
+                desc="Pick a date and time - vendors will confirm the exact slot with you."
+                iconBg="bg-success/20"
+                icon={<span className={STEP_BADGE_CLASS}>4</span>}
+                className="border border-surface-page shadow-md bg-white w-full"
               >
-                {submitting ? "Submitting..." : "Submit Request"}
-              </Button>
+                <div className="flex flex-col gap-4 mt-2">
+                  <div className="grid grid-cols-2 gap-4">
+                    <section>
+                      <FieldTitle
+                        label="Date"
+                        htmlFor="date"
+                        className="ml-1"
+                      />
+                      <Input
+                        type="date"
+                        id="date"
+                        value={preferredDate}
+                        min={getTodayISO()}
+                        onChange={(e) => setPreferredDate(e.target.value)}
+                        className="rounded-lg text-sm mt-1.5"
+                      />
+                    </section>
+                    <section>
+                      <FieldTitle
+                        label="Time"
+                        htmlFor="time"
+                        className="ml-1"
+                      />
+                      <Input
+                        type="time"
+                        id="time"
+                        value={preferredTime}
+                        onChange={(e) => setPreferredTime(e.target.value)}
+                        min={
+                          preferredDate === getTodayISO()
+                            ? getCurrentTimeHHMM()
+                            : undefined
+                        }
+                        className="rounded-lg text-sm mt-1.5"
+                      />
+                    </section>
+                  </div>
+                  <div>
+                    <FieldTitle
+                      label="Urgency"
+                      htmlFor="urgency"
+                      className="ml-1"
+                    />
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                      {URGENCY_OPTIONS.map(
+                        ({
+                          description,
+                          Icon,
+                          name,
+                          containerClassName,
+                          activeTheme,
+                          code,
+                          iconBg,
+                          iconColor,
+                        }) => (
+                          <div
+                            key={code}
+                            className={cn(
+                              "flex items-center gap-3 rounded-xl border border-ink-placeholder/20 p-4 transition-all duration-200 hover:shadow-sm cursor-pointer",
+                              containerClassName,
+                              urgency === code && activeTheme,
+                            )}
+                            onClick={() => setUrgency(code)}
+                          >
+                            <div
+                              className={cn(
+                                "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
+                                iconBg,
+                              )}
+                            >
+                              <Icon size={16} className={iconColor} />
+                            </div>
+                            <div className="flex min-w-0 flex-col">
+                              <p className="m-0 text-sm font-medium text-ink">
+                                {name}
+                              </p>
+                              <p className="m-0 font-sans text-xs font-normal leading-5 text-ink-muted">
+                                {description}
+                              </p>
+                            </div>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </SectionCard>
+
+              {/* 5. Budget (Optional) */}
+              <SectionCard
+                title="Budget (Optional)"
+                desc="Roughly what you're expecting to spend."
+                iconBg="bg-success/20"
+                icon={<span className={STEP_BADGE_CLASS}>5</span>}
+                className="border border-surface-page shadow-md bg-white w-full"
+              >
+                <div>
+                  <FieldTitle
+                    label="Your Budget"
+                    htmlFor="budget"
+                    className="ml-1"
+                  />
+                  <Input
+                    placeholder="Enter amount in Indian Rupees"
+                    className="mt-1.5"
+                    value={estimatedBudget}
+                    type="number"
+                    icon={IndianRupee}
+                    onChange={(e) => setEstimatedBudget(e.target.value)}
+                  />
+                </div>
+              </SectionCard>
+
+              {/* CTA */}
+              <div className="flex justify-end gap-3">
+                <Button
+                  onClick={handleSubmit}
+                  disabled={submitting}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
+                               bg-ink text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:opacity-90 hover:shadow-xl"
+                >
+                  {submitting ? "Submitting..." : "Submit Request"}
+                </Button>
+              </div>
             </div>
-          </div>
 
-          {/* Vendor picker modal */}
-          <VendorPickerModal
-            open={showVendorPicker}
-            onClose={() => setShowVendorPicker(false)}
-            vendors={vendorResults}
-            loading={vendorsLoading}
-            onConfirm={(vendor) => setSelectedVendor(vendor)}
-          />
+            {/* Vendor picker modal */}
+            <VendorPickerModal
+              open={showVendorPicker}
+              onClose={() => setShowVendorPicker(false)}
+              vendors={vendorResults}
+              loading={vendorsLoading}
+              onConfirm={(vendor) => setSelectedVendor(vendor)}
+            />
 
-          <BookingConfirmModal
-            open={showConfirm}
-            onClose={() => setShowConfirm(false)}
-            booking={confirmedBooking}
-          />
+            <BookingConfirmModal
+              open={showConfirm}
+              onClose={() => setShowConfirm(false)}
+              booking={confirmedBooking}
+            />
+          </section>
         </section>
       </section>
-    </section>
+    </Reveal>
   );
 }
