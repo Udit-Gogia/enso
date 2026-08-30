@@ -40,8 +40,8 @@ export function SectionCard({
             </div>
           )}
           <div>
-            <h3 className="font-semibold text-ink-900">{title}</h3>
-            <p className="text-sm text-ink-muted">{desc}</p>
+            <h3 className="font-semibold text-base text-ink">{title}</h3>
+            <p className=" text-ink-muted text-[13px]">{desc}</p>
           </div>
         </div>
         <section>

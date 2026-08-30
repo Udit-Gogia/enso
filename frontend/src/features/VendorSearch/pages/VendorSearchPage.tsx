@@ -142,8 +142,7 @@ export default function VendorSearchPage() {
                   <Button
                     onClick={handleSearch}
                     className="flex items-center gap-2 px-6 py-1 rounded-xl text-sm font-semibold
-                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl "
-                    style={{ backgroundColor: "#16161D" }}
+                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl bg-ink"
                   >
                     <SearchIcon size={16} />
                     Search

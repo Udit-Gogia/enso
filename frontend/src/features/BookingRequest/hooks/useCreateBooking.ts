@@ -65,7 +65,7 @@ export default function useCreateBooking() {
         address: data.address,
         locality: data.locality,
         city: data.city,
-        serviceOfferingId: data.serviceOfferingId || undefined,
+        serviceOfferingIds: data.serviceOfferingIds || [],
         state: data.state,
         pincode: data.pincode,
         preferredDate: data.preferredDate,

@@ -184,8 +184,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
                     onClick={handleSubmit}
                     disabled={!canProceed}
                     className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
-                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl"
-                    style={{ backgroundColor: "#16161D" }}
+                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl bg-ink"
                   >
                     Complete Setup
                   </Button>
@@ -194,8 +193,7 @@ export function PersonaSetupForm({ persona }: PersonaSetupFormProps) {
                     onClick={goNext}
                     disabled={!canProceed}
                     className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
-                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl"
-                    style={{ backgroundColor: "#16161D" }}
+                               text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] hover:shadow-xl bg-ink"
                   >
                     Next
                     <ArrowRight size={15} />

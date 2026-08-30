@@ -40,7 +40,7 @@ export default {
 
         // --- Text / Ink ---
         ink: {
-          DEFAULT: "#171717",
+          DEFAULT: "#16161D",
           secondary: "#3A3D47",
           body: "#5B5F6B",
           muted: "#80828E",

@@ -106,19 +106,15 @@ export function MagneticDots({
 
     wrap.addEventListener("pointermove", onMove);
     wrap.addEventListener("pointerleave", onLeave);
-    // const ro = new ResizeObserver(resize);
-    // ro.observe(wrap);
-    let resizeTimeout: ReturnType<typeof setTimeout>;
-    const ro = new ResizeObserver(() => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resize, 100);
-    });
+
+    const ro = new ResizeObserver(resize);
     ro.observe(wrap);
 
     const sp = 34; // grid spacing
     const R = 160; // bloom radius
 
     const loop = () => {
+      resize();
       st.t += 0.016;
 
       // Idle drift when the pointer isn't over the canvas.
@@ -180,7 +176,7 @@ export function MagneticDots({
       wrap.removeEventListener("pointermove", onMove);
       wrap.removeEventListener("pointerleave", onLeave);
       ro.disconnect();
-      clearTimeout(resizeTimeout);
+      // clearTimeout(resizeTimeout);
       cancelAnimationFrame(st.raf);
     };
   }, [palette, intensity]);
